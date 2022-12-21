@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>a tag - 가상 선택자</title>
+    <style>
+        a:link{color:blue;text-decoration:none;}
+        a:visited{color:purple;}
+        a:active{text-decoration:overline;}
+        a:hover{background-color:yellow;}
+
+    </style>
+</head>
+<body>
+    <h3>a태그에서 가상 선택자</h3>
+    <!-- 
+        a:link    //사용자가 방문하지 않은 곳 표시
+        a:visited //사용자가 방문한 곳 표시
+        a:active  //링크를 클릭하는 순간
+        a:hover   //링크에 마우스를 올리는 순간
+    -->    
+    <a href="http://www.w3schools.com" target="_blank"> W3C사이트</a><br><br>
+    <a href="http://www.naver.com" target="_blank">네이버</a><br><br>
+    <a href="http://www.google.com" target="_blank">구글</a><br><br>
+</body>
+</html>

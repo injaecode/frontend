@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>셀 병합하기 - table</title>
+    <!--CSS적용-->
+    <style>
+        table, tr, th, td {
+            border-collapse: collapse;
+        }
+    </style>
+</head>
+<body>
+<!-- 테이블 태그의 속성 
+    colspan :열 합치기
+    rowspan :행 합치기
+-->    
+<h1 align = "center"> 테이블 태그에서 셀 병합하기</h1>
+<table border="1" width ="500" height="100" align="center">
+    <tr align = "center"><td><b>지역</b></td><td><b>현재기온</b></td><td colspan="2"><b>불쾌지수/습도</b></td><td>풍속</td></tr>
+    <tr align = "center"><td rowspan="2">서울/경기</td><td>23</td><td>60</td><td>80</td><td>4.7</td></tr>
+    <tr align = "center"><td>20</td><td>60</td><td>80</td><td>5.0</td></tr>
+    <tr align = "center"><td>제주</td><td>21</td><td>65</td><td>85</td><td>3.5</td></tr>
+
+</table>
+</body>
+</html>
