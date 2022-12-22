@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Box Shadow(그림자 넣기)</title>
+    <style>
+        .b1{width:300px;height:30px;background-color:plum;border:1px solid black;
+            box-shadow:3px 3px 3px hotpink;}
+        .b2{width:300px;height:30px;background-color:olive;
+            border:3px solid rgba(114, 114, 79, 0.679);
+            margin:15px;
+            box-shadow:-2px -2px 4px gray}
+        .b3{width:300px;height:30px;
+            background-color:rgba(0,255,0,0.3);
+            box-shadow:5px -5px 0px green, 10px -10px 0px darkgreen;}
+        .b4{width:300px;height:30px;
+            margin:100px;
+            border:5px dashed rgba(153, 95, 186, 0.8);
+            box-shadow: 7px 8px 4px rgb(22, 7, 28)}
+    </style>
+</head>
+<body>
+    <h3>그림자 넣기</h3>
+    <!-- 
+        box-shadow:수평(필수)|수직 그림자(필수)|흐림|번짐|색상|삽입효과
+            수평그림자: +(왼쪽으로 이동), -(오른쪽으로 이동)
+            수직그림자: +(아래로 이동), -(위로 이동)
+        RGBA(red/green/blue/투명도)
+            R/G/B:0~255
+            투명도:(투명)0~1(불투명)
+    -->
+    <div class="b1">박스 그림자 넣기1</div>
+    <div class="b2">박스 그림자 넣기2</div>
+    <div class="b3">박스 그림자 넣기3</div>
+    <div class="b4">박스 그림자 넣기4</div>
+</body>
+</html>
