@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>투명도 설정</title>
+</head>
+<style>
+ a:link{
+    opacity:0.5;
+    text-decoration:none;} /*링크 기본 설정*/
+ a:hover{
+    opacity:1;
+    text-shadow:1px 1px 4px violet;} /*마우스를 올렸을 때*/
+img{ opacity:0.7;}
+img:hover{
+    opacity:1;
+    box-shadow: 5px 5px 5px darkgray;
+    padding : 5px
+    }
+</style>
+<body>
+    <h3>마우스를 올리면 선명한 효과 적용</h3>
+    <!-- opacity: 0(투명)~1(불투명)-->
+    <div>
+        <a href="http://www.google.com" target="_blank">구글</a>
+    </div>
+    <p></p>
+    <div><img src="../../img-04/pic1.jpg" target="_blank"></div>    
+</body>
+</html>

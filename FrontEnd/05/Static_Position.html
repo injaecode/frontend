@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>position</title>
+    <style>
+        body{
+            font-weight:border;font-size: 12px;
+        }
+        p{border:1px solid royalblue;}
+        .b1{position:static;
+            top:100px;width:400px;height:50px; /*작동 안됨*/}
+        .b2{position:static;
+            top:300px;left:300px;width:400px;height:50px;}
+        .b3{position:
+            width:300px;height:50px;        }
+    </style>
+</head>
+<body>
+    <h3>position: 블락태그는 박스를 생성하고 위치를 설정할 수 있음</h3>
+    <!--
+        정적 위치 설정 - position:static;       웹문서 흐름에 따라 배치(T/B/L/R 작성해도 반영안됨)
+        상대 위치 설정 - position:relative;     다른 박스를 기준으로 상대적으로 위치를 처리
+        절대 위치 설정 - position:absolute;     전체 페이지 기준(왼쪽 최상단이 기준, top 0/left 0)
+        고정 위치 설정 - position:fixed;        절대 위치와 동일+스크롤에 영향 받지 않음
+    -->
+    <h1>Position Style1 - Static Position</h1>
+    <p class="b1">정적 위치 설정1</p>
+    <p class="b2">정적 위치 설정2</p>
+    <p class="b3">정적 위치 설정3</p>
+</body>
+</html>

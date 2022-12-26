@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML5(시멘트릭 태그) - float 속성 사용하기</title>
+    <style>
+        a:link{text-decoration: none;}
+        header{width:100%;height:100px;border:2px solid red;}
+        nav{width:18%;height:500px;border:2px solid salmon;float:left;}
+        section{width:60%;height:500px;border:2px solid purple;float:left;}
+        .s1{width:20%; border:1px solid green; float:left;}
+        footer{width:100%;height:100px;border:2px solid cornflowerblue; clear:both}
+    </style>
+</head>
+<body>
+   <!--
+    <header> 주로 페이지 상단에 로고, 메뉴 등의 컨텐츠 포함
+    <footer> 주로 페이지 하단에 저작권, 주소, 전화번호, 연락처 정보 
+    <section> 주로 아티클의 그룹핑
+        <article> 하나의 컨텐츠(하나의 기사)
+    <nav> 주로 메뉴를 처리할 때 사용
+   -->
+   
+    <div class-"fix">
+        <header> Header=최상단의 레이아웃 - 주로 상단 내용</header>
+       <!-- nav, section, aside는 float 속성을 사용해서 같은 라인으로 출력-->
+        <nav> NAV=메뉴 내용을 적용할 때 사용됨 <p/>
+            <span>목차</span>
+            <ul>
+                <li><a href="http://www.google.com">구글</a></li>
+                <li><a href="#">애플</a></li>
+                <li><a href="#">오라클</a></li>
+                <li><a href="#">자바</a></li>
+                <li><a href="#">아마존</a></li>
+            </ul>
+
+        </nav>
+        <section>
+            section1
+            <article>컨텐츠1</article>
+            <article>컨텐츠2</article>
+            <article>컨텐츠3</article>
+        </section>
+        <section class="s1">
+        <aside> section2-오른쪽, 왼쪽에 내용</aside>
+    </section>
+        <footer>최하단의 레이아웃 - 회사 주소, 전화번호</footer>
+    </div>
+</body>
+</html>
