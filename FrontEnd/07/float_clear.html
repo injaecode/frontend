@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .items{
+            border:3px solid black;
+            float:right;
+            margin:5px;
+        }
+        .items img{
+            display:block; /*div 블락내에 img 삽입 시 하단 여백 제거*/
+
+        }
+        /*브라우저와 상관없이 3개씩만 출력*/
+        #clear{
+            clear:both;  /*float left,rigth 두 설정을 종료*/
+        }
+    </style>
+</head>
+<body>
+    <div class="items">
+        <img src ="img/image1.jpg" width="120px">
+    </div>
+    <div class="items">
+        <img src ="img/image2.jpg" width="120px">
+    </div>
+    <div class="items">
+        <img src ="img/image3.jpg" width="120px">
+    </div>
+    <div id="clear"></div>
+    <div class="items">
+        <img src ="img/image4.jpg" width="120px">
+    </div>
+    <div class="items">
+        <img src ="img/image5.jpg" width="120px">
+    </div>
+    <div class="items">
+        <img src ="img/image6.jpg" width="120px">
+    </div>
+    <div id="clear"></div>
+    <div class="items">
+        <img src ="img/image1.jpg" width="120px">
+    </div>
+    <div class="items">
+        <img src ="img/image2.jpg" width="120px">
+    </div>
+    <div class="items">
+        <img src ="img/image3.jpg" width="120px">
+    </div>
+    <div id="clear"></div>
+    <div class="items">
+        <img src ="img/image4.jpg" width="120px">
+    </div>
+    <div class="items">
+        <img src ="img/image5.jpg" width="120px">
+    </div>
+    <div class="items">
+        <img src ="img/image6.jpg" width="120px">
+    </div>
+    <div id="clear"></div>
+
+</body>
+</html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AJAX - HOW TO INCLUDE HTML</title>
+<script src="./include.js" defer></script>
+</head>
+<body>
+<!-- https://www.w3schools.com/howto/howto_html_include.asp -->
+
+<!--include:외부의 HTML을 불러들여서 출력
+    HTML은 외부의 HTML을 불러서 처리하기 위해 iframe을 사용
+     - frame을 사용하면 외부스타일 시트가 작동 안됨
+     - AJAX를 통해 include함-->
+
+<header data-include="./include/header.html"></header>
+ <main data-include="./main.html"></main>
+<!-- 
+<footer data-include="./main.html"></footer>
+-->
+</body>
+</html>
