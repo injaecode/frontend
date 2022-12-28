@@ -1,0 +1,26 @@
+*{margin:0;padding:0;}
+body{font-family: "나눔고딕";  
+    font-size:12px; }
+#page{
+    width: 970px; 
+    margin: 0 auto;}
+ul{list-style-type: none;}
+a{text-decoration: none;
+    color:white }
+
+#logo{float:left;}
+ #top{border: 1px solid white;
+     vertical-align: top;}
+#top li{float:right; margin-right:7px;}
+#main_menu{margin-left:200px; margin-top:25px;
+           background-image: url(img/main_menu_bg.png);
+           background-repeat: no-repeat;
+            }
+ #main_menu li{
+            display:inline-block; 
+            font-size: 14px; font-weight: bold;
+            color:white !important;
+            padding:12px; height:10px;
+            margin-left:55px;}
+       
+header{height:90px;}

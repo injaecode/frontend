@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #wrap{border: 1px solid black;}
+        header{
+            border:1px solid royalblue;
+            width:100px;height:100px;
+            float:left;}
+        aside{
+            border:1px solid rebeccapurple;
+            width:100px;height:100px;}
+        main{
+            border:1px solid rosybrown;
+            width:100px;height:100px;
+            margin-left:100px;}
+        footer{
+            border:1px solid red;
+            width:100px;height:100px;}
+        #wrap2 > div{
+            border:1px solid darkorange;
+            width:100px;height:100px;
+            margin:10px;
+            float:left;}
+    </style>
+</head>
+<body>
+    <!-- html5 시멘틱 태그에서 float 속성 사용 -->
+    <div id="wrap">
+        <header>헤더 컨텐츠</header>
+        <aside>좌측 컨텐츠</aside>
+        <main>메인 컨텐츠</main>
+        <footer>푸터 컨텐츠</footer>
+    </div>
+    <!-- div태그에서 float 속성 사용 -->
+    <div id ="wrap2">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+</body>
+</html>

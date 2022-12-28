@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Includer</title>
+</head>
+<body>
+    <!-- 
+        include : 외부의 파일을 HTML내부에 끼워넣기 (Header, Aside, footer)
+        모든 페이지에서 출력해야하는 파일은 외부 파일로 만들고 include해서 사용
+        유지보수를 쉽게
+        JSP, Spring, PHP, Node.js,DJango 내장 객체를 사용해 쉽게 include가능
+
+        HTML만 사용해서 외부의 파일을 페이지 내부에 적용 : iframe(외부 CSS가 작동 안됨)
+            JAVA script
+    -->
+</body>
+<!--외부의 파일을 iframe을 사용해 include-->
+<p>HEADER</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/d7LdvBzkDDY" 
+title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; 
+clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+allowfullscreen></iframe>
+<P>FOOTER</P>
+<iframe src="header.html"></iframe>
+<iframe src="main.html"></iframe>
+</html>

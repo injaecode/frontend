@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{margin:10;padding:0;}
+        body{font-family: "나눔고딕";  
+            font-size:12px; }
+        #page{
+            width: 970px; 
+            margin: 0 auto;}
+        ul{list-style-type: none;}
+        a{text-decoration: none;
+            color:white }
+        #clear{clear:both;}
+        #logo{float:left;}
+        #top{border: 1px solid white;
+            vertical-align: top;}
+        #top li{float:right; margin-right:7px;}
+        #main_menu{margin-left:200px; margin-top:25px;
+                    background-image: url(img/main_menu_bg.png);
+                    background-repeat: no-repeat;
+                   
+                  }
+        #main_menu li{
+                    display:inline-block; 
+                    font-size: 14px; font-weight: bold;
+                    color:white !important;
+                        padding:14px; height:12px;
+                        margin-left:30px;
+                        margin-right:25px}
+       
+        header{height:90px;} /*헤더 끝*/
+
+        aside{width:190px;float:left;}
+        #login_box{background-color:whitesmoke;
+                width:175px;height:100px;
+                padding:10px;border:1px solid silver;
+                border-radius: 10px;}
+        #login_input {width:100px;float:left;}
+        #login_input li{margin-top:2px; }
+        #login_input input{width:100px;}
+        #btn_log {margin:10px 0 0 10px;} /*로그인 끝*/
+
+        #visit_box{background-color:rgba(220, 220, 220, 0.438);
+                width:175px;height:100px;
+                padding:10px;border:1px solid silver;
+                margin-top: 20px;
+                border-radius: 10px;}
+        #line{border-top:1px solid silver;} /*방명록 끝*/
+        
+        #main_index{margin-left: 18px;}
+        #index_left{ float:left;}
+        #notice{margin-left:20px; width:350px; height:120px;
+                    position:relative;float:left;}
+        
+        #more {margin-left:240px;}
+        #bp{float:left;}
+        #text {float:left; padding-left: 20px;}
+        #date{float:left;padding-left: 20px;}
+        #board{margin-left:20px; width:350px; height:120px;
+                position:relative;float:left;}
+        
+        #index_right{float:left; margin-left:20px;}
+        #bach{margin-top: 10px; margin-left:60px}
+        #index_bottom{margin-left:200px}
+        #photo{
+            border:1px solid silver;
+            width:760px;height:170px;border-radius: 10px;}
+        #photo img{padding:10px 0 0 50px;}
+        #photo div{float:left;margin:2px 50px 0 90px}
+    </style>
+   
+</head>
+<body>
+    <div id="page">
+        <header>
+            <img id="logo" src="img/logo.png">
+            <nav id="top_menu">
+                <ul id="top">
+                    <li>NOTICE</li>
+                    <li>|</li>
+                    <li>JOIN</li>
+                    <li>|</li>
+                    <li>LOGIN</li>                   
+                    <li>|</li>
+                    <li>HOME</li>
+                </ul>
+                <ul id="main_menu">
+                    <li><a href="board_list.html">자유 게시판</a></li>
+                    <li><a href="#">기타 연주</a></li>
+                    <li><a href="#">공동 구매</a></li>
+                    <li><a href="#">연주회 안내</a></li>
+                    <li><a href="#">회원 게시판</a></li>
+                </ul>
+            </nav>   
+        </header>
+        <aside>
+            <article id="login_box">
+                <img id="login_title" src="img/ttl_login.png">
+                <div id="input_button">
+                        <ul id="login_input">
+                            <li><input type="text"></li>
+                            <li><input type="password"></li>
+                        </ul>
+                <img id="btn_log" src="img/btn_login.gif">
+                </div>
+                <div id="clear"></div>
+                <div id="join_search">
+                    <img src="img/btn_join.gif">
+                    <img src="img/btn_search.gif">
+                </div>
+            </article>
+            <article id="visit_box">
+                <img id="visit_title" src="img/ttl_memo.gif">
+                <div id="line"></div>
+                <ul>
+                    <li><img src="img/icon_blue.gif">안녕하세요!</li>
+                    <li><img src="img/icon_blue.gif">안녕하세요!</li>
+                    <li><img src="img/icon_blue.gif">안녕하세요!</li>
+                    <li><img src="img/icon_blue.gif">안녕하세요!</li>
+                </ul>
+
+            </article>
+        </aside>
+        <main>
+            <img id="main_index" src="img/main_img.png">
+            <section id="index_left">
+                <div id="notice">
+                    <img src="img/latest1.gif">
+                    <img id="more" src="img/more.gif">
+                    <div id="line"></div>
+                    <div id="inner1">
+                        <img id="bp" src="img/book_pen.gif">
+                        <ul id="text">
+                            <li>루바토 개편과 사이트 이용..</li>
+                            <li>루바토 개편과 사이트 이용..</li>
+                            <li>루바토 개편과 사이트 이용..</li>
+                            <li>루바토 개편과 사이트 이용..</li>
+                        </ul>
+                        <ul id="date">
+                            <li>2017-08-20</li>
+                            <li>2017-08-20</li>
+                            <li>2017-08-20</li>
+                            <li>2017-08-20</li>
+                        </ul>
+                    </div>
+                </div>
+                <div id="clear"></div>
+                <div id="board">
+                    <img src="img/latest2.gif">
+                    <img id="more" src="img/more.gif">
+                    <div id="line"></div>
+                    <div id="inner1">
+                        <img id="bp" src="img/book_pen.gif">
+                        <ul id="text">
+                            <li>까스통님의 선물인 보드카..</li>
+                            <li>까스통님의 선물인 보드카..</li>
+                            <li>까스통님의 선물인 보드카..</li>
+                            <li>까스통님의 선물인 보드카..</li>
+                        </ul>
+                        <ul id="date">
+                            <li>2017-08-20</li>
+                            <li>2017-08-20</li>
+                            <li>2017-08-20</li>
+                            <li>2017-08-20</li>
+                        </ul>
+                    </div>
+
+                </div>
+            </section>
+            <section id="index_right">
+                <div id="video">
+                    <img src="img/latest3.gif">
+                    <img id="more" src="img/more.gif">
+                    <div id="clear"></div>
+                    <div id="line"></div>
+                    <img id="bach" src="img/bach.jpg">
+                </div>
+            </section>
+            <div id="clear"></div>
+
+            <section id="index_bottom">
+                <img src="img/latest4.gif">
+                <div id="photo">
+                    <img src="img/img1.jpg">
+                    <img src="img/img1.jpg">
+                    <img src="img/img1.jpg">
+                    <div>기타 페스티벌 4중주</div>
+                    <div>기타 페스티벌 4중주</div>
+                    <div>기타 페스티벌 4중주</div>
+                </div>
+                <div id="clear"></div>
+                
+
+            </section>
+        </main>
+        <footer>
+
+        </footer>
+    </div>
+</body>
+</html>
