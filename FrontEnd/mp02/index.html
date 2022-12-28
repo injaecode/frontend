@@ -21,7 +21,7 @@
             vertical-align: top;}
         #top li{float:right; margin-right:7px;}
         #main_menu{margin-left:200px; margin-top:25px;
-                    background-image: url(img/main_menu_bg.png);
+                    background-image: url(./img/main_menu_bg.png);
                     background-repeat: no-repeat;
                    
                   }
@@ -31,7 +31,7 @@
                     color:white !important;
                         padding:14px; height:12px;
                         margin-left:30px;
-                        margin-right:25px}
+                        margin-right:20px}
        
         header{height:90px;} /*헤더 끝*/
 
@@ -68,17 +68,23 @@
         #bach{margin-top: 10px; margin-left:60px}
         #index_bottom{margin-left:200px}
         #photo{
+            box-shadow: 2px 2px gainsboro ;
             border:1px solid silver;
             width:760px;height:170px;border-radius: 10px;}
         #photo img{padding:10px 0 0 50px;}
-        #photo div{float:left;margin:2px 50px 0 90px}
+        #photo div{float:left;margin:2px 50px 0 90px} /*메인 끝*/
+        
+        footer #line{margin-top: 20px;border-top:1px solid silver;}
+        #footer_logo{float:left;padding:0 0 20px 200px;}
+        #footer_info{float:left;padding-left: 30px;}
+        #sns{float:right; padding-top:10px;vertical-align: top;}    
     </style>
    
 </head>
 <body>
     <div id="page">
         <header>
-            <img id="logo" src="img/logo.png">
+            <img id="logo" src="./img/logo.png">
             <nav id="top_menu">
                 <ul id="top">
                     <li>NOTICE</li>
@@ -100,41 +106,41 @@
         </header>
         <aside>
             <article id="login_box">
-                <img id="login_title" src="img/ttl_login.png">
+                <img id="login_title" src="./img/ttl_login.png">
                 <div id="input_button">
                         <ul id="login_input">
                             <li><input type="text"></li>
                             <li><input type="password"></li>
                         </ul>
-                <img id="btn_log" src="img/btn_login.gif">
+                <img id="btn_log" src="./img/btn_login.gif">
                 </div>
                 <div id="clear"></div>
                 <div id="join_search">
-                    <img src="img/btn_join.gif">
-                    <img src="img/btn_search.gif">
+                    <img src="./img/btn_join.gif">
+                    <img src="./img/btn_search.gif">
                 </div>
             </article>
             <article id="visit_box">
-                <img id="visit_title" src="img/ttl_memo.gif">
+                <img id="visit_title" src="./img/ttl_memo.gif">
                 <div id="line"></div>
                 <ul>
-                    <li><img src="img/icon_blue.gif">안녕하세요!</li>
-                    <li><img src="img/icon_blue.gif">안녕하세요!</li>
-                    <li><img src="img/icon_blue.gif">안녕하세요!</li>
-                    <li><img src="img/icon_blue.gif">안녕하세요!</li>
+                    <li><img src="./img/icon_blue.gif">안녕하세요!</li>
+                    <li><img src="./img/icon_blue.gif">안녕하세요!</li>
+                    <li><img src="./img/icon_blue.gif">안녕하세요!</li>
+                    <li><img src="./img/icon_blue.gif">안녕하세요!</li>
                 </ul>
 
             </article>
         </aside>
         <main>
-            <img id="main_index" src="img/main_img.png">
+            <img id="main_index" src="./img/main_img.png">
             <section id="index_left">
                 <div id="notice">
-                    <img src="img/latest1.gif">
-                    <img id="more" src="img/more.gif">
+                    <img src="./img/latest1.gif">
+                    <img id="more" src="./img/more.gif">
                     <div id="line"></div>
                     <div id="inner1">
-                        <img id="bp" src="img/book_pen.gif">
+                        <img id="bp" src="./img/book_pen.gif">
                         <ul id="text">
                             <li>루바토 개편과 사이트 이용..</li>
                             <li>루바토 개편과 사이트 이용..</li>
@@ -151,11 +157,11 @@
                 </div>
                 <div id="clear"></div>
                 <div id="board">
-                    <img src="img/latest2.gif">
-                    <img id="more" src="img/more.gif">
+                    <img src="./img/latest2.gif">
+                    <img id="more" src="./img/more.gif">
                     <div id="line"></div>
                     <div id="inner1">
-                        <img id="bp" src="img/book_pen.gif">
+                        <img id="bp" src="./img/book_pen.gif">
                         <ul id="text">
                             <li>까스통님의 선물인 보드카..</li>
                             <li>까스통님의 선물인 보드카..</li>
@@ -175,31 +181,42 @@
             <section id="index_right">
                 <div id="video">
                     <img src="img/latest3.gif">
-                    <img id="more" src="img/more.gif">
+                    <img id="more" src="./img/more.gif">
                     <div id="clear"></div>
                     <div id="line"></div>
-                    <img id="bach" src="img/bach.jpg">
+                    <img id="bach" src="./img/bach.jpg">
                 </div>
             </section>
             <div id="clear"></div>
 
             <section id="index_bottom">
-                <img src="img/latest4.gif">
+                <img src="./img/latest4.gif">
                 <div id="photo">
-                    <img src="img/img1.jpg">
-                    <img src="img/img1.jpg">
-                    <img src="img/img1.jpg">
+                    <img src="./img/img1.jpg">
+                    <img src="./img/img1.jpg">
+                    <img src="./img/img1.jpg">
                     <div>기타 페스티벌 4중주</div>
                     <div>기타 페스티벌 4중주</div>
                     <div>기타 페스티벌 4중주</div>
                 </div>
                 <div id="clear"></div>
-                
-
             </section>
         </main>
         <footer>
-
+            <div id="line"></div>
+            <img id="footer_logo" src="img/footer_logo.gif">
+            <div id="footer_info">
+                <ul>
+                    <li>서울시 강남구 삼성동 1234 우 : 123-1234</li>
+                    <li>TEL:031-123-1234 Email:email@domain.com</li>
+                    <li>COPYRIGHT (C) 루바트 ALL RIGHTS RESERVED</li>
+                </ul>
+            </div>
+            <div id="sns">
+            <img src="./img/facebook.gif">
+            <img src="./img/blog.gif">
+            <img src="./img/twitter.gif">
+            </div>
         </footer>
     </div>
 </body>
