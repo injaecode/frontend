@@ -9,7 +9,7 @@
         *{margin:10;padding:0;}
         body{font-family: "나눔고딕";  
             font-size:12px; }
-        #page{
+        #page{ 
             width: 970px; 
             margin: 0 auto;}
         ul{list-style-type: none;}
@@ -21,7 +21,7 @@
             vertical-align: top;}
         #top li{float:right; margin-right:7px;}
         #main_menu{margin-left:200px; margin-top:25px;
-                    background-image: url(./img/main_menu_bg.png);
+                    background-image: url(img/main_menu_bg.png);
                     background-repeat: no-repeat;
                    
                   }
@@ -44,7 +44,7 @@
         #login_input li{margin-top:2px; }
         #login_input input{width:100px;}
         #btn_log {margin:10px 0 0 10px;} /*로그인 끝*/
-        #sub_menu{background-image: url(./img/sub_menu_bg.png);
+        #sub_menu{background-image: url(img/sub_menu_bg.png);
                     background-repeat: no-repeat;
                     height:340px; width:230px}
         #community_list {padding:100px 0 0 30px; font-size: 14px;}
@@ -62,29 +62,23 @@
         #select select{float:left;margin-right:3px}
         #select input{float:left;margin-right:3px;
                     width:100px;height:15px}
-        #post{margin-left:200px}
-        #subject{background-color: whitesmoke;
-                font-size: 13px;font-weight: bold;padding:5px 30px 5px 47px;
-                border-top:1px solid gray;}
-        #no{margin:12px 0 5px 0;float:left;}
-        #title{margin:12px 0 5px 0;float:left;}
-        #writer{margin:12px 0 5px 0;float:left;}
-        #date{margin:12px 0 5px 0;float:left;}
-        #view{margin:12px 0 5px 0;float:left;}
-        #one{padding:2px 15px 2px 40px;}
-        #two{padding:2px 15px 2px 40px;}
-        #thr{padding:2px 15px 2px 40px;}
+        table{margin-left:200px; height: 120px;}
+        table th{background-color: whitesmoke;}
+        #next{margin: 0 230px 0 300px; float:left;} 
+        #click{text-decoration: none;color:black;}
+            /*게시글 끝*/
 
         footer #line{margin-top: 20px;border-top:1px solid silver}
         #footer_logo{float:left;padding:0 0 20px 200px;}
         #footer_info{float:left;padding-left: 30px;}
         #sns{float:right; padding-top:10px;vertical-align: top;}
+
     </style>
 </head>
 <body>
     <div id="page">
         <header>
-            <img id="logo" src="./img/logo.png">
+            <img id="logo" src="img/logo.png">
             <nav id="top_menu">
                 <ul id="top">
                     <li>NOTICE</li>
@@ -106,18 +100,18 @@
         </header>
         <aside>
             <article id="login_box">
-                <img id="login_title" src="./img/ttl_login.png">
+                <img id="login_title" src="img/ttl_login.png">
                 <div id="input_button">
                         <ul id="login_input">
                             <li><input type="text"></li>
                             <li><input type="password"></li>
                         </ul>
-                <img id="btn_log" src="./img/btn_login.gif">
+                <img id="btn_log" src="img/btn_login.gif">
                 </div>
                 <div id="clear"></div>
                 <div id="join_search">
-                    <img src="./img/btn_join.gif">
-                    <img src="./img/btn_search.gif">
+                    <img src="img/btn_join.gif">
+                    <img src="img/btn_search.gif">
                 </div>
             </article>
             <article id="sub_menu">
@@ -131,19 +125,19 @@
             </article>
             <article>
                 <div id="list_banner">
-                    <img src="./img/banner1.png">
-                    <img src="./img/banner2.png">
-                    <img src="./img/banner3.png">
+                    <img src="img/banner1.png">
+                    <img src="img/banner2.png">
+                    <img src="img/banner3.png">
                     
                 </div>
             </article>
         </aside>
         <main>
-          <img id="comm" src="./img/comm.gif">
+          <img id="comm" src="img/comm.gif">
           <div id="jage">자유게시판</div>
           <div id="new">▷ 총 5개의 게시물이 있습니다.</div>
           <div id="select">
-            <img id="select_search" src="./img/select_search.gif">
+            <img id="select_search" src="img/select_search.gif">
             
             <select>
                 <option>제목</option>
@@ -151,59 +145,36 @@
                 <option>게시일</option>
             </select>
             <input type="text">
-            <img src="./img/search_button.gif">
-          </div>
-          
-          <div id="post">
-            <ul id="no">
-                <li id="subject">번호</li>
-                <li id="one">1</li>
-                <li id="two">2</li>
-                <li id="thr">3</li>
-            </ul>
-            <ul id="title">
-                <li id="subject">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;제목&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </li>
-                <li id="one">까스롱님의 선물인 보드카가 정말 독하네요!!!</li>
-                <li id="two">까스롱님의 선물인 보드카가 정말 독하네요!!!</li>
-                <li id="thr">까스롱님의 선물인 보드카가 정말 독하네요!!!</li>
-            </ul>
-            <ul id="writer">
-                <li id="subject">글쓴이</li>
-                <li id="one">루바트</li>
-                <li id="two">루바트</li>
-                <li id="thr">루바트</li>
-            </ul>
-            <ul id="date">
-                <li id="subject">일시</li>
-                <li id="one">2017-09-20</li>
-                <li id="two">2017-09-20</li>
-                <li id="thr">2017-09-20</li>
-            </ul>
-            <ul id="view">
-                <li id="subject">조회수</li>
-                <li id="one">15</li>
-                <li id="two">15</li>
-                <li id="thr">15</li>
-            </ul>
-          </div>
-        </main>
-        <div id="clear"></div>
-        <footer>
-            <div id="line"></div>
-            <img id="footer_logo" src="./img/footer_logo.gif">
-            <div id="footer_info">
-                <ul>
-                    <li>서울시 강남구 삼성동 1234 우 : 123-1234</li>
-                    <li>TEL:031-123-1234 Email:email@domain.com</li>
-                    <li>COPYRIGHT (C) 루바트 ALL RIGHTS RESERVED</li>
-                </ul>
+            <img src="img/search_button.gif">
+            <table width ="750" height="100" align="center" border="0" frameborder="0" >
+                <tr align = "center"><th width ="70">번호</th><th>제목</th><th>글쓴이</th><th>일시</th><th>조회수</th></tr>
+                <tr align = "center"><td>1</td><td align="left"><a id="click" href="board_view.html">&nbsp;&nbsp;&nbsp;&nbsp;까스롱님의 선물인 보드카가 정말 독하네요!!!</a></td> <td>루바트</td><td>2017-09-20</td><td>15</td></tr>
+                <tr align = "center"><td>2</td><td align="left"><a id="click" href="board_view.html">&nbsp;&nbsp;&nbsp;&nbsp;까스롱님의 선물인 보드카가 정말 독하네요!!!</a></td><td>루바트</td><td>2017-09-20</td><td>15</td></tr>
+                <tr align = "center"><td>3</td><td align="left"><a id="click" href="board_view.html">&nbsp;&nbsp;&nbsp;&nbsp;까스롱님의 선물인 보드카가 정말 독하네요!!!</a></td><td>루바트</td><td>2017-09-20</td><td>15</td></tr>
+              
+            </table>
             </div>
-            <div id="sns">
-            <img src="./img/facebook.gif">
-            <img src="./img/blog.gif">
-            <img src="./img/twitter.gif">
-            </div>
-        </footer>
+            <div id="next">◀ 이전 1 다음 ▶</div>
+            <img src="img/list.png">
+            <a href="board_write.html"><img src="img/write.png"></a>
+        </main>   
+        <div id="clear"></div>   
+         <footer>
+                <div id="line"></div>
+                <img id="footer_logo" src="img/footer_logo.gif">
+                <div id="footer_info">
+                    <ul>
+                        <li>서울시 강남구 삼성동 1234 우 : 123-1234</li>
+                        <li>TEL:031-123-1234 Email:email@domain.com</li>
+                        <li>COPYRIGHT (C) 루바트 ALL RIGHTS RESERVED</li>
+                    </ul>
+                </div>
+                <div id="sns">
+                <img src="img/facebook.gif">
+                <img src="img/blog.gif">
+                <img src="img/twitter.gif">     
+            </footer>
     </div>
+
 </body>
 </html>

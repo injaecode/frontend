@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+    *{margin:0;padding:0;}
+    body{font-size: 12px;font-family: "나눔고딕";background-color: #f2f0f0;}
+    #page{width:1060px;margin:0 auto; }
+    ul{list-style-type: none;}
+    #clear{clear:both;}
+    a {text-decoration:none;color:white}
+    #top1{height:100px; padding:0 30px 0 30px}
+    #logo{float:left;width:200px; padding:30px 80px 20px 10px;}
+    #search{float:left;width:350px;padding:50px 50px 20px 30px}
+    #sea_txt{float:left;color:yellowgreen; font-size: 16px;}
+    #underbar {float:left;height:20px;border-bottom: 2px solid silver; width:130px}
+    #top_menu li{float:left;padding:5px;margin-top:40px;}
+    .gr {color:yellowgreen}
+    #menu{background-color:dimgray;height:50px; width:1030px;padding-left:30px}
+    #up li{float:left; padding:15px 50px 0 70px;
+            color:white;font-weight: bolder;font-size: 18px;} /*헤더 끝*/
+    #first{float:left;width:250px;}
+    #first img{margin:10px 0 0 30px;border:1px solid silver;}
+    #category ul {margin-top: 20px;margin-left:30px;width:200px;float:left;}
+    #cate{padding:8px 8px 8px 25px;border-bottom: 1px solid silver;
+        border-left: 1px solid silver;border-right: 1px solid silver;
+        font-weight:bold;color:gray ;}
+    #cate_title{background-color: yellowgreen; height:20px;
+                color:white;font-weight:bold;text-align: center;
+                padding:14px 10px 6px 10px;}    /*카테고리 끝*/
+    #cart{float:left; width:750px; padding:25px;}
+    #process{margin:10px 10px 10px 0; padding:20px;border-top:1px solid black;}
+    h2 span{ color:yellowgreen}
+    table th {background-color:gainsboro; height:40px;border-top: 2px solid olivedrab;}
+    table {border:1px solid lightgray;border-collapse: collapse;}
+    table td {border:1px solid lightgray}
+    table #tab2{height:60px;}
+    table #tab3{height:60px;}
+    table #tab4{height:30px;}
+    table #tab5{background-color:gainsboro;height:100px;}
+    table td span{font-weight: bold;}
+    #order{ margin:20px 0 0 70px;}
+    #order ul li{float:left; padding:2px;} /*장바구니 끝*/
+
+    
+    #bo_menu{background-color:dimgray;height:50px; width:880px;padding-left:180px}
+    #bo_menu li{float:left;font-size:12px;padding:18px;color:white; }
+    #bottom1 {height:100px; padding:0 30px 0 30px}
+    #footer_logo{float:left;margin:20px 20px 0 30px;}
+    #company_info{float:left;margin:20px 20px 0 40px;}
+    #footer_banner{margin:20px 20px 0 100px;}
+    </style>
+</head>
+<body>
+    <div id="page">
+        <header>
+            <section id="top1">  
+                <img id="logo"src="img/logo.gif">  
+                <div id="search">
+                    <div id="sea_txt">SEARCH</div>
+                    <div id="underbar"></div>
+                    <img src="img/btn_search.gif">
+                </div>
+                <ul id="top_menu">
+                    <li class="gr" >로그인</li>
+                    <li class="gr">회원가입</li>
+                    <li>마이페이지</li>
+                    <li>이용안내</li>
+                    <li>고객센터</li>
+                </ul>
+            </section>
+            
+            <section id="top2">
+                <nav id="up">
+                    <ul id="menu">
+                        <li>상세 페이지</li>
+                        <li><a href=cert.html>장바구니</a></li>
+                        <li>고객 갤러리</li>
+                        <li>주문배송</li>
+                        <li>자주하는 질문</li>
+                    </ul>
+                </nav>
+            </section>
+        </header>
+        <main>
+            <section id=first>    
+                <article id="category">
+                    <ul>
+                        <li id="cate_title">CATEGORY ITEM</li>
+                        <li id="cate">생활 아트</li>
+                        <li id="cate">캔버스 아트</li>
+                        <li id="cate">사진 벽지</li>
+                        <li id="cate">창문형/현관문형</li>
+                        <li id="cate">포인트 벽지</li>
+                        <li id="cate">세계지도</li>
+                        <li id="cate">앤티크 세계지도 벽지</li>
+                        <li id="cate">입체 세계지도 벽지</li>
+                        <li id="cate">어린이방 세계지도</li>
+                        <li id="cate">족자형 롤스크린</li>
+                        <li id="cate">맞춤제작 결제창</li>
+                    </ul>
+                </article>
+                <article id="tel_banner">
+                    <img src="img/customer.png">
+                </article>
+            </section>
+            <section id="cart">
+                <h2><span>SHOPPING CART</span> 장바구니</h2>
+                <img id="process" src="img/process.png">
+                <table width="770" align="center" border="0" >
+                    <tr id="tab1"><th>선택</th><th>상품명</th><th>판매가</th><th>수량</th><th>적립금</th><th>배송비</th><th>합계</th></tr>
+                    <tr id="tab2"><td align="center"><input type="checkbox" name="select" value="y"></td><td>&nbsp;&nbsp; sjdy-005 펄실크 벽지/가로 125cmx세로 90cm</td><td align="center">19,000원</td><td align="center"><input type="checkbox" name="qnt" value="y">&nbsp;&nbsp;<input type="button" value="수정"></td><td align="center">100원</td><td align="center">3,000원</td><td align="center">22,000원</td></tr>
+                    <tr id="tab3"><td align="center"><input type="checkbox" name="select" value="y"></td><td>&nbsp;&nbsp; sjdy-005 펄실크 벽지/가로 125cmx세로 90cm</td><td align="center">19,000원</td><td align="center"><input type="checkbox" name="qnt" value="y">&nbsp;&nbsp;<input type="button" value="수정"></td><td align="center">100원</td><td align="center">3,000원</td><td align="center">22,000원</td></tr>
+                    <tr id="tab4"><td colspan="7" align="right">[상품 구매 금액] : 19,000 + [배송비] : 3,000 = [총구매액] : <span>22000원</span></td></tr>
+                    <tr id="tab5"><td colspan="4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 고객님의 총 주문 합계입니다</td><td colspan="2" align="right">[상품 구매 금액] :<br>배송비 :<br><span>총 주문 합계 금액</span></td><td align="right">19,000원<br>3,000원<br><span>21,000원</span></td></tr>
+                </table>
+                <div id="order">
+                    <ul>
+                        <li><img src="img/order_button1.gif""></li>
+                        <li><img src="img/order_button2.gif""></li>
+                        <li><img src="img/order_button3.gif""></li>
+                        <li><img src="img/order_button4.gif""></li>
+                        <li><img src="img/order_button5.gif""></li>
+                        <li><img src="img/order_button6.gif""></li>
+    
+                    </ul>
+                </div>
+                
+            </section>
+         
+        </main>
+        <div id="clear"></div>
+        <footer>
+            <section id="bottom2">
+                <nav>
+                    <ul id="bo_menu">
+                        <li>회사소개</li>
+                        <li>이용안내</li>
+                        <li><a href=cert.html>장바구니</a></li>
+                        <li>주문조회</li>
+                        <li>적립금</li>
+                        <li>이용약관</li>
+                        <li>개인정보보호정책</li>
+                        <li>고객센터</li>
+                    </ul>
+                </nav>
+            </section>
+            <div id="clear"></div>
+            <section id="bottom1">  
+                <img id="footer_logo" src="img/footer_logo.gif">  
+                <ul id="company_info">
+                    <li>상호:다연아트 대표:이승주 개인정보관리책임자:이승주(sjdayoun@naver.com)</li>
+                    <li>주소:경기도 고양시 덕양구 고양동 160번지 전화:031-967-6218, 031-967-6219</li>
+                    <li>사업자등록번호 [104-03-41624] 통신판매업 신고 (제 경기고양-234호)</li>
+                    <li>Copyrightⓒ2008 dayunart.com All rights reserved</li>
+                </ul>
+                <img id="footer_banner" src="img/footer_banner_01.gif"
+            </section>
+        </footer>
+    </div>
+</body>
+</html>

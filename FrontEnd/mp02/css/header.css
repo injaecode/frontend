@@ -1,4 +1,4 @@
-*{margin:0;padding:0;}
+*{margin:10;padding:0;}
 body{font-family: "나눔고딕";  
     font-size:12px; }
 #page{
@@ -7,20 +7,66 @@ body{font-family: "나눔고딕";
 ul{list-style-type: none;}
 a{text-decoration: none;
     color:white }
-
+#clear{clear:both;}
 #logo{float:left;}
- #top{border: 1px solid white;
-     vertical-align: top;}
+#top{border: 1px solid white;
+    vertical-align: top;}
 #top li{float:right; margin-right:7px;}
 #main_menu{margin-left:200px; margin-top:25px;
-           background-image: url(img/main_menu_bg.png);
-           background-repeat: no-repeat;
-            }
- #main_menu li{
+            background-image: url(../img/main_menu_bg.png);
+            background-repeat: no-repeat;
+           
+          }
+#main_menu li{
             display:inline-block; 
             font-size: 14px; font-weight: bold;
             color:white !important;
-            padding:12px; height:10px;
-            margin-left:55px;}
-       
-header{height:90px;}
+                padding:14px; height:12px;
+                margin-left:30px;
+                margin-right:20px}
+
+header{height:90px;} /*헤더 끝*/
+
+aside{width:190px;float:left;}
+#login_box{background-color:whitesmoke;
+        width:175px;height:100px;
+        padding:10px;border:1px solid silver;
+        border-radius: 10px;}
+#login_input {width:100px;float:left;}
+#login_input li{margin-top:2px; }
+#login_input input{width:100px;}
+#btn_log {margin:10px 0 0 10px;} /*로그인 끝*/
+
+#visit_box{background-color:rgba(220, 220, 220, 0.438);
+        width:175px;height:100px;
+        padding:10px;border:1px solid silver;
+        margin-top: 20px;
+        border-radius: 10px;}
+#line{border-top:1px solid silver;} /*방명록 끝*/
+
+#main_index{margin-left: 18px;}
+#index_left{ float:left;}
+#notice{margin-left:20px; width:350px; height:120px;
+            position:relative;float:left;}
+
+#more {margin-left:240px;}
+#bp{float:left;}
+#text {float:left; padding-left: 20px;}
+#date{float:left;padding-left: 20px;}
+#board{margin-left:20px; width:350px; height:120px;
+        position:relative;float:left;}
+
+#index_right{float:left; margin-left:20px;}
+#bach{margin-top: 10px; margin-left:60px}
+#index_bottom{margin-left:200px}
+#photo{
+    box-shadow: 2px 2px gainsboro ;
+    border:1px solid silver;
+    width:760px;height:170px;border-radius: 10px;}
+#photo img{padding:10px 0 0 50px;}
+#photo div{float:left;margin:2px 50px 0 90px} /*메인 끝*/
+
+footer #line{margin-top: 20px;border-top:1px solid silver;}
+#footer_logo{float:left;padding:0 0 20px 200px;}
+#footer_info{float:left;padding-left: 30px;}
+#sns{float:right; padding-top:10px;vertical-align: top;}  
