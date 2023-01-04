@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>solt 메소드 활용하기</title>
+</head>
+<body>
+    <script>
+        //기본: 유니코드 값을 기준으로 출력됨
+            //오름차순 정렬 function(a, b) {return a - b;} 
+            //내림차순 정렬 function(a, b) {return b - a;}
+      
+
+        var ndata1=[19, 38, 67, 26, 55, 24, 53, 12, 31]; 
+        var ndata2=[132, 2, 41, 123, 45, 1234, 6, 29, 4567]; 
+        var edata=['Apple', 'Html', 'Game', 'Computer', 'Java']; 
+        var kdata=['서울', '부산', '구포', '대구', '인천']; 
+        document.write("수치 정렬1 : " + ndata1.sort() + "<p/>");   
+        //12,19,24,26,31,38,53,55,67
+        document.write("수치 정렬2 : " + ndata2.sort() + "<p/>");
+        //123,1234,132,2,29,41,45,4567,6
+        document.write("수치 정렬3 : " + ndata2.sort(function(a, b) {return a - b;}) + "<p/>");
+        //2,6,29,41,45,123,132,1234,4567  
+         document.write("영문 정렬 : " + edata.sort() + "<p/>");
+        //Apple,Computer,Game,Html,Java
+        document.write("한글 정렬 : " + kdata.sort() + "<p/>"); 
+        //구포,대구,부산,서울,인천
+    </script>
+</body>
+</html>
