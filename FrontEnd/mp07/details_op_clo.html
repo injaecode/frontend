@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+ 
+        ul li {list-style-type: none;height: 70px;margin:10px;}
+        #close1,#close2,#close3{border-bottom: 0.5px solid lightgray;display: none;}
+        #open1,#open2,#open3{font-size: 20px;font-weight: bolder; }
+        #open1:hover,#open2:hover,#open3:hover{cursor: pointer;text-decoration: underline;color:cadetblue}
+   
+        /* id 값 뒷부분이 -toggle인 모든 태그 선택
+         [id$="toggle"]{
+            margin-right:15pxl
+         }
+        */
+    </style>
+</head>
+<body>
+    <ul>
+        <li id="open1" onclick="openCloseToc1()">+'HTML'이란 무엇인가요? </li>
+        <li id="close1">하이퍼텍스트 마크업언어(HyperText Markup Language)입니다.</li>
+        <li id="open2" onclick="openCloseToc2()">+'CSS'란 무엇인가요? </li>
+        <li id="close2">캐스케이딩 스타일 시트(Cascading Style Sheets)입니다.</li>
+        <li id="open3" onclick="openCloseToc3()">+'JavaScript'란 무엇인가요? </li>
+        <li id="close3">자바스크립트는 객체(Object)를 기초로하는 스크립트 프로그래밍 언어입니다.</li>
+        
+    </ul>
+
+    <script>
+        function openCloseToc1(){
+
+            if(document.getElementById('close1').style.display === 'block') {
+             document.getElementById('close1').style.display = 'none';
+             document.getElementById('open1').textContent = "+'HTML'이란 무엇인가요?";
+             } else {
+               document.getElementById('close1').style.display = 'block';
+                document.getElementById('open1').textContent = "-'HTML'이란 무엇인가요?";
+             }
+        }
+
+        function openCloseToc2(){
+
+            if(document.getElementById('close2').style.display === 'block') {
+             document.getElementById('close2').style.display = 'none';
+             document.getElementById('open2').textContent = "+'CSS'란 무엇인가요?";
+             } else {
+               document.getElementById('close2').style.display = 'block';
+                document.getElementById('open2').textContent = "-'CSS'란 무엇인가요?";
+             }
+        }
+        function openCloseToc3(){
+   
+            if(document.getElementById('close3').style.display === 'block') {
+             document.getElementById('close3').style.display = 'none';
+             document.getElementById('open3').textContent = "+'JavaScript'란 무엇인가요?";
+             } else {
+               document.getElementById('close3').style.display = 'block';
+                document.getElementById('open3').textContent = "-'JavaScript'란 무엇인가요?";
+             }
+        }
+    </script>
+</body>
+</html>

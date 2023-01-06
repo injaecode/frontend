@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- 배열 내에 객체를 저장한 후 출력하기-->
+    <p id="car"></p>
+    <p>[Car1 속성]</p>
+    <p id="car0"></p>
+    <p>[Car2 속성]</p>
+    <p id="car1"></p>
+    <p>[Car3 속성]</p>
+    <p id="car2"></p>
+    
+    <script>
+        //car 배열 내부에 객체 넣기
+        var car=new Array (
+            ['Sonata','blue',100],
+            ['Jeep','red',70],
+            ['Passt', 'white', 150]
+            );
+            var cname=document.getElementById("car");    
+            cname.textContent="car[2][1] : "+ car[2][1]; 
+
+            //2중 for문을 사용해 각 요소의 값을 출력
+            for(vari=0; i<3; i++) {
+                var cname=document.getElementById("car"+i);
+                cname.textContent=car[i];
+            }
+    </script>
+</body>
+</html>

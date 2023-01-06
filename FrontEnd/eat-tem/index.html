@@ -6,23 +6,125 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Eat-tem.</title>
     <style>
-    *{background-color:rgb(255, 230,153) ; margin:0;padding:0;}
-    body{font-size: 12px;font-family: "Courier";font-size:17px;}
-    #page{width:960px; margin:0 auto; background-color: #f2f0f0;border:1px solid red;}
-    button{padding: 5px;border-radius: 5px;font-size: 20px;
-        font-family: '나눔고딕', cursive;float:right;padding: 5 10px 5 10px;}
-    ul li {list-style-type: none;float:left; margin-left: 20px;}
+    *{background-color:cornsilk; margin:0;padding:0;}
+    body{font-size: 12px;font-family:'나눔고딕', 'Courier';font-size:1rem; }
+    #clear{clear:both;}
+    li{list-style:none;}
+    a{text-decoration:none;font-size:14px;}
+    #page{ margin:0 auto; width:900px;height:1200px;background-color: whitesmoke;}
+    header{padding:50px;height:100px;background-color: whitesmoke;border:1px solid red;}
+    header .logo{height:100px;display:inline;background-color:whitesmoke;border:1px solid red;}
+    header .search{height:100px;display:inline;border:1px solid red;margin:10px 30px ;} 
+    #search_top{background-color: rgb(255,230,153); width:300px;height:20px;
+        border-radius: 10px;padding-left: 10px;}
+    .login{height:100px;display:inline;border:1px solid red;}
+    .login button{background-color:bisque ;border-radius: 10px;
+        font-size: 1.5rem;line-height: normal;padding: 10px 20px;}
+    
+    aside ul{display: left;height:1100px;background-color:rgb(255,230,153);border:1px solid red;}
+        .menu{
+            width:300px;
+            margin:150px;
+        }
+        .menu>li{  /* 직계자손 */ 
+            /*   float : left ; */     /* 주석 처리 : top 메뉴 구성시 사용 */ 
+            text-align:center;
+            width:100%;
+            line-height:40px;
+            background-color:rgb(255,230,153);
+        }
+        .submenu>li{
+            line-height:50px;
+            background-color:rgb(255,242,204);
+        }
+        /*submenu는 기본적으로 보이지 않게 처리*/
+        .submenu{
+            height:0;
+            overflow:hidden; /* 블락 밖으로 출력되는 내용을 없앰 */ 
+        }
+        /*마우스 올렸을 때 메뉴 색상 변경*/
+        .menu>li:hover{
+            background-color:#94a9ff;
+            transition-duration: 2s;
+        }
+        /*마우스를 올렸을 때 서브메뉴가 보이도록 처리*/
+        .menu>li:hover .submenu{
+            height:250px;
+            transition-duration:2s;
+        }
     </style>
 </head>
 <body>
     <div id="page">
         
         <header>
-            <img src="/FrontEnd/eat-tem/잇템 로고.png" width="230px">
-            <a href="#"><button type="button">로그인</button></a>
-        </header>
-        <aside>
+            <div class="logo">
+            <img src="/FrontEnd/eat-tem/잇템 로고.png" width="270px">
+            </div>
 
+            <div class="search">
+                <input type="text" id="search_top" placeholder="잇-템 찾기">
+            </div>
+
+            <div class="login">
+            <button type="button"><a href="#"></a>로그인</a></button>
+            </div>
+        </header>
+        <div id="clear"></div>
+ 
+        <aside>
+            <ul class="menu">
+                <li>
+                    <a href="#"> MENU 1</a>     <!-- 상위 메뉴 -->
+                    <ul class ="submenu">       <!-- 하위 메뉴 -->
+                        <li><a href="#"> submenu 01</a></li>
+                        <li><a href="#"> submenu 02</a></li>
+                        <li><a href="#"> submenu 03</a></li>
+                        <li><a href="#"> submenu 04</a></li>
+                        <li><a href="#"> submenu 05</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#"> MENU 2</a>
+                    <ul class ="submenu">       <!-- 하위 메뉴 -->
+                        <li><a href="#"> submenu 01</a></li>
+                        <li><a href="#"> submenu 02</a></li>
+                        <li><a href="#"> submenu 03</a></li>
+                        <li><a href="#"> submenu 04</a></li>
+                        <li><a href="#"> submenu 05</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#"> MENU 3</a>
+                    <ul class ="submenu">       <!-- 하위 메뉴 -->
+                        <li><a href="#"> submenu 01</a></li>
+                        <li><a href="#"> submenu 02</a></li>
+                        <li><a href="#"> submenu 03</a></li>
+                        <li><a href="#"> submenu 04</a></li>
+                        <li><a href="#"> submenu 05</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#"> MENU 4</a>
+                    <ul class ="submenu">       <!-- 하위 메뉴 -->
+                        <li><a href="#"> submenu 01</a></li>
+                        <li><a href="#"> submenu 02</a></li>
+                        <li><a href="#"> submenu 03</a></li>
+                        <li><a href="#"> submenu 04</a></li>
+                        <li><a href="#"> submenu 05</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#"> MENU 5</a>
+                    <ul class ="submenu">       <!-- 하위 메뉴 -->
+                        <li><a href="#"> submenu 01</a></li>
+                        <li><a href="#"> submenu 02</a></li>
+                        <li><a href="#"> submenu 03</a></li>
+                        <li><a href="#"> submenu 04</a></li>
+                        <li><a href="#"> submenu 05</a></li>
+                    </ul>
+                </li>
+            </ul>
         </aside>
         <main>
            

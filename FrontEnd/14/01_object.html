@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        div{
+            border:1px solid black;
+            width:300px;
+            margin:10px auto;
+        }
+        /*p태그는 기본이 블락형식으로 출력됨 :width 100%*/
+        p{border:1px solid red;}
+    </style>
+  
+</head>
+<body>
+<div>
+    <p id="var1"></p>
+    <p id="var2"></p>
+    <p id="var3"></p>
+</div>
+<script>
+    
+    //car 객체={속성:값, 속성:값, 속성:값}
+            //{key:value, key:value, key:value}
+    var car ={name:'sonata', speed:100,color:'white'};
+
+    document.getElementById("var1").innerHTML="자동차 이름 : "+car['name'];
+    document.getElementById("var2").innerHTML="자동차 속도 : "+car.speed;
+    document.getElementById("var3").innerHTML="자동차 색 : "+car.color;
+</script>
+</body>
+</html>
