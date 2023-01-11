@@ -1,0 +1,448 @@
+var ssg_react = (function(){
+    "use strict";
+
+    function isSync(link) {
+        if(link && link.startsWith("#") == false && link.indexOf("javascript:void(0)") < 0 && link.indexOf("javascript:;") < 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    function call(param) {
+        if(param && param.tarea) {
+            var paramData = {tarea : param.tarea};
+            if(param.itemId){
+                paramData.itemId = param.itemId;
+            }
+
+            try {
+                if(typeof _adobeYn !== 'undefined' && _adobeYn == 'Y' && typeof sendLoadDataToAdobe === 'function') {
+                    sendLoadDataToAdobe('r', param.tarea, 'x');
+                }
+            } catch (e) {
+            }
+
+            $.ajax({
+                type: "GET",
+                url: "/comm/ajaxReact.ssg",
+                data: paramData,
+                async: param.async === undefined ? true : param.async
+            }).always(function() {
+                if(param.callbackUrl) {
+                    location.href = param.callbackUrl;
+                }
+            });
+
+            // var adobeEvent = new CustomEvent('buildAdobeEvent', {detail: {tarea: param.tarea}})
+            // window.dispatchEvent(adobeEvent);
+        }
+    }
+
+    function bindReactClick() {
+        
+        var bindClick = function() {
+            $(".react-area").off("click.sa.react");
+            $(".react-area").on("click.sa.react", ".clickable[data-react-tarea]", function(){
+                
+                var param = {tarea: $(this).attr("data-react-tarea"), itemId: $(this).attr("data-info")},
+                    target_link = $(this).attr("href"),
+                    target_onclick = $(this).attr("onclick");
+                
+                if(target_onclick || isSync(target_link)) {
+                    param.async = false; 
+                }
+
+                call(param);
+            });
+        }
+        
+        var bindSelectable = function() {
+            $(".react-area").off("change.sa.react");
+            $(".react-area").on("change.sa.react", ".selectable", function() {
+                
+                var param = {
+                    tarea: $(this).find("option:selected").attr("data-react-tarea")
+                };
+                
+                call(param);
+            });
+        }
+        
+        var bindSelectableTmpl = function() {
+            var selectBoxArr = document.querySelectorAll('.react-area select.selectable-tmpl'),
+                selectBoxLen = selectBoxArr.length,
+                baseOnChangeFunc;
+            for (var x = 0; x < selectBoxLen; x++) {
+                baseOnChangeFunc = selectBoxArr[x].onchange;
+                if(typeof baseOnChangeFunc === 'function' && $(selectBoxArr[x]).data('selectableTmplReactFunc') !== 'Y') {
+                    $(selectBoxArr[x]).data('selectableTmplReactFunc', 'Y');
+                    selectBoxArr[x].onchange = (function(func) {
+                        return function () {
+                            var reactAreaVal = this.options[this.selectedIndex].getAttribute('data-react-tarea');
+                            call({tarea: reactAreaVal});    
+                            func.call(this);
+                        }
+                    })(baseOnChangeFunc);
+                }
+            }
+        }
+        
+        bindClick();
+        bindSelectable();
+        bindSelectableTmpl();
+    }
+
+    // function CustomEvent ( event, params ) {
+    //     params = params || { bubbles: false, cancelable: false, detail: null };
+    //     var evt = document.createEvent( 'CustomEvent' );
+    //     evt.initCustomEvent( event, params.bubbles, params.cancelable, params.detail );
+    //     return evt;
+    // }
+    //
+    // function initCustomEvent() {
+    //     if ( typeof window.CustomEvent === "function" ) {
+    //
+    //     } else {
+    //         window.CustomEvent = CustomEvent;
+    //     }
+    // }
+
+    return {
+        init : function() {
+            // initCustomEvent();
+            bindReactClick();
+        },
+        directCall : function(param) {
+            call(param);
+        }
+    }
+})();
+
+var ssg_react_v2 = (function(){
+    "use strict";
+
+    function call(param) {
+        if(param && param.tarea) {
+            var paramData = {tarea : param.tarea};
+            if(param.itemId){
+                paramData.itemId = param.itemId;
+            }
+
+            try {
+                if(typeof _adobeYn !== 'undefined' && _adobeYn == 'Y' && typeof sendLoadDataToAdobe === 'function') {
+                    sendLoadDataToAdobe('r', param.tarea, 'x');
+                }
+            } catch (e) {
+            }
+
+            $.ajax({
+                type: "GET",
+                url: "/comm/ajaxReact.ssg",
+                data: paramData,
+                async: param.async === undefined ? true : param.async
+            }).always(function() {
+                if(param.callbackUrl) {
+                    location.href = param.callbackUrl;
+                }
+            });
+
+            // var adobeEvent = new CustomEvent('buildAdobeEvent', {detail: {tarea: param.tarea}})
+            // window.dispatchEvent(adobeEvent);
+        }
+    }
+
+    function bindReactClick() {
+        var Util = {
+            getCookie : function(cname){
+                var name = cname + "=";
+                var ca = document.cookie.split(';');
+                for(var i = 0; i <ca.length; i++) {
+                    var c = ca[i];
+                    while (c.charAt(0)==' ') {
+                        c = c.substring(1);
+                    }
+                    if (c.indexOf(name) == 0) {
+                        return c.substring(name.length,c.length);
+                    }
+                }
+                return "";
+            }
+            , getCkwhere : function(){
+                var value = decodeURIComponent(Util.getCookie("where"));
+                var ckwhere_idx = value.indexOf("CK_WHERE=");
+                var ckwhereVal;
+                if ( ckwhere_idx >=0 ) {
+                    ckwhereVal = value.substr(ckwhere_idx+9);
+                    var ckwhere_e_idx = ckwhereVal.indexOf("&");
+                    if ( ckwhere_e_idx >= 0 ) {
+                        ckwhereVal =  ckwhereVal.substr(0, ckwhere_e_idx);
+                    }
+                }
+                return ckwhereVal ? ckwhereVal : "";
+            }
+            , getParams : function(){
+                var prmstr = window.location.search.substr(1);
+
+                var params = {};
+                var prmarr = prmstr.split("&");
+                for ( var i = 0; i < prmarr.length; i++) {
+                    var tmparr = prmarr[i].split("=");
+                    params[tmparr[0]] = tmparr[1];
+                }
+
+                return params;
+            }
+        };
+    }
+
+    function callServer(param){
+        if(!param.tarea_cd) {
+            return false;
+        }
+        param.url = location.href;
+        param.referrer = document.referrer;
+        param.inflo_site_no = settings.curr_siteno;
+        param.data_ver_info = "2021091001";
+
+        var zone = settings.zone;
+
+        var callUrl = zone == "prod" ? location.protocol + "//track.ssg.com/react" : location.protocol + "//qa-track.ssg.com/react";
+
+        //console.log(JSON.stringify(param))
+
+        $.ajax({
+            url: callUrl,
+            type: "post",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            xhrFields: { withCredentials: true },
+            data: JSON.stringify(param)
+        });
+    }
+
+    function bindClick(){
+        $(".react-area").off("click.sa.react.v2");
+        $(".react-area").on("click.sa.react.v2", ".clickable[data-react-tarea-dtl-cd]", function(){
+            var templ = getRectParam(this);
+            callServer(templ);
+        });
+    }
+
+    function getRectParam(obj) {
+
+        var templ = {};
+
+        var areaParent = $(obj).parents("[data-react-tarea-cd]");
+        var tareaCd = areaParent.data("react-tarea-cd");
+        var tareaDtlCd = $(obj).data("react-tarea-dtl-cd");
+        var tareaOld = $(obj).data("react-tarea");
+        var areaunit = $(obj).parents("[data-react-unit-id],[data-react-unit-type]");
+        var commTypeParent = $(obj).parents("[data-react-comm-type]");
+        var commType = commTypeParent.data("react-comm-type");
+        var commId = commTypeParent.data("react-comm-id");
+        var salestrNo = commTypeParent.data("react-salestr-no");
+        var siteNo = commTypeParent.data("react-site-no");
+        var srchRsvDivCd = commTypeParent.data("react-srch-rsv-div-cd") || "";
+
+        templ.tarea_cd = tareaCd ? tareaCd : "";
+        templ.tarea_dtl_cd = tareaDtlCd ? tareaDtlCd : "";
+        templ.tarea_cd_old = tareaOld ? tareaOld : "";
+        templ.comm_type = commType ? commType : "";
+        templ.comm_id = commId ? commId : "";
+        templ.salestr_no = salestrNo ? salestrNo : "";
+        templ.site_no = siteNo ? siteNo : "";
+        templ.srch_rsv_div_cd = srchRsvDivCd ? srchRsvDivCd : "";
+
+        templ.tarea_dtl_info = [];
+
+        templ.tarea_dtl_info.push(getUnitInfo(areaunit));
+
+        return templ;
+    }
+
+    //unit정보 세팅
+    function getUnitInfo(unit){
+        var list_templ;
+        var  unitId = unit.data("react-unit-id") || "",
+            unitInx = unit.data("react-unit-inx") || "0",
+            mdlInfo = unit.data("react-mdl-info") || "",
+            unitType = unit.data("react-unit-type") || "",
+            unitText = unit.data("react-unit-text"),
+            advertYn = unit.data("react-advert-yn") || "",
+            advertBidCd = unit.data("react-advert-bid-id") || "",
+            advertTgtId = unit.data("react-advert-tgt-id") || "",
+            advertBilngTypeCd = unit.data("react-advert-bilng-type-cd") || "",
+            advertKindCd = unit.data("react-advert-kind-cd") || "",
+            advertExtensTeryDivCd = unit.data("react-advert-extens-tery-div-cd") || "",
+            advertAcctGrpId = unit.data("react-prior-advert-acct-grp-id") || ""
+        ;
+
+        // int -> string
+        unitId      += "";
+        unitInx     += "";
+        mdlInfo     += "";
+        unitType    += "";
+        advertYn    += "";
+        advertBidCd += "";
+        advertTgtId += "";
+        advertBilngTypeCd += "";
+        advertKindCd += "";
+        advertExtensTeryDivCd += "";
+        advertAcctGrpId += "";
+
+        list_templ = {};
+
+        if(unitId !== '' || unitType !== '') {
+            list_templ.unit_id = unitId;
+            list_templ.unit_inx = unitInx;
+            list_templ.mdl_info = mdlInfo;
+            list_templ.unit_type = unitType;
+            list_templ.unit_text = unitText;
+            list_templ.advert_yn = advertYn;
+            list_templ.advert_bid_id = advertBidCd;
+            list_templ.advert_tgt_id = advertTgtId;
+            list_templ.advert_bilng_type_cd = advertBilngTypeCd;
+            list_templ.advert_kind_cd = advertKindCd;
+            list_templ.advert_extens_tery_div_cd = advertExtensTeryDivCd;
+            list_templ.prior_advert_acct_grp_id = advertAcctGrpId;
+        }
+
+        return list_templ;
+    }
+
+    return {
+        init : function() {
+                bindClick();
+            },
+        impression : function(obj) {
+            var areaparent = $(obj).parents("[data-react-tarea-cd]");
+            var tareaCd = areaparent.data("react-tarea-cd") ? areaparent.data("react-tarea-cd") : "";
+
+            var commTypeParent = $(obj).parents("[data-react-comm-type]");
+            var commType = commTypeParent.data("react-comm-type") || "";
+            var commId = commTypeParent.data("react-comm-id") || "";
+            var salestrNo = commTypeParent.data("react-salestr-no") || "";
+            var siteNo = commTypeParent.data("react-site-no") || "";
+            var srchRsvDivCd = commTypeParent.data("react-srch-rsv-div-cd") || "";
+
+            var tareaDtlInfo = [];
+            var unitInfo = (getUnitInfo($(obj)));
+
+            tareaDtlInfo.push(unitInfo);
+
+            var param = {
+                tarea_cd : tareaCd,
+                tarea_dtl_cd : "t10000",
+                tarea_dtl_info : tareaDtlInfo,
+                comm_type : commType,
+                comm_id : commId,
+                salestr_no : salestrNo,
+                site_no : siteNo,
+                srch_rsv_div_cd : srchRsvDivCd
+            };
+
+            //console.log(JSON.stringify(param))
+
+            if (tareaCd != "") {
+                callServer(param)
+            }
+        },
+        observable_unit_impression : function(obj) {
+            var tareaCd = $(obj).data("react-tarea-cd");
+            var tareaDtlInfo = [];
+
+            var commTypeParent = $(obj).parents("[data-react-comm-type]");
+            var commType = commTypeParent.data("react-comm-type") || "";
+            var commId = commTypeParent.data("react-comm-id") || "";
+            var salestrNo = commTypeParent.data("react-salestr-no") || "";
+            var siteNo = commTypeParent.data("react-site-no") || "";
+            var srchRsvDivCd = commTypeParent.data("react-srch-rsv-div-cd") || "";
+
+            var param = {
+                tarea_cd : tareaCd,
+                tarea_dtl_cd : "t00000",
+                tarea_dtl_info : tareaDtlInfo,
+                comm_type : commType,
+                comm_id : commId,
+                salestr_no : salestrNo,
+                site_no : siteNo,
+                srch_rsv_div_cd : srchRsvDivCd
+            };
+
+            if (tareaCd != "") {
+                callServer(param)
+            }
+        },
+        observable_item_impression : function(obj) {
+            var areaparent = $(obj).parents("[data-react-tarea-cd]");
+            var tareaCd = areaparent.data("react-tarea-cd") ? areaparent.data("react-tarea-cd") : "";
+
+            var commTypeParent = $(obj).parents("[data-react-comm-type]");
+            var commType = commTypeParent.data("react-comm-type") || "";
+            var commId = commTypeParent.data("react-comm-id") || "";
+            var salestrNo = commTypeParent.data("react-salestr-no") || "";
+            var siteNo = commTypeParent.data("react-site-no") || "";
+            var srchRsvDivCd = commTypeParent.data("react-srch-rsv-div-cd") || "";
+
+            var tareaDtlInfo = [];
+            var unitInfo = (getUnitInfo($(obj)));
+
+            tareaDtlInfo.push(unitInfo);
+
+            //console.log(JSON.stringify(unitInfo.UNIT_ID))
+
+            var param = {
+                tarea_cd : tareaCd,
+                tarea_dtl_cd : "t10000",
+                tarea_dtl_info : tareaDtlInfo,
+                comm_type : commType,
+                comm_id : commId,
+                salestr_no : salestrNo,
+                site_no : siteNo,
+                srch_rsv_div_cd : srchRsvDivCd
+            };
+
+            if (tareaCd != "" && unitInfo.unit_id != undefined) {
+                callServer(param)
+            }
+        },
+        custom_direct_impression : function(obj) {
+            var tareaCd = $(obj).data("react-tarea-cd") ? $(obj).data("react-tarea-cd") : "";
+            var tareaDtlCd = $(obj).data("react-tarea-dtl-cd") ? $(obj).data("react-tarea-dtl-cd") : "";
+
+            var commType = $(obj).data("react-comm-type") || "";
+            var commId = $(obj).data("react-comm-id") || "";
+            var salestrNo = $(obj).data("react-salestr-no") || "";
+            var siteNo = $(obj).data("react-site-no") || "";
+            var srchRsvDivCd = $(obj).data("react-srch-rsv-div-cd") || "";
+
+            var tareaDtlInfo = [];
+            var unitInfo = (getUnitInfo($(obj)));
+
+            tareaDtlInfo.push(unitInfo);
+
+            var param = {
+                tarea_cd : tareaCd,
+                tarea_dtl_cd : tareaDtlCd,
+                tarea_dtl_info : tareaDtlInfo,
+                comm_type : commType,
+                comm_id : commId,
+                salestr_no : salestrNo,
+                site_no : siteNo,
+                srch_rsv_div_cd : srchRsvDivCd
+            };
+
+            if (tareaCd != "" && unitInfo.unit_id != undefined) {
+                callServer(param)
+            }
+        },
+        direct_call: function(obj) {
+            if ($(obj).is('.clickable[data-react-tarea-dtl-cd]')) {
+                var param = getRectParam(obj);
+                callServer(param);
+            }
+        }
+    }
+})();

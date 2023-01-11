@@ -1,0 +1,61 @@
+/*
+' ------------------------------------------------------------------
+' Function    : openShowPopupDelivery()
+' Description : 배송 픽업 팝업
+' Argument    :
+' Return      :
+' ------------------------------------------------------------------
+*/
+function openShowPopupDelivery(salestrNo , regnId , dayAfter,width , height){
+	$.ajax({
+		 type: "GET",
+		 url: "/shipping/getRegnId.ssg",
+		 dataType: "json",
+		 success: function(map) {
+			 if(map.resultMsg != null && map.resultMsg != '' ){
+				 if(width == undefined || width == null || width == ''){
+					 width = '694';
+				 }
+
+				 if(height == undefined || height == null || height == ''){
+					 height = '696';
+				 }
+
+				 //openPopupDelivery(salestrNo , regnId , dayAfter,width , height);
+				 var url = "https://" + settings.domain.mssg + "/common/showMEmallDelivery.ssg?siteNo=6001&isPop=Y";
+				 popupWin(url, "", 860, 724, "yes", "no");
+			 }else{
+				 alert("현재 설정된 고객님의 기본 배송지는 예약배송이 가능하지 않습니다.");
+			 }
+		 },
+		 error: function(request, status, error) {
+			 alert('에러');
+		 }
+	 });
+}
+
+function openPopupDelivery(salestrNo , regnId , dayAfter,width , height){
+	var url ="/shipping/showPopupDelivery.ssg?salestrNo=" + salestrNo + "&regnId=" + regnId + "&dayAfter="+ dayAfter;
+	window.open(url, "showPopupDelivery","menubar=no, scrollbars=1, resizable=no, width="+width+", height="+height+",left=5, top=5");
+}
+
+/*
+ * ' ------------------------------------------------------------------ '
+ * Function : OpenPopupSetDelivery() ' Description : 배송 설정 팝업 ' Argument : '
+ * Return : ' ------------------------------------------------------------------
+ */
+function OpenPopupSetDelivery(mbrId , cntryCd ,width , height){
+	var SSL_DOMAIN = settings.domain.protocol + settings.domain.domain + settings.domain.context;
+	var url = SSL_DOMAIN + "/comm/popup/shpplocList.ssg";
+	popupWin(url + "?callbackUrl=" + encodeURIComponent(location.protocol + "//" + settings.localDomain + "/comm/popup/sslCallback.ssg"), "", 750, 822, "yes", "no");
+}
+
+/*
+ * 쓱배송 가능지역 확인 팝업
+ */
+function openPopupZipcdShppInfo() {
+	var url = settings.domain.protocol + settings.domain.domain + settings.domain.context + '/addr/popup/zipcdShppInfo.ssg?callbackUrl=' + encodeURIComponent(document.location.href);
+	popupWin(url, "", 500, 900, "yes", "no");
+}
+
+///// NOTE traders shipping.js 싱크 또는 정리 필요 /////

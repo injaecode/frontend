@@ -1,0 +1,106 @@
+/**
+ * 제휴사 Gnb 스크립트
+ */
+var isHttp = window.location.protocol.indexOf("https") < 0 ? true : false;
+var isCkwhere = getCkwhereCookie();
+
+if (isCkwhere == "shinhan"  || isCkwhere == "shcard" ) {
+	document.write("<script type=\"text/javascript\" src=\"https://allthatcdn.aws.shinhancard.com/conts/partners/header/allthat.js\"></script>");
+	document.write("<div id=\"allthat\"></div>");
+
+} else if ( isCkwhere == "kbmall" || isCkwhere == "kbcardshop" || isCkwhere == "ssg_kbcard" || isCkwhere == "kbcardshop_happy" || isCkwhere == "kbcardshop_m" ) {
+	document.write("<script type=\"text/javascript\" src=\"https://lifes.kbcard.com/cxl/js/pc2018/common/js/partner_gnb_A_UTF.js\"><\/script>");
+
+} else if (isCkwhere == "asiana" || isCkwhere == "asiana_mobile") {
+	document.write("<script type=\"text/javascript\" src=\"https://flyasiana.com/C/pc/js/partnerHeader/partnerHeader_utf.js?mn=" + encodeURI('이마트몰') + "&amp;code=EMT\"><\/script>");
+
+} else if (isCkwhere == "asianaclub" || isCkwhere == "asianaclub_mobile") {
+	document.write("<script type=\"text/javascript\" src=\"https://flyasiana.com/C/pc/js/partnerHeader/partnerHeader_utf.js?mn=" + encodeURI('신세계몰') + "&amp;code=SSM\"><\/script>");
+
+} else if (isCkwhere == "hyundaicard" || isCkwhere == "hcard" || isCkwhere == "ssg_hdcard") {
+	var hc_header = '';
+	hc_header += '<div style="width:100%;height:75px;margin:0;padding:0;font-size:11px;line-height:18px;font-family:돋움;background:#fff;">';
+	hc_header += '<div style="position:relative;width:990px;height:40px;margin:0 auto;padding:15px 0 0;">';
+	hc_header += '	<a href="http://www.hyundaicard.com" style="vertical-align:top;"><img src="https://www.hyundaicard.com/img/com/logo_header.gif" alt="hyundaicard" style="border:0;"/></a>';
+	hc_header += '	<a href="http://mpointmall.hyundaicard.com/plusmall/main.do" style="position:absolute;right:0;top:50%;border:0;text-decoration:none;color:#424242 !important;padding:0;margin:-15px 0 0;">';
+	hc_header += '		<span style="display:block;border:1px solid #d5d5d5;line-height:28px;text-align: center;vertical-align: top;padding:0 10px;letter-spacing:-1px;">M포인트 사용/추가적립 가맹점</span>';
+	hc_header += '	</a>';
+	hc_header += '</div>';
+	hc_header += '<div style="width:100%;background:#f0f0f0;height:20px;">';
+	hc_header += '	<p style="width:990px;margin:0 auto;line-height:20px;color:#424242;background:#f0f0f0;">M포인트 사용/추가적립 가맹점은 통신판매 중개자로서 상품주문/배송/환불 등 쇼핑몰 관련 의무와 책임은 해당쇼핑몰에 있습니다.</p>';
+	hc_header += '</div>';
+	hc_header += '</div>';
+	document.write(hc_header);
+
+} else if ( isCkwhere == "hanamall" || isCkwhere == "hanaskcard" || isCkwhere == "ssg_hanask" || isCkwhere == "hanacard" || isCkwhere == "ssg_hana" ) {
+	document.write("<script type=\"text/javascript\" src=\"https://www.hanacard.co.kr/js/shopping_wa.js\" charset=\"euc-kr\"><\/script>");
+
+} else if(isCkwhere == 'ssg_cashbag') {
+	document.write('<script src="https://cashbagmall.okcashbag.com/mall/cTop4Ssg.js" charset="euc-kr"></script>');
+
+} else if(isCkwhere == 's_cashbagmall') {
+	document.write('<script src="https://cashbagmall.okcashbag.com/mall/cTop4Shinsegae.js" charset="euc-kr"></script>');
+
+} else if(isCkwhere == 'cashbagmall') {
+	document.write('<script src="https://cashbagmall.okcashbag.com/mall/cTop4Emart.js" charset="euc-kr"></script>');
+
+} else if(isCkwhere == 'ecashbag_early') {
+	document.write('<script src="https://cashbagmall.okcashbag.com/mall/cTop4SsgEarlyMorning.js" charset="euc-kr"></script>');
+
+} else if(isCkwhere == 'ssg_hanafos' || isCkwhere == 's_hanafos' || isCkwhere == 'hanafos' || isCkwhere == 'hana_early') {
+	if(isHttp) {
+		document.write('<script language="javascript" src="http://shop.dreamx.com/html/cpGNB/redir_utf8.js" charset="utf-8"></script>');
+	} else {
+		document.write('<script language="javascript" src="https://shop.dreamx.com/html/cpGNB/redir_utf8_ssl.js" charset="utf-8"></script>');
+	}
+} else if (isCkwhere === 'scardmall' || isCkwhere === 'sscard') {
+	var docStr = "<!-- 20160303 : SAMSUNG CARD - MALLinMALL HEADER -->\n";
+	docStr += "<div style=\"width:100%; height:110px; color:#101010; font-family:'맑은 고딕','Malgun Gothic','Apple SD Gothic Neo', '돋움','Dotum',Arial,Sans-serif; background-color:#fff; border-bottom:1px solid #d0d0d0; word-break:keep-all; padding:0; margin:0; box-sizing:border-box; overflow:hidden;\">\n";
+	docStr += " <div style=\"position:relative; width:980px; height:72px; margin:0 auto 0 auto; overflow:hidden;\">\n";
+	docStr += " <h1 style=\"position:absolute; top:27px; left:0; width:267px; height:21px; background:url('http://static12.samsungcard.com/images/mallinmall/cml/fo/partners/logo.png') 0 0 no-repeat; padding:0; margin:0; overflow:hidden;\"><a href=\"http://mallinmall.samsungcard.com/\" title=\"SAMSUNG CARD 국내제휴몰\" target=\"_blank\" style=\"display:block; width:267px; height:21px; font-size:0; line-height:0; text-indent:-5000px;\">SAMSUNG CARD 국내제휴몰</a></h1>\n";
+	docStr += " <em style=\"position:absolute; top:20px; left:287px; width:134px; height:33px; font-size:0; line-height:0; text-indent:-5000px; background:url('http://static12.samsungcard.com/images/mallinmall/cml/fo/partners/btn_point_on.gif') 0 center no-repeat; overflow:hidden;\">포인트적립 가능</em>\n";
+	docStr += " <ul style=\"position:absolute; top:0; right:0; padding:0; margin:21px 0 0 0;\">\n";
+	docStr += " <li style=\"list-style:none; display:inline-block; padding:0; margin:0 0 0 12px;\"><a href=\"http://shopping.samsungcard.com/\" title=\"삼성카드 쇼핑\" target=\"_blank\" style=\"font-size:20px; line-height:24px; letter-spacing:-1px; font-weight:bold; color:#101010; text-decoration:none;\">삼성카드 쇼핑</a></li>\n";
+	docStr += " </ul>\n";
+	docStr += " </div>\n";
+	docStr += " <div style=\"width:100%; height:38px; padding:0; border-top:1px solid #d0d0d0; background:#f4f4f4; box-shadow:inset 0 2px 3px 0 rgba(0,0,0,0.08); overflow:hidden;\">\n";
+	docStr += " <p style=\"width:980px; height:38px; font-size:13px; color:#303030; line-height:17px; background:url('http://static12.samsungcard.com/images/mallinmall/cml/fo/partners/ico_tip.gif') 0 10px no-repeat; padding:8px 0 9px 24px; margin:0 auto 0 auto; box-sizing:border-box; overflow:hidden;\">삼성카드 쇼핑은 통신판매 중개자로서, 아래 매장은 <em style=\"font-style:normal; font-weight:bold;\">해당 쇼핑몰의 책임하에 운영</em>되고 있습니다.</p>\n";
+	docStr += " </div>\n";
+	docStr += "</div>\n";
+	docStr += "<!-- //20160303 : SAMSUNG CARD - MALLinMALL HEADER -->\n";
+	document.write(docStr);
+}
+
+
+function getCkwhereCookie() {
+	var q = document.cookie;
+	var key = "where";
+	var value = "";
+
+	var nameOfCookie = key + "=";
+	var x = 0;
+	while (x <= document.cookie.length) {
+		var y = (x + nameOfCookie.length);
+		if (document.cookie.substring(x, y) == nameOfCookie) {
+			if ((endOfCookie = document.cookie.indexOf(";", y)) == -1) {
+				endOfCookie = document.cookie.length;
+			}
+			value = unescape(document.cookie.substring(y, endOfCookie));
+		}
+		x = document.cookie.indexOf(" ", x) + 1;
+		if (x == 0) break;
+	}
+
+	var ckwhere_idx = value.indexOf("CK_WHERE=");
+	var ckwhere = "";
+
+	if (ckwhere_idx >= 0) {
+		ckwhere = value.substr(ckwhere_idx + 9);
+		var ckwhere_e_idx = ckwhere.indexOf("&");
+		if (ckwhere_e_idx >= 0) {
+			ckwhere = ckwhere.substr(0, ckwhere_e_idx);
+		}
+	}
+
+	return ckwhere;
+}

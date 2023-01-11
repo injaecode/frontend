@@ -1,0 +1,134 @@
+var ssg = ssg || {};
+ssg.View = ssg.View || {};
+ssg.View.category = ssg.View.category || {};
+
+ssg.View.category.tabMenu = function() {
+    this.init();
+};
+ssg.View.category.tabMenu.prototype = {
+    init: function() {
+        this._assignElements();
+        this._attachEventHandlers();
+    },
+    _assignElements: function() {
+        this._welCateTabMenu = $('.cctg_nav');
+        this._welCateTabList = this._welCateTabMenu.find('>ul>li');
+        this._welCateMenuWrap = this._welCateTabList.find('>.wrap');
+    },
+    _attachEventHandlers: function() {
+        this._welCateTabList.on('mouseenter', $.proxy(this._onMouseenterTabList, this));
+        this._welCateTabList.on('mouseleave', $.proxy(this._onMouseleaveTabList, this));
+        // this._welCateMenuWrap.on('mousedown focusin', '.btn', $.proxy(this._onClickSubMenuBtn, this));
+        this._welCateMenuWrap.on('click', '.btn', $.proxy(this._onClickSubMenuBtn, this));
+        this._welCateMenuWrap.on('change', '.custom_chk input[type=checkbox]', $.proxy(this._onChangeSubMenuCheckbox, this));
+    },
+    _onMouseenterTabList: function(e) {
+        var welTarget = $(e.currentTarget);
+
+        if (welTarget.find('a').length || welTarget.find('.custom_chk').length) {
+            welTarget.addClass('lst_over');
+            this._welCateTabList.filter('.selected').addClass('on').removeClass('selected');
+        }
+    },
+    _onMouseleaveTabList: function() {
+        this._welCateTabList.removeClass('lst_over');
+
+        if (!this._welCateTabList.hasClass('active')) {
+            this._welCateTabList.filter('.on').addClass('selected').removeClass('on');
+        }
+    },
+    _onClickSubMenuBtn: function(e) {
+        var welTarget = $(e.currentTarget);
+        var welTargetList = welTarget.closest('li');
+
+        if (welTargetList.find('ul').length) {
+            if (welTargetList.hasClass('active')) {
+                welTargetList.removeClass('active');
+
+                welTarget.attr('aria-expanded', 'false');
+            } else {
+                this._welCateTabList.removeClass('active');
+                welTargetList.addClass('active');
+
+                this._welCateTabList.find('.btn').attr('aria-expanded', 'false');
+                welTarget.attr('aria-expanded', 'true');
+            }
+        }
+    },
+    _onChangeSubMenuCheckbox: function(e) {
+        var welTarget = $(e.currentTarget);
+        var welTargetList = welTarget.closest('li');
+
+        this._welCateTabList.removeClass('on');
+        welTargetList.addClass('on');
+
+        if (welTarget.is(':checked')) {
+            this._welCateTabList.removeClass('active');
+            welTargetList.addClass('active');
+            
+            this._welCateTabList.find('.btn').attr('aria-expanded', 'false');
+            welTargetList.find('.btn').attr('aria-expanded', 'true');
+        } else {
+            welTargetList.removeClass('active');
+
+            welTargetList.find('.btn').attr('aria-expanded', 'false');
+        }
+    }
+};
+
+$(function() {
+    var oSsgViewCategoryTabMenu = new ssg.View.category.tabMenu();
+
+    // 카테고리 네비게이션 영역 체크박스
+    var welCategoryNavWrap = $('.cctg_nav_wrap');
+    welCategoryNavWrap.on('change', '.custom_chk input[type=checkbox]', function() {
+        $(this).parent('.custom_chk').toggleClass('on', $(this).is(':checked'));
+    });
+
+    // 필터 영역 체크박스
+    var welCategoryFilterWrap = $('.cctg_filter_wrap');
+    welCategoryFilterWrap.on('change', '.custom_chk input[type=checkbox]', function() {
+        $(this).parent('.custom_chk').toggleClass('on', $(this).is(':checked'));
+    });
+
+    // 필터 영역 우측 더보기/접기 버튼
+    welCategoryFilterWrap.on('click', '.btn_filter_more', function(){
+        var $this = $(this),
+            welCategoryFilter = $this.parents('.cctg_filter');
+
+        if (welCategoryFilter.hasClass('on')) {
+            welCategoryFilter.removeClass('on').removeAttr('tabindex');
+        } else {
+            welCategoryFilter.addClass('on').attr('tabindex', '-1').focus().siblings('.cctg_filter').removeAttr('tabindex');
+        }
+    });
+
+    // 툴팁 예외
+    $('#_mysize_tooltip').after($('#sizeTooltipLayer1')).on('mouseenter', function() {
+        // $('#sizeTooltipLayer2').before($('#sizeTooltipLayer1'));
+        $('#sizeTooltipLayer1').show(0);
+    }).on('mouseleave', function() {
+        $('#sizeTooltipLayer1').hide(0);
+    });
+
+    // 필터 툴팁 5번째 열에 있는 것만 위치 변경 (스카이스크랩퍼에 가리는 것 방지)
+    $('.cctg_filter .filter_list > li:has(.ssg-tooltip-layer)').each(function (e) {
+        var nIdx = $(this).index() + 1,
+            nTooltipWith = $(this).find('.ssg-tooltip-layer').outerWidth(),
+            nTooltipMaxWith = 273;
+
+        if (nTooltipWith > nTooltipMaxWith && nIdx % 5 == 0) {
+            $(this).find('.ssg-tooltip-layer').css('left', nTooltipMaxWith - nTooltipWith + 'px');
+        }
+    });
+
+    // 라디오버튼
+    $('.custom_rdo').on('change', 'input[type=radio]', function() {
+        var sRadioGroupName = $(this).attr('name');
+        var welRadioGroup = $('input[type=radio][name='+sRadioGroupName+']');
+
+        welRadioGroup.each(function() {
+            $(this).parent('.custom_rdo').toggleClass('on', $(this).is(':checked'));
+        });
+    });
+});

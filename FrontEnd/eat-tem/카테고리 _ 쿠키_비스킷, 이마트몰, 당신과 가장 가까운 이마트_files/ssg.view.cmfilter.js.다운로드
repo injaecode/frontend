@@ -1,0 +1,635 @@
+//throttle
+!(function (n, t) {
+	"$:nomunge";
+	var u,
+		e = n.jQuery || n.Cowboy || (n.Cowboy = {});
+	(e.throttle = u =
+		function (n, u, o, i) {
+			function r() {
+				function e() {
+					(c = +new Date()), o.apply(f, d);
+				}
+
+				function r() {
+					a = t;
+				}
+				var f = this,
+					g = +new Date() - c,
+					d = arguments;
+				i && !a && e(),
+					a && clearTimeout(a),
+					i === t && g > n
+						? e()
+						: u !== !0 && (a = setTimeout(i ? r : e, i === t ? n - g : n));
+			}
+			var a,
+				c = 0;
+			return (
+				"boolean" != typeof u && ((i = o), (o = u), (u = t)),
+				e.guid && (r.guid = o.guid = o.guid || e.guid++),
+				r
+			);
+		}),
+		(e.debounce = function (n, e, o) {
+			return o === t ? u(n, e, !1) : u(n, o, e !== !1);
+		});
+})(this);
+
+var cmflt;
+var ssg = ssg || {};
+ssg.View = ssg.View || {};
+ssg.View.LnbCmfilter = ssg.View.LnbCmfilter || {};
+
+ssg.View.LnbCmfilter = cmflt = {
+	// scroll
+	welCmfltLnb: null,
+	welFooter: null,
+	nCmfltLnbTop: 0,
+	nCmfltLnbFixTop: null,
+	nCmfltLnbHeight: null,
+	nBreakPoint: null,
+	nGetScrollVal: 0,
+	flag: false,
+
+	// elements:not(:scroll)
+	welContent: null,
+	welCmfltToggle: null,
+	// welInputCheck    : null,
+	// welInputRadio    : null,
+	welcmfblLayerWrap: null,
+	welcmfblTab: null,
+	welHart: null,
+	welShoesWrap: null,
+	welShoesLayerBtn: null,
+	welShoesLayer: null,
+	welShoesCancelBtn: null,
+	welTypeProduct: null,
+	welTypeProductOffice: null,
+	welcmfltShoesLayer: null,
+	// welcmfltBrandLayer: null,
+	welcmfltLayerCloseBtn: null,
+	welcmfltFilboxCheck: null,
+	welcmfltLayer: null,
+	welMySizeShoesCheck: null,
+	welCategoryWrp: null,
+	welCategoryList: null,
+	welcomTmplContent: null,
+	welSearchCategory: null,
+
+	// class string
+	sClassNameCmfltSticy: "cmfltSticky",
+	sClassNameCmfilBox: "cmflt_filbox",
+	sClassNameCmfilBoxCts: "cmflt_filbox_cts",
+	sClassNameCtlistToggle: "cmflt_ctlist_toggle",
+	sToggleClass: "on",
+	sCtlistToggleClass: "on",
+
+	_init: function () {
+		this._getVariableInfo();
+		// this._setDefaultValue();
+		this._isEventHandler();
+		// this._checkScrollHandler();
+	},
+
+	_getVariableInfo: function () {
+		// LNB:not(scroll)
+		this.welBody = $("body");
+		this.welContent = $(".com_tmpl");
+		this.welCmfltLnbWrap = $(".com_tmpl_lnb");
+		this.welCmfltLnb = $("#cmflt_lnb");
+		this.welCmfltToggle = $(".cmflt_toggle");
+		this.welcmfblLayerWrap = $(".cmflt_fbl_brand");
+		this.welHart = $(".cmflt_btn_hart");
+		this.welShoesWrap = $(".cmflt_list_tbl");
+		this.welShoesLayerBtn = $(".size_check");
+		this.welShoesLayer = $(".size_check_layer");
+		this.welFilterLayer = $(".tmpl_select_layer");
+		this.welShoesCancelBtn = $(".cmflt_cancel");
+		this.welTypeProduct = $(".chk_more");
+		this.welTypeProductOffice = $(".cmflt_spsub");
+		this.welCategoryWrp = $(".cmflt_ctlist");
+		this.welcmfltLayer = $(".cmflt_filbox_layer");
+		this.welcmfltShoesLayer = $(".cmflt_fbl_tbl");
+		// this.welcmfltBrandLayer    = $('.cmflt_fbl_brand');
+		this.welcomTmplContent = $(".com_tmpl_content");
+		this.welSearchCategory = $(".cmflt_ctlist_search");
+		this.welCategoryList = this.welCategoryWrp.find(">li");
+		this.welcmfltLayerCloseBtn = this.welcmfltLayer.find(".cmflt_fbl_close");
+		this.welMySizeShoesCheck = this.welcmfltLayer.find(".shoes_allcancel");
+		this.welcmfltFilboxCheck = this.welcmfltLayer.find("input:checkbox");
+		this.welcmfltFilboxRadio = this.welcmfltLayer.find("input:radio");
+		// this.welInputCheck         = this.welCmfltLnb.find('input:checkbox');
+		// this.welInputRadio         = this.welCmfltLnb.find('input:radio');
+		this.welcmfblTab = this.welcmfblLayerWrap.find(".cmflt_fbl_tab");
+
+		// scroll
+		this.nCmfltLnbTop = this.welCmfltLnb.offset().top;
+		this.nCmfltLnbFixTop = this.welCmfltLnb.offset().top;
+		this.nCmfltLnbHeight = this.welCmfltLnb.outerHeight();
+		this.nBreakPoint = Math.abs(this.nCmfltLnbHeight - $(window).height());
+		this.welFooter = $("#footer");
+	},
+
+	_isEventHandler: function () {
+		this.welContent.on("click", ".cmflt_toggle", cmflt._isCmfltBoxToggle);
+		this.welContent.on("click", ".cmflt_lnb input:checkbox", cmflt._isChecked);
+		this.welContent.on("click", ".cmflt_lnb input:radio", cmflt._isChecked);
+		this.welBody.on(
+			"click",
+			".cmflt_filbox_layer input:checkbox",
+			cmflt._isChecked
+		);
+		this.welBody.on(
+			"click",
+			".cmflt_filbox_layer input:radio",
+			cmflt._isChecked
+		);
+		this.welBody.on("click", ".cmflt_fbl_tab a", cmflt._isTab);
+		this.welBody.on("click", ".cmflt_btn_hart", cmflt._toggleHart);
+		this.welShoesCancelBtn.on("click", cmflt._checkedCancel);
+		this.welShoesLayerBtn.on("click", cmflt._isShoesSizeOptToggle);
+		this.welcmfltLayerCloseBtn.on("click", cmflt._isCmfltLayerClose);
+		this.welMySizeShoesCheck.on("click", cmflt._checkedCancelLayerMyShoes);
+		this.welCategoryList.on("click", "a", this._toggleCategory);
+		this.welContent.on(
+			"click",
+			"." + cmflt.sClassNameCtlistToggle,
+			cmflt._toggleSpecialCategory
+		);
+		this.welContent.on(
+			"click",
+			".cmfltExpContent .cmflt_more",
+			this._lookMoreCategory
+		);
+		this.welContent.on(
+			"click",
+			".cmflt_price_list .round_cell",
+			this._onOffCmfltPrice
+		);
+	},
+
+	// cmfltPrice
+	_onOffCmfltPrice: function () {
+		$(this).toggleClass("on").parent().siblings().children().removeClass("on");
+	},
+
+	// 더보기영역
+	_lookMoreCategory: function (e) {
+		var welTarget = $(e.currentTarget),
+			welTargetContent = welTarget.closest(".cmfltExpContent"),
+			welCtlistHighNotFirst = welTargetContent
+				.find(".cmfltExpClist")
+				.eq(0)
+				.siblings(".cmfltExpClist");
+
+		$(this).hide();
+		welTarget.toggleClass("on");
+		if (welTarget.hasClass("on")) {
+			welCtlistHighNotFirst.addClass("on").eq(0).attr("tabindex", "-1").focus();
+		} else {
+			welCtlistHighNotFirst.removeClass("on").eq(0).removeAttr("tabindex");
+			$("html, body").animate(
+				{
+					scrollTop: welTargetContent.offset().top,
+				},
+				0
+			);
+		}
+		// cmflt._setDefaultValue();
+	},
+
+	// 높이변경시 재호출 필요한 함수.
+	_setDefaultValue: function () {
+		var lnbHeight = $("#cmflt_lnb").outerHeight();
+		var contentHeight = $(".com_tmpl_content").innerHeight();
+
+		this.nBreakPoint = Math.abs(lnbHeight - $(window).height());
+
+		if (lnbHeight > contentHeight) {
+			this.welCmfltLnbWrap.css("height", lnbHeight);
+		} else {
+			this.welCmfltLnbWrap.css("height", contentHeight);
+		}
+	},
+
+	// category list toggle
+	_toggleCategory: function (e) {
+		var parentElem = $(this).parent();
+		var searchCategory = $(this).closest(cmflt.welSearchCategory);
+		e.preventDefault();
+		if (!searchCategory.length) {
+			parentElem
+				.addClass("on")
+				.siblings()
+				.removeClass("on")
+				.find(".on")
+				.removeClass("on");
+		}
+	},
+	_toggleSpecialCategory: function (e) {
+		var welTarget = $(e.currentTarget);
+		var welParentElem = welTarget.parent();
+
+		e.preventDefault();
+		welParentElem
+			.toggleClass(
+				cmflt.sCtlistToggleClass,
+				!welParentElem.hasClass(cmflt.sCtlistToggleClass)
+			)
+			.siblings()
+			.removeClass(cmflt.sCtlistToggleClass);
+
+		if (welTarget.is("[aria-expanded]")) {
+			welTarget.attr(
+				"aria-expanded",
+				welParentElem.hasClass(cmflt.sCtlistToggleClass) ? true : false
+			);
+			welParentElem
+				.siblings()
+				.find("." + cmflt.sClassNameCtlistToggle)
+				.attr("aria-expanded", false);
+		}
+	},
+
+	_handleToggleClip: function () {
+		var welBody = $("body");
+		welBody.off().on("click", ".cmflt_btn_hart", this._toggleHart);
+	},
+
+	// hart
+	_toggleHart: function () {
+		$(this).toggleClass("on");
+	},
+
+	// tab
+	_isTab: function (e) {
+		e.preventDefault();
+		$(this).parent().addClass("on").siblings().removeClass("on");
+		$("." + $($(this).attr("href")).attr("class")).hide();
+		$($(this).attr("href")).show();
+		if ($(this).is('[role="tab"]')) {
+			// 방어코딩 - role tab 속성이 있을때만 동작
+			$(this)
+				.attr("aria-selected", "true")
+				.parent()
+				.siblings()
+				.children()
+				.attr("aria-selected", "false");
+		}
+	},
+
+	// filbox_cts Toggle
+	_isCmfltBoxToggle: function () {
+		$(this).toggleClass(cmflt.sToggleClass);
+		$(this)
+			.closest($("." + cmflt.sClassNameCmfilBox))
+			.find($("." + cmflt.sClassNameCmfilBoxCts))
+			.toggle();
+		if ($(this).is("[aria-expanded]")) {
+			$(this).attr(
+				"aria-expanded",
+				$(this).attr("aria-expanded") == "false" ? true : false
+			);
+		}
+		// cmflt._setDefaultValue();
+	},
+
+	// cmflt Layer Close
+	_isCmfltLayerClose: function () {
+		$(this).parent().hide();
+	},
+
+	// check & radio all
+	_isChecked: function (e) {
+		var cmfltListCheck = $(".cmflt_list_check");
+		var targetElement = $(".cmflt_spsub");
+		var sCheckboxGroupName = $(this).attr("name");
+		var inputType = $(this).attr("type") === "checkbox" ? "checkbox" : "radio";
+		var welRadioGroup = $(
+			"input[type=" + inputType + "][name=" + sCheckboxGroupName + "]"
+		);
+
+		welRadioGroup.each(function () {
+			$(this).parent().toggleClass("on", $(this).is(":checked"));
+		});
+
+		// 백화점,매직픽업상품 toggle
+		if ($(this).closest("li").attr("class") === "chk_more") {
+			var cmfltSpcSub = $(this).closest(cmfltListCheck);
+
+			if ($(this).is(":checked") === true) {
+				cmflt._showCheckEtcType(cmfltSpcSub, targetElement);
+			} else {
+				var chkMoreInput = $(".chk_more > .cmflt_checkbox");
+				if (chkMoreInput.eq(0).find(" > input").is(":checked") === false) {
+					cmflt._hideCheckEtcType(cmfltSpcSub, targetElement);
+				}
+			}
+		}
+	},
+
+	_showCheckEtcType: function (targetSub, welTypeProductOffice) {
+		clearTimeout(addTimer);
+		this._hideCheckEtcType(targetSub, welTypeProductOffice);
+		var addTimer = setTimeout(function () {
+			targetSub.find(welTypeProductOffice).addClass("show");
+		});
+	},
+	_hideCheckEtcType: function (targetSub, welTypeProductOffice) {
+		targetSub.find(welTypeProductOffice).removeClass("show");
+	},
+
+	// shoes check cancel
+	_checkedCancel: function () {
+		var shoesInput = $(this).parent().find(cmflt.welShoesWrap).find("input");
+		if (shoesInput) {
+			shoesInput.prop("checked", false);
+			shoesInput.parent().removeClass("on");
+		}
+	},
+
+	_checkedCancelLayerMyShoes: function () {
+		var shoesListTbl = cmflt.welcmfltShoesLayer.find(cmflt.welShoesWrap);
+		if ($(this).prop("checked") === true) {
+			shoesListTbl.find("input").prop("checked", false);
+			shoesListTbl.find("td").removeClass("on");
+		}
+	},
+
+	// scroll
+	_downScroll: function (callback, nCurrentScrollTop) {
+		this.nBreakPoint = Math.abs(this.nCmfltLnbHeight - $(window).height());
+		this.nGetScrollVal = Math.min(
+			nCurrentScrollTop - this.nCmfltLnbTop,
+			this.nBreakPoint
+		);
+
+		if (nCurrentScrollTop > this.nCmfltLnbFixTop) {
+			this.welCmfltLnb.addClass(this.sClassNameCmfltSticy);
+			if (nWindowHeight < this.nCmfltLnbHeight) {
+				this.welCmfltLnb.css({
+					top: -this.nGetScrollVal,
+				});
+				if (nCurrentScrollTop + nWindowHeight > this.welFooter.offset().top) {
+					this.welCmfltLnb.addClass("cmfltSticky_bottom").removeAttr("style");
+				}
+			} else {
+				if (
+					nCurrentScrollTop + this.nCmfltLnbHeight >
+					this.welFooter.offset().top
+				) {
+					this.welCmfltLnb.addClass("cmfltSticky_bottom").removeAttr("style");
+				}
+			}
+		}
+
+		if (typeof callback === "function") {
+			this._isnCmfltLnbTopCallback();
+		}
+	},
+
+	_isnCmfltLnbTopCallback: function () {
+		return (this.nCmfltLnbTop = this.welCmfltLnb.offset().top);
+	},
+
+	_upScroll: function (callback, nCurrentScrollTop) {
+		this.nGetScrollVal = Math.max(nCurrentScrollTop - this.nCmfltLnbTop, 0);
+
+		if (nWindowHeight < this.nCmfltLnbHeight) {
+			this.welCmfltLnb.css({
+				top: -this.nGetScrollVal,
+			});
+			if (nCurrentScrollTop + nWindowHeight < this.welFooter.offset().top) {
+				this.welCmfltLnb.removeClass("cmfltSticky_bottom");
+			} else {
+				this.welCmfltLnb.removeAttr("style");
+			}
+		} else {
+			if (
+				nCurrentScrollTop + this.nCmfltLnbHeight >
+				this.welFooter.offset().top
+			) {
+				this.welCmfltLnb.removeClass("cmfltSticky_bottom");
+			} else {
+				this.welCmfltLnb.removeAttr("style");
+			}
+		}
+
+		if (nCurrentScrollTop <= this.nCmfltLnbFixTop) {
+			this.welCmfltLnb.css("padding-top", this.nCmfltLnbFixTop + "px");
+			this.welCmfltLnb
+				.removeClass(this.sClassNameCmfltSticy)
+				.css("top", 0)
+				.removeAttr("style");
+		}
+
+		if (typeof callback === "function") {
+			this._isnCmfltLnbTopCallback();
+		}
+	},
+
+	_checkScrollHandler: function () {
+		var nLastScroll = 0;
+		var self = this;
+
+		$(window).on("scroll resize", function () {
+			var nScrollTop = $(window).scrollTop();
+
+			self.nCmfltLnbHeight = self.welCmfltLnb.outerHeight();
+			nWindowHeight = $(window).height();
+
+			if (nLastScroll < nScrollTop) {
+				// console.log('down')
+				self._downScroll(self._isnCmfltLnbTopCallback, nScrollTop);
+			} else {
+				// console.log('up')
+				self._upScroll(self._isnCmfltLnbTopCallback, nScrollTop);
+			}
+
+			nLastScroll = nScrollTop;
+		});
+	},
+};
+
+//common Location subDepth layer
+var commonLocation = function () {
+	var focusChk = 0;
+	$("#wrap").on(
+		"mouseenter focusin",
+		"div#location div.lo_depth_01 > a.lo_menu.lo_arr",
+		function (e) {
+			e.preventDefault();
+			var trigger = $(this);
+			var TimerId;
+			focusChk = 1;
+			var thisSelector = "div#location div.lo_depth_01 > a.lo_menu.lo_arr";
+			var target = trigger.data("original-target") || trigger.next();
+
+			trigger.off("mouseleave focusout");
+			trigger.on("mouseleave focusout", function () {
+				focusChk = 0;
+				clearTimeout(TimerId);
+				TimerId = window.setTimeout(function () {
+					if (!focusChk) {
+						trigger.removeClass("active");
+						target.removeClass("active");
+					}
+				}, 100);
+			});
+
+			$(thisSelector).removeClass("active");
+			$("div#location div.lo_depth_01 > div.lo_depth_02").removeClass("active");
+
+			target.removeAttr("style");
+			trigger.addClass("active");
+			target.addClass("active");
+			target.find("a").bind({
+				"mouseenter focusin": function () {
+					focusChk = 1;
+					$(this).addClass("lst_over");
+				},
+				"mouseleave focusout": function () {
+					focusChk = 0;
+					clearTimeout(TimerId);
+					$(this).removeClass("lst_over");
+					TimerId = window.setTimeout(function () {
+						if (!focusChk) {
+							trigger.removeClass("active");
+							target.removeClass("active");
+						}
+					}, 100);
+				},
+			});
+		}
+	);
+};
+
+//efftet
+var layerEffet = function (efflayer) {
+	var targetlayer = $(efflayer);
+	clearTimeout(fadeTimer);
+	var fadeTimer = setTimeout(function () {
+		targetlayer.fadeOut();
+	}, 3000);
+};
+
+$(function () {
+	// 셀렉트박스
+	$("._dropdown").dropdown({
+		originalHidden: true,
+		item: "li:not(.disabled)",
+		onClickSelect: function () {
+			//viewport check and focus element
+			var nFocusTop = 0;
+			var nFocusBottom = 0;
+			var $this = null;
+			this.$selectWrap
+				.toggleClass("on")
+				.delay(50)
+				.queue(function () {
+					$this = $(this);
+
+					if ($this.hasClass("on")) {
+						$this.one("clickoutside.option", function () {
+							$this.removeClass("on");
+						});
+					} else {
+						$this.off("clickoutside.option");
+					}
+
+					$(this).dequeue();
+				});
+		},
+		onChanged: function () {
+			//for dev
+			$.isFunction(this.el.onchange) && this.el.onchange();
+			//for ui test
+			$(this.el).trigger("close.dropdown");
+			$(this.el).trigger("sync.dropdown");
+		},
+		onClose: function () {
+			//event: close.dropbox
+			this.$selectWrap.removeClass("on");
+			this.$selectWrap.off("clickoutside.option");
+		},
+	});
+	// 체크박스
+	$(".tmpl_check .custom_chk").on(
+		"change",
+		"input[type=checkbox]",
+		function () {
+			var sCheckboxGroupName = $(this).attr("name");
+			var welRadioGroup = $(
+				"input[type=checkbox][name=" + sCheckboxGroupName + "]"
+			);
+
+			welRadioGroup.each(function () {
+				$(this).parent(".custom_chk").toggleClass("on", $(this).is(":checked"));
+			});
+		}
+	);
+
+	//공통 location
+	commonLocation();
+
+	// 백화점,매장픽업 toggle
+	var storeTogglewrp = function () {
+		var storeViewtip = $(".chk_dt_pic, .chk_store_pic").find(
+			".cmflt_checkbox_v2"
+		);
+		storeViewtip.on("click", function (e) {
+			var checkSelect = $(this).hasClass("on");
+			var storeContent = $(this).parent().find(".cmflt_parent");
+			if (checkSelect === false) {
+				storeContent.addClass("show");
+			} else {
+				storeContent.removeClass("show");
+			}
+		});
+		var substoreView = $(".dt_sub_store li");
+		substoreView.on("click", function (e) {
+			var scheckSelect = $(this).attr("class");
+			var sstoreContent = $(this).parent().parent().find(".dt_store_list");
+			if (scheckSelect === "view_store") {
+				sstoreContent.addClass("show");
+			} else {
+				sstoreContent.removeClass("show");
+			}
+		});
+		var storeViewtipopt = $(".toggle_opt");
+		storeViewtipopt.on("click", function (e) {
+			var checkSelect = $(this).hasClass("on");
+			if (checkSelect === false) {
+				$(this).addClass("on");
+			} else {
+				$(this).removeClass("on");
+			}
+		});
+	};
+	storeTogglewrp();
+
+	// e쓱배송변경 추천순 셀렉트영역 레이어 콘트롤
+	$(document).on(
+		"mouseenter focusin",
+		".tmpl_sort_drop .ssg-tooltip",
+		function (e) {
+			e.stopPropagation();
+			var ssgSortDropTooltipLayer = $(this)
+				.closest(".tmpl_sort_drop")
+				.find(".ssg-tooltip-layer");
+			ssgSortDropTooltipLayer.show();
+			$(this).one("mouseleave focusout", function (e) {
+				ssgSortDropTooltipLayer.hide();
+			});
+		}
+	);
+
+	var filterTogglewrp = function (e) {
+		var substoreView = $(".tmpl_delivery_filter .cmflt_list_round li");
+		substoreView.on("click", function (e) {
+			e.preventDefault();
+			$(this).addClass("on").siblings().removeClass("on");
+		});
+	};
+	filterTogglewrp();
+});

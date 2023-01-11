@@ -1,0 +1,847 @@
+// 최근검색어 글로벌 저장용
+var globalMallMbrList = [];
+
+var siteNo = settings.curr_siteno;
+var isGucci =  (siteNo == '6004' && document.URL.indexOf('special/gucci') >-1) ? 'Y' : 'N';
+var isTagArea = (siteNo == '6001') ? 'Y' : 'N';
+
+/**
+ * 공통 로직
+ */
+try{
+    /* 검색창 광고영역 */
+    if(srch_Ad_keyword && document.getElementById('query').value == ''  && settings.locale == "ko-KR" ){
+        var dt  = new Date();
+        var today = dt.getFullYear() +  ("00" + (dt.getMonth() + 1)).slice(-2) + ("00"+dt.getDate()).slice(-2) + ("00"+dt.getHours()).slice(-2) + ("00"+dt.getMinutes()).slice(-2);
+        var ads;
+        if(siteNo == '6001') {
+            /*이마트 점포코드*/
+            var cookieStr  = getCookie('PT');
+            var mbrEmSalesStr = "";
+            if(cookieStr.indexOf('&') >= 0 && cookieStr !=''){
+                var cookieStrs = cookieStr.split('&');
+                for(var i=0; i<cookieStrs.length; i++){
+                    if(cookieStrs[i].indexOf('EM_SALE_STR_NO') >= 0){
+                        var values = cookieStrs[i].split('=');
+                        mbrEmSalesStr = values[1];
+                        break;
+                    }
+                }
+            }
+
+            var ads_res = _.filter(srch_Ad_keyword, function(ad){
+                return ad.siteNo=='6001' && (today >= String(ad.dispStrtDts) && today <= String(ad.dispEndDts)) && String(ad.salestrNo).indexOf('2439') <= -1 && String(ad.salestrNo).indexOf('2449') <= -1;
+            });
+            var ads_neo1 = _.filter(srch_Ad_keyword, function(ad){
+                return ad.siteNo=='6001' && (today >= String(ad.dispStrtDts) && today <= String(ad.dispEndDts)) && String(ad.salestrNo).indexOf('2439') > -1 ;
+            });
+            var ads_neo2 = _.filter(srch_Ad_keyword, function(ad){
+                return ad.siteNo=='6001' && (today >= String(ad.dispStrtDts) && today <= String(ad.dispEndDts)) && String(ad.salestrNo).indexOf('2449') > -1 ;
+            });
+
+            if(mbrEmSalesStr == '2439'){
+                ads = ads_neo1;
+            }else if(mbrEmSalesStr == '2449'){
+                ads = ads_neo2;
+            }else{
+                ads = ads_res;
+            }
+
+            if(mbrEmSalesStr == '2439' || mbrEmSalesStr == '2449' ){
+                if(ads_neo1.length ==0 || ads_neo2.length ==0){
+                    ads = ads_res;
+                }
+            }
+
+        } else if(siteNo == '7018') {
+            /*이마트 점포코드*/
+            var cookieStr  = getCookie('PT');
+            var mbrEmSalesStr = "";
+            if(cookieStr.indexOf('&') >= 0 && cookieStr !=''){
+                var cookieStrs = cookieStr.split('&');
+                for(var i=0; i<cookieStrs.length; i++){
+                    if(cookieStrs[i].indexOf('EM_SALE_STR_NO') >= 0){
+                        var values = cookieStrs[i].split('=');
+                        mbrEmSalesStr = values[1];
+                        break;
+                    }
+                }
+            }
+
+            var ads_res = _.filter(srch_Ad_keyword, function(ad){
+                return ad.siteNo=='7018' && (today >= String(ad.dispStrtDts) && today <= String(ad.dispEndDts)) && String(ad.salestrNo).indexOf('2439') <= -1 && String(ad.salestrNo).indexOf('2449') <= -1;
+            });
+            var ads_neo1 = _.filter(srch_Ad_keyword, function(ad){
+                return ad.siteNo=='7018' && (today >= String(ad.dispStrtDts) && today <= String(ad.dispEndDts)) && String(ad.salestrNo).indexOf('2439') > -1 ;
+            });
+            var ads_neo2 = _.filter(srch_Ad_keyword, function(ad){
+                return ad.siteNo=='7018' && (today >= String(ad.dispStrtDts) && today <= String(ad.dispEndDts)) && String(ad.salestrNo).indexOf('2449') > -1 ;
+            });
+
+            if(mbrEmSalesStr == '2439'){
+                ads = ads_neo1;
+            }else if(mbrEmSalesStr == '2449'){
+                ads = ads_neo2;
+            }else{
+                ads = ads_res;
+            }
+
+            if(mbrEmSalesStr == '2439' || mbrEmSalesStr == '2449' ){
+                if(ads_neo1.length ==0 || ads_neo2.length ==0){
+                    ads = ads_res;
+                }
+            }
+
+        } else {
+            ads = _.filter(srch_Ad_keyword, function(ad){
+                return (ad.siteNo==siteNo || (isGucci == 'Y' && ad.siteno == 'GUCCI')) && (today >= String(ad.dispStrtDts) && today <= String(ad.dispEndDts));
+            });
+        }
+
+        if(ads){
+            var rand = Math.floor((Math.random() * ((ads.length-1) - 0 + 1)) + 0);
+
+            if(rand>-1){
+                document.getElementById('query').value          = ads[rand].banrDesc;
+                document.getElementById('search_ad_txt').value  = ads[rand].banrDesc;
+                document.getElementById('search_ad_link').value = ads[rand].lnkdUrl;
+
+                // 광고 노출 로그 수집
+                if(ads[rand].advertAcctId != null && ads[rand].advertAcctId != '') {
+                    keysToLowerCase(ads[rand]);
+                    ssg_ad.triggerImp('search_box', ads[rand]);
+                }
+            }
+        }
+    }
+}catch(e){}
+
+if(isGucci == 'Y'){
+    $('#search_special_view').val('1');
+    $('#search_select').on('click',function(e){
+        e.preventDefault();
+        $('#search_select_view').show();
+    });
+
+    $('#search_select_view ul li a').on('click',function(e){
+        e.preventDefault();
+        if(isGucci == 'Y'){
+            var clsNm = $(this).attr('class');
+            if(clsNm == 'gucci'){
+                $('#search_select').html('<span><a href="#"><span class="img_logo"></span></a></span>');
+                $('#search_special_view').val('1');
+            }
+            else if(clsNm == 'oversea'){
+                $('#search_select').html('<span><a href="#"><span class="img_logo"><span class="blind">해외직구</span></span></a></span>');
+                $('#search_special_view').val('1');
+            }
+            else{
+                $('#search_select').html('<span><a class="all" href="#">신세계몰 전체</a></span>');
+                $('#search_special_view').val('0');
+            }
+        }
+        $('#search_select_view').hide();
+    });
+
+    var target = $('.srch_box .srch_select .sel_menu').text();
+    $('#query').on('keydown',function(e){
+        var target = $('#search_special_view').val();
+        if(e.keyCode == '13'){
+            e.preventDefault();
+            var q = $('#query').val();
+            if(q.replace(/(^\s*)|(\s*$)/gi, "")!=''){
+                if(target == '0'){
+                	if(siteNo == '7013'){
+               		 	document.location.href = location.protocol + '//'+ssg.domain.trip+ '/search.ssg?query='+encodeURIComponent(q);
+	               	}else{
+	                    document.location.href = '/search.ssg?query='+encodeURIComponent(q);
+	               	}
+                }else{
+                    if(isGucci == 'Y'){
+                        document.location.href = '/special/gucci/search.ssg?query='+encodeURIComponent(q);
+                    }
+                }
+            }else{
+                alert($.i18n.prop('i18n.front.search.keyword.검색어를입력하세요'));
+            }
+        }
+    });
+
+    $('#gnb_sch_btn').on('click',function(e){
+        e.preventDefault();
+        var target = $('#search_special_view').val();
+        var q = $('#query').val();
+        var a = $('#search_ad_txt').val();
+        if(a!='' && a == q){
+            document.location.href = $('#search_ad_link').val();
+        }else{
+            if(q.replace(/(^\s*)|(\s*$)/gi, "")!=''){
+                if(target == '0'){
+                	if(siteNo == '7013'){
+               		 	document.location.href = location.protocol + '//'+ssg.domain.trip+ '/search.ssg?query='+encodeURIComponent(q);
+	               	}else{
+	                    document.location.href = '/search.ssg?query='+encodeURIComponent(q);
+	               	}
+                }else{
+                    if(isGucci == 'Y'){
+                        document.location.href = '/special/gucci/search.ssg?query='+encodeURIComponent(q);
+                    }
+                }
+            }else{
+                alert($.i18n.prop('i18n.front.search.keyword.검색어를입력하세요'));
+            }
+        }
+    });
+    if(document.getElementById('query')){
+        $('#query').on('click',function(e){
+            document.getElementById('query').value          = '';
+            document.getElementById('search_ad_txt').value  = '';
+            document.getElementById('search_ad_link').value = '';
+        });
+    }
+}else if(!window.Element){
+    // IE7 에서는 jquery 사용
+    $('#query').on('keydown',function(e){
+        if(e.keyCode == '13'){
+            e.preventDefault();
+            var q = $('#query').val();
+            if(q.replace(/(^\s*)|(\s*$)/gi, "")!=''){
+                var url = '/search.ssg?target=all&query='+encodeURIComponent(q);
+                if(siteNo == '7013') url = location.protocol + '//'+ssg.domain.trip+ '/search.ssg?target=all&query='+encodeURIComponent(q);
+                document.location.href = url;
+            }else{
+                alert($.i18n.prop('i18n.front.search.keyword.검색어를입력하세요'));
+            }
+        }
+    });
+
+    $('#gnb_sch_btn').on('click',function(e){
+        e.preventDefault();
+        var q = $('#query').val();
+        if(q.replace(/(^\s*)|(\s*$)/gi, "")!=''){
+            var url = '/search.ssg?target=all&query='+encodeURIComponent(q);
+            if(siteNo == '7013') url = location.protocol + '//'+ssg.domain.trip+ '/search.ssg?target=all&query='+encodeURIComponent(q);
+            document.location.href = url;
+        }else{
+            alert($.i18n.prop('i18n.front.search.keyword.검색어를입력하세요'));
+        }
+    });
+}else {
+    if (document.getElementById('query')) {
+        /* body에 다른 부분 선택했을 경우 창 닫기 script */
+        var _body = document.getElementsByTagName('body');
+        _body[0].addEventListener('mousedown', function (event) {
+            var tgt;
+            if (!event.target) {
+                tgt = event.srcElement;
+            } else tgt = event.target;
+            if (!childOf(tgt, document.getElementById('mall-common_search_word')) && !childOf(tgt, document.getElementById('query'))) {
+                hide(document.getElementById('mall-common_search_word'));
+            }
+        }, false);
+
+        /* 검색버튼 */
+        if (document.getElementById('gnb_sch_btn')) {
+            document.getElementById('gnb_sch_btn').addEventListener('click', function (event) {
+                event.preventDefault();
+                mallTrigger.enter(-1);
+            }, false);
+        }
+
+        var mallTrigger = {
+            id: 'query',
+            sub: 'search_sub_txt',
+            ad   : 'search_ad_txt',
+            isFirst: true,
+            /* 최근검색어, 자주찾은 검색어 영역 */
+            mbrkwd: {
+                url: function () {
+                    return '/searchKeyWord.ssg';
+                },
+                callback: function (data) {
+                    show(document.getElementById('mall-common_search_word'));
+                    show(document.getElementById('mall-mbr-wrap-area'));
+                    hide(document.getElementById('mall-auto_word'));
+                    var mbrTgt = document.getElementById('mall-recent_search');
+                    var mbrList = data.mbrKeyWordList;
+                    var idx = 0;
+
+                    /* 영역 초기화 */
+                    mbrTgt.innerHTML = '';
+
+                    /* 와이즈로그 파라미터 */
+                    var lateLogParam = '&src_area=late';
+
+                    globalMallMbrList = data.mbrKeyWordList;
+
+                    /* 최근 검색어 영역 시작 */
+                    /* 최근 검색어가 존재할 경우에는 최근검색어를 보여준다. */
+                    if (mbrList && mbrList.length > 0) {
+                        var size = mbrList.length > 10 ? 10 : mbrList.length;
+
+                        for (var j = 0; j < size; j++) {
+                            var mbr = mbrList[j];
+                            var linkUrl = '';
+                            var title = '';
+                            if (mbr.siteNo == siteNo) {
+                                title = mbr.srchwdDtlc;
+                                linkUrl = '/search.ssg?target=all&query=' + encodeURIComponent(mbr.srchwdDtlc) + lateLogParam;
+
+                                if(siteNo == '7013') {
+                                	linkUrl = location.protocol + '//'+ssg.domain.trip+ '/search.ssg?target=all&query=' + encodeURIComponent(mbr.srchwdDtlc) + lateLogParam;
+                                }
+
+                                var acHtml = '<li><a title="' + mbr.srchwdDtlc + '" href="' + linkUrl + '"><span title="' + title + '">' + title + '</span></a><button type="button" onclick="javascript:mallTrigger.mbrDel(event,' + mbr.srchSeq + ')" class="btn_del"><span class="cmicon"><i class="icon ty_xs icon_close"></i><span class="blind">삭제</span></span></button></li>';
+                                mbrTgt.innerHTML = mbrTgt.innerHTML + acHtml;
+                                idx++;
+                            }
+                        }
+                    }
+                    /* 최근검색어가 없는 경우 검사 */
+                    if (!mbrList || mbrList == null || mbrList.length < 1 || idx < 1) {
+                        show(document.getElementById('mall-late_nodate'));
+                        hide(document.getElementById('mall-btn_late_clear'));
+                        hide(document.getElementById('mall-result_area'));
+                    } else {
+                        show(document.getElementById('mall-result_area'));
+                    }
+                }
+            },
+            /* 검색어 삭제 관련작업 */
+            btnHandle: function (e, obj) {
+                e.preventDefault();
+                var type = obj.getAttribute("data-value");
+                var param = {
+                    url: function () {
+                        return '/searchKeyWordDeleteSite.ssg?siteNo=' + siteNo + '&type=' + type;
+                    },
+                    callback: function () {
+                        callAjax(mallTrigger.mbrkwd);
+                    }
+                };
+                callAjax(param);
+            },
+            /* 삭제버튼 */
+            mbrDel: function (e, s) {
+                e.preventDefault();
+                var param = {
+                    url: function () {
+                        return '/searchKeyWordDelete.ssg?srchSeq=' + s;
+                    },
+                    callback: function () {
+                        callAjax(mallTrigger.mbrkwd);
+                    }
+                };
+                callAjax(param);
+            },
+            /* 마우스 클릭 이벤트 */
+            click: function () {
+                var q = document.getElementById(mallTrigger.id).value;
+                var a = '';
+
+                if(document.getElementById(mallTrigger.ad)) {
+                    a = document.getElementById(mallTrigger.ad).value;
+                }
+
+                if(a.trim()!=''){
+                    document.getElementById(mallTrigger.id).value = '';
+                    document.getElementById(mallTrigger.ad).value = '';
+                    q = '';
+                }
+
+                if (this.isFirst) {
+                    this.isFirst = false;
+                    this.setGlobalMbrList();
+                }
+
+                if (q.trim() != '') {
+                    /* 추천검색어 결과가 존재할때만 다시 켜도록 한다. */
+                    if (document.getElementById('mall-auto_list').childNodes.length > 0 || document.getElementById("mall-shrtc_target").childNodes.length > 0) {
+                        var disp = document.getElementById('mall-auto_word').style.display;
+                        if (disp != 'none') {
+                            show(document.getElementById('mall-common_search_word'));
+                            show(document.getElementById('mall-auto_word'));
+                            hide(document.getElementById('mall-mbr-wrap-area'));
+                        } else {
+                            show(document.getElementById('mall-mbr-wrap-area'));
+                            hide(document.getElementById('mall-auto_word'));
+                        }
+                    } else {
+                        var disp = document.getElementById('mall-shrtc_target').style.display;
+                        if (disp != 'none') {
+                        	callAutoAjax(mallTrigger.autocmp, q);
+                        }
+                    }
+                } else {
+                    callAjax(mallTrigger.mbrkwd);
+                }
+                return -1;
+            },
+            /* 현재 보이고 있는 혹은 살아있는 검색창 영역을 리턴한다. */
+            getLiveTarget: function () {
+                if (document.getElementById('mall-auto_word').style.display != 'none') {
+                    return 'mall-auto_list';
+                } else if (document.getElementById('mall-mbr-wrap-area').style.display != 'none') {
+                    return 'mall-mbr-wrap-area';
+                }
+            },
+            /* 현재 선택된 div 영역을 리턴한다. */
+            getSelectedTarget: function () {
+                var recents = document.getElementById('mall-recent_search').childNodes;
+                if (recents.length > 0) {
+                    for (var i = 0; i < recents.length; i++) {
+                        if (recents[i].getAttribute('class') == 'on') {
+                            return 'mall-recent_search';
+                            break;
+                        }
+                    }
+                }
+            },
+            getLiveElement: function (idx, h_idx) {
+                /* 현재 살아있는 suggest를 찾는다. */
+                var li = document.getElementById(mallTrigger.getLiveTarget()).childNodes;
+                var liveTgt = mallTrigger.getLiveTarget();
+                /* 현재 살아있는 suggest 가 최근검색어/자주찾은 검색어 일때 */
+                if (liveTgt == 'mall-mbr-wrap-area') {
+                    if (h_idx == 0) {
+                        li = document.getElementById('mall-recent_search').childNodes;
+                    }
+                }
+
+                return li;
+            },
+            setLiveElement: function (li, idx, h_idx) {
+                var liveTgt = mallTrigger.getLiveTarget();
+
+                for(var i=0;i<li.length;i++) {
+                    if(idx == i){
+                        li[i].setAttribute('class', 'on');
+                        var title = li[i].childNodes[0].getAttribute('title');
+                        document.getElementById('search_sub_txt').value = title;
+                        document.getElementById(mallTrigger.id).value = title;
+                        if(li[i].childNodes.length > 1){
+                            li[i].childNodes[1].style.display = 'block';
+                            appendClass("mall-auto_word", "ad_showing");
+                        }
+                    }else{
+                        li[i].setAttribute('class', '');
+                        if(li[i].childNodes.length > 1){
+                            li[i].childNodes[1].style.display = 'none';
+                            removeClass("mall-auto_word", "ad_showing");
+                        }
+                    }
+                }
+                return [idx, h_idx];
+            },
+            getVerticalIndex: function (idx, h_idx) {
+                var liveTgt = mallTrigger.getLiveTarget();
+                /* 현재 살아있는 suggest 가 최근검색어/자주찾은 검색어 일때 */
+                if (liveTgt == 'mall-mbr-wrap-area') {
+                    var tgt_length = document.getElementById('mall-recent_search').childNodes.length - 1;
+                    if (idx > tgt_length) {
+                        idx = tgt_length;
+                    }
+                }
+                return idx;
+            },
+            /* 키보드 이벤트 엔터키 */
+            enter: function (idx) {
+                var q = document.getElementById(mallTrigger.id).value;
+                var a = "";
+
+                if(document.getElementById(mallTrigger.ad)) {
+                    a = document.getElementById(mallTrigger.ad).value;
+                }
+                
+                if(a.trim()!='' && a == q){
+                    // 광고 클릭 로그 수집
+                    if(ads[rand].advertacctid != null && ads[rand].advertacctid != '') {
+                        ssg_ad.triggerClick('search_box', ads[rand], ads);
+                    }
+                    document.location.href = document.getElementById('search_ad_link').value;
+                }else {
+                    if (q.trim() != '') {
+                        var url = shrtc(siteNo,q,'10');
+                        if(url!=""){
+                            window.open(url);
+                            return false;
+                        }else{
+                            var div = mallTrigger.getLiveTarget();
+                            var logParam ='';
+                            if(div == 'mall-mbr-wrap-area'){ //최근,자주찾은 검색어
+                                var ul = mallTrigger.getSelectedTarget();
+                                if(ul =='mall-recent_search'){//최근검색어
+                                    logParam ='&src_area=late';
+                                }
+                            }else if(div == 'mall-auto_list'){ //추천검색어
+                                var li = document.getElementById(mallTrigger.getLiveTarget()).childNodes;
+                                for(var i=0;i<li.length;i++) {
+                                    if(li[i].getAttribute('class') == 'on'){
+                                        logParam ='&src_area=recom';
+                                        break;
+                                    }
+                                }
+                            }
+
+                            
+                        	if(siteNo == "7013"){
+                        		 document.location.href = location.protocol + '//'+ssg.domain.trip+ '/search.ssg?target=all&query='+encodeURIComponent(q)+logParam;
+                        	}else{
+                        		document.location.href = '/search.ssg?target=all&query='+encodeURIComponent(q)+logParam;
+                        	}
+                            
+                        }
+                        return idx;
+                    } else {
+                        alert($.i18n.prop('i18n.front.search.keyword.검색어를입력하세요'));
+                        return false;
+                    }
+                }
+            },
+            /* 키보드 이벤트 상승 */
+            up: function (idx, h_idx) {
+                var li = mallTrigger.getLiveElement(idx, h_idx);
+                if (idx > 0) {
+                    idx--;
+                } else if (idx == 0) {
+                    idx = li.length - 1;
+                }
+                return mallTrigger.setLiveElement(li, idx, h_idx);
+            },
+            /* 키보드 이벤트 하강 */
+            down: function (idx, h_idx) {
+                var li = mallTrigger.getLiveElement(idx, h_idx);
+                if (idx < li.length - 1) {
+                    idx++;
+                } else {
+                    idx = 0;
+                }
+                return mallTrigger.setLiveElement(li, idx, h_idx);
+            },
+            /* 키보드 이벤트 우측
+             *  0 Left
+             *  1 Right
+             * */
+            left: function (idx, h_idx) {
+                /* 최근검색어/자주찾은 검색어가 모두 있을때에만 이벤트가 실행되고 그 외에는 실행되지 않음 */
+                if (mallTrigger.getLiveTarget() == 'mall-mbr-wrap-area') {
+                    var a_len = document.getElementById('mall-recent_search').childNodes.length;
+                    var b_len = document.getElementById('mall-often_search').childNodes.length;
+                    if (a_len > 0 && b_len > 0) {
+                        h_idx = 0;
+                        idx = mallTrigger.getVerticalIndex(idx, h_idx);
+                        var li = mallTrigger.getLiveElement(idx, h_idx);
+                        return mallTrigger.setLiveElement(li, idx, h_idx);
+                    }
+                }
+                return [idx, h_idx];
+            },
+            /* 키보드 이벤트 좌측 */
+            right: function (idx, h_idx) {
+                /* 최근검색어/자주찾은 검색어가 모두 있을때에만 이벤트가 실행되고 그 외에는 실행되지 않음 */
+                if (mallTrigger.getLiveTarget() == 'mall-mbr-wrap-area') {
+                    var a_len = document.getElementById('mall-recent_search').childNodes.length;
+                    var b_len = document.getElementById('mall-often_search').childNodes.length;
+                    if (a_len > 0 && b_len > 0) {
+                        h_idx = 1;
+                        idx = mallTrigger.getVerticalIndex(idx, h_idx);
+                        var li = mallTrigger.getLiveElement(idx, h_idx);
+                        return mallTrigger.setLiveElement(li, idx, h_idx);
+                    }
+                }
+                return [idx, h_idx];
+            },
+            /* 자동완성 광고 영역 */
+            advertise : {
+                query : "",
+                url : function(v){
+                    this.query = (v || "").toLowerCase();
+                    var url =  settings.domain.auto+'/auto/ad?site='+siteNo+ '&query=' + encodeURIComponent(this.query);
+
+                    if(siteNo == '6001' || siteNo == '6002'  || siteNo == '6004' || siteNo == '6009' || siteNo == '7018'){
+                    	return url;
+                    }else{
+                    	return '';
+                    }
+                    
+                },
+                callback : function(data){
+                	if(data.data && data.data.collection && data.data.collection[0]){
+                        var items = data.data.collection;
+                        if(items.length>0){
+                            var tgtLi     = document.getElementById('mall-auto_list').childNodes;
+                            if(tgtLi && tgtLi.length>0){
+                                var isFirstAd = true;
+                                for(var l=0;l<tgtLi.length;l++){
+                                    var li = tgtLi[l];
+                                    var title = li.childNodes[0].getAttribute('title');
+                                    for(var a=0;a<items.length;a++){
+                                        var item = items[a];
+                                        var linkname = item.linkname;
+                                        var itemid = '';
+                                        var itemname = '';
+                                        var sellprc = '';
+                                        if(linkname.indexOf(';')>-1){
+                                            var objs     = linkname.split(';');
+                                            itemid         = objs[0];
+                                            itemname     = objs[1];
+                                            sellprc     = commify(objs[2]);
+                                        }
+                                        var linkurl = item.linkurl;
+                                        var keyword = item.keyword;
+
+                                        if(keyword == title && li.childNodes.length == 1){
+                                            li.setAttribute('class', 'mall-ad_keyword');
+                                            li.childNodes[0].setAttribute('class', 'match');
+                                            var ad_div = document.createElement('div');
+                                            ad_div.setAttribute('class', 'ad');
+                                            var trans = "this.onerror=null;this.src=\'" + settings.cdn.trans +"?src=/ui/ssg/img/common/img_ready_500x500.jpg&w=202&h=202\'";
+                                            var adHtml = '';
+                                            adHtml += '    <div class="ad_thmb">';
+                                            adHtml += '        <a href="'+ '/item/itemView.ssg?itemId=' + itemid +'&src_area=layerad" class="link"><img src="'+ settings.cdn.itemPath + linkurl +'" alt="" onerror="' +trans +'"></a>';
+                                            adHtml += '            <div class="tt_adinfo_n">';
+                                            adHtml += '            <a href="#" class="btn_tt_adinfo">광고</a>';
+                                            adHtml += '                <div class="tt_adinfo_layer">';
+                                            adHtml += '                    <span class="bg_adinfo">&nbsp;</span>검색어와 관련된 상품으로<br>입찰가순으로 전시됩니다. ';
+                                            adHtml += '                </div>';
+                                            adHtml += '            </div>';
+                                            adHtml += '    </div>';
+                                            adHtml += '    <div class="ad_detail">';
+                                            adHtml += '        <a href="'+ '/item/itemView.ssg?itemId=' + itemid +'&src_area=layerad" class="link">';
+                                            adHtml += '            <span class="tx">'+itemname+'</span>';
+                                            adHtml += '            <span class="price"><em>'+sellprc+'</em>원</span>';
+                                            adHtml += '        </a>';
+                                            adHtml += '    </div>';
+                                            ad_div.innerHTML = adHtml;
+                                            if(isFirstAd){
+                                                appendClass("mall-auto_word", "ad_showing");
+                                                ad_div.style.display = 'block';
+                                                isFirstAd = false;
+                                            }
+
+                                            var arrow = document.createElement('div');
+                                            arrow.setAttribute('class', 'word_lnk');
+                                            arrow.innerHTML = '<span class="cmicon"><i class="icon ty_xs icon_chevron_right_s"></i></span>';
+
+                                            li.childNodes[0].appendChild(arrow);
+                                            li.appendChild(ad_div);
+                                        }
+                                    }
+                                }
+                                /* 광고가 존재하는 경우 event를 새로 bind 할 필요가 있음 */
+                                var li = document.getElementById('mall-auto_list').childNodes;
+
+                                // 광고 상품 순서 변경
+                                var liArr = [];
+
+                                for(var i=0;i<li.length;i++) {
+                                    liArr.push(li[i].cloneNode(true));
+                                }
+
+                                liArr = _.sortBy(liArr, function(o) {
+                                    return o.getAttribute('class') == 'mall-recent_keyword' ? 1 : o.getAttribute('class') == 'mall-ad_keyword' ? 2 : 3;
+                                });
+
+                                document.getElementById('mall-auto_list').innerHTML = '';
+
+                                for(var i=0;i<liArr.length;i++) {
+                                    document.getElementById('mall-auto_list').appendChild(liArr[i]);
+                                }
+
+                                li = document.getElementById('mall-auto_list').childNodes;
+
+                                for(var i=0;i<li.length;i++) {
+                                    if(li[i].childNodes.length>1){
+                                        li[i].onmouseover  = function(){
+                                            appendClass("mall-auto_word", "ad_showing");
+                                            this.childNodes[1].style.display = 'block';
+                                        };
+                                    }else{
+                                        li[i].onmouseover  = function(){
+                                            removeClass("mall-auto_word", "ad_showing");
+
+                                            var li = document.getElementById('mall-auto_list').childNodes;
+                                            for(var j=0;j<li.length;j++){
+                                                if(li[j].childNodes.length>1){
+                                                    li[j].childNodes[1].style.display = 'none';
+                                                }
+                                            }
+                                        };
+                                    }
+                                }
+                            }
+                        }
+                    } else {
+                        removeClass("mall-auto_word", "ad_showing");
+                    }
+                }
+            },
+            /* 자동완성 추천검색어 영역 */
+            autocmp: {
+                query : "",
+                url: function (v) {
+                    this.query = (v || "").toLowerCase();
+                    var url = settings.domain.auto+'/auto/topkeyword?site='+siteNo+'&query=' + encodeURIComponent(this.query);
+                    return url;
+                },
+                callback: function (data) {
+                    /* 자동완성 영역 추천검색어 준비 */
+                    var acsrchwd = document.getElementById('mall-auto_list');
+                    acsrchwd.innerHTML = '';
+
+                    var logParam = '&src_area=recom';
+                    hide(document.getElementById('mall-common_search_word'));
+                    show(document.getElementById('mall-auto_word'));
+                    document.getElementById('mall-word_list').style.visibility="visible";
+                    show(document.getElementById('mall-auto_list'));
+                    hide(document.getElementById('mall-mbr-wrap-area'));
+
+                    if(data.data && data.data.collection && data.data.collection[0]){
+                        show(document.getElementById('mall-common_search_word'));
+                        var items = data.data.collection;
+
+                        var word_htmls = '';
+                        var sortedItems = [];
+                        var tempItems = [];
+
+                        for(var j=0;j<globalMallMbrList.length;j++) {
+                            if(globalMallMbrList[j].srchwdDtlc.indexOf("#") != 0 && globalMallMbrList[j].srchwdDtlc.indexOf(this.query) > -1 && globalMallMbrList[j].siteNo == siteNo) {
+                                var item = {
+                                    hkeyword : globalMallMbrList[j].srchwdDtlc.replace(this.query, "<strong>" + this.query + "</strong>")
+                                    , keyword : globalMallMbrList[j].srchwdDtlc
+                                    , regDt : globalMallMbrList[j].regDt
+                                };
+
+                                sortedItems.push(item);
+                            }
+                        }
+
+                        for(var i=0;i<items.length;i++) {
+                            var duplicateArr = _.filter(sortedItems, function(obj){
+                                return items[i].keyword == obj.keyword;
+                            });
+
+                            if(duplicateArr.length == 0) {
+                                tempItems.push(items[i]);
+                            }
+                        }
+
+                        sortedItems = sortedItems.concat(tempItems);
+
+                        for (var k = 0; k < sortedItems.length; k++) {
+                            if (k >= 10) {
+                                break;
+                            }
+
+                            var item = sortedItems[k];
+                            var keyword = item.keyword;
+                            var regDt = item.regDt;
+                            var hkeyword = item.highlight;
+                            var isRecentKeyword = false;
+
+                            if(item.count) {
+                                hkeyword = hkeyword;
+                            } else {
+                                isRecentKeyword = true;
+                            }
+
+                            word_htmls += '<li' + (isRecentKeyword ? ' class="mall-recent_keyword"' :'') +'>'+'<a href="/search.ssg?target=all&query=' + encodeURIComponent(keyword) + logParam + '" title="'+keyword+'">'+keyword.split(hkeyword).join("<strong>"+hkeyword+"</strong>")+ '<em class="word_date">'+ (regDt || "" ) + '</em></a></li>';
+                            
+                        }
+
+                        if (word_htmls.trim() != '') {
+                            acsrchwd.innerHTML = word_htmls + acsrchwd.innerHTML;
+                        }
+
+                        if(document.getElementById(mallTrigger.id).value && settings.locale == "ko-KR") {
+                        	callAutoAjax(mallTrigger.advertise, document.getElementById(mallTrigger.id).value);
+                        }
+                    } else {
+                        document.getElementById('mall-word_list').style.visibility="hidden";
+                    }
+                }
+            },
+            /* 자동완성 바로가기 영역 */
+            shrtc: {
+                url: function (v) {
+                    this.query = (v || "").toLowerCase();
+                    var url = settings.domain.auto+'/auto/shortcut?' + 'site='+siteNo+'&mediaCd=10' + '&query=' + encodeURIComponent(this.query);
+                    return url;
+                },
+                callback: function (data) {
+                    var shrtc = document.getElementById('mall-shrtc_target');
+                    shrtc.innerHTML = '';
+                    var shortcutHtml = '';
+                    if (data.data && data.data.collection) {
+                        var items = data.data.collection;
+                        if (items.length > 0) {
+                            var itemIdx = 0;
+
+                            var shrtcObj = _.filter(items, function (obj) {
+                                return obj.banrurl == '' && ( obj.mediaCd == '' || obj.mediaCd == '00' || obj.mediaCd == '10');
+                            });
+                            
+                            if (shrtcObj && shrtcObj.length > 0) {
+                                hide(document.getElementById('mall-mbr-wrap-area'));
+                                show(document.getElementById('mall-auto_word'));
+                                show(shrtc);
+                                var li = document.getElementById('mall-auto_list').childNodes;
+                                if (li.length < 1) {
+                                    hide(document.getElementById('mall-auto_list'));
+                                } else {
+                                    show(document.getElementById('mall-auto_list'));
+                                }
+                                for (var k = 0; k < shrtcObj.length; k++) {
+                                    var item = shrtcObj[k];
+                                    var symbol = item.linkurl.indexOf("?") > -1 ? "&" : "?";
+                                    var srcArea = "src_area=shortcut";
+                                    if (siteNo == '6001' || siteNo == '7018') {
+                                        srcArea = "src_area=eshortcut";
+                                    } else if (siteNo == '6002') {
+                                        srcArea = "src_area=tshortcut";
+                                    } else if (siteNo == '6003') {
+                                        srcArea = "src_area=bshortcut";
+                                    } else if (siteNo == '6004') {
+                                        srcArea = "src_area=sshortcut";
+                                    } else if (siteNo == '6009') {
+                                        srcArea = "src_area=dshortcut";
+                                    } else if (siteNo == '6200') {
+                                        srcArea = "src_area=tvshortcut";
+                                    } else if (siteNo == '6300') {
+                                        srcArea = "src_area=sishortcut";
+                                    }
+                                    var linkurl = getLinkUrlIncludeZone(item.linkurl);
+
+                                    shortcutHtml = "<a href='"+linkurl+symbol+srcArea + "'><span class=\"cmicon\"><i class=\"icon ty_sm icon_market\"></i></span><strong>"+item.linkname+"</strong> <em>바로가기</em><div class=\"word_shortcut_arrow\"><span class=\"cmicon\"><i class=\"icon ty_xs icon_chevron_right\"></i></span></div></a>";
+                                    if (itemIdx < 1)shrtc.innerHTML = shrtc.innerHTML + shortcutHtml;
+                                    itemIdx++;
+                                }
+                            } else {
+                                hide(shrtc);
+                            }
+                        } else {
+                            hide(shrtc);
+                        }
+                    } else {
+                        hide(shrtc);
+                    }
+                }
+            },
+            setGlobalMbrList: function () {
+                // 최근찾은 검색어 미리 가져오기
+                var param = {
+                    url: function () {
+                        return '/searchKeyWord.ssg?siteNo=' + siteNo;
+                    },
+                    callback: function (data) {
+                        globalMallMbrList = data.mbrKeyWordList;
+                    }
+                };
+
+                callAjaxSync(param);
+            }
+        };
+
+        acTrigger(mallTrigger);
+    }
+}

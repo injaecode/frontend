@@ -1,0 +1,158 @@
+@charset "UTF-8";
+.content_cctg,
+.content_cctg button,
+.content_cctg input,
+.content_cctg textarea {
+  line-height: 1.5em;
+}
+.content_cctg {
+  padding-bottom: 80px;
+}
+.content_cctg a {
+  text-decoration: none;
+}
+/* 카테고리 네비게이션 */
+.emall_subcategory {
+  max-width: 1240px;
+  background: #f3f5f7;
+  border-radius: 12px;
+  margin: 16px auto 0;
+  padding: 16px 20px;
+}
+.emall_subcategory .emall_subcategory_list {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  gap: 20px;
+}
+.emall_subcategory a {
+  display: block;
+  font-family: "Spoqa-Medium", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", Arial, sans-serif;
+  font-size: 13px;
+  line-height: 16px;
+  letter-spacing: -0.5px;
+  color: #7b8895;
+  -webkit-transition: 150ms color cubic-bezier(0.4, 0.8, 0.74, 1);
+  transition: 150ms color cubic-bezier(0.4, 0.8, 0.74, 1);
+}
+.emall_subcategory a:hover {
+  color: #5a6672;
+}
+.emall_subcategory a.active {
+  font-family: "Spoqa-Bold", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", Arial, sans-serif;
+  color: #262b2e;
+}
+/* 카테고리 타이틀 */
+.cctg_subtit {
+  max-width: 1280px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  margin: 60px auto 40px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #262b2e;
+}
+.cctg_subtit h2 {
+  font-family: "Spoqa-Bold", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", Arial, sans-serif;
+  font-weight: normal;
+  font-size: 28px;
+  line-height: 36px;
+  letter-spacing: -0.5px;
+  color: #262b2e;
+}
+.cctg_subtit a {
+  color: inherit;
+}
+.cctg_subtit a:hover {
+  text-decoration: underline;
+}
+.cctg_subtit .aside_txt {
+  font-family: "Spoqa-Medium", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", Arial, sans-serif;
+  font-size: 16px;
+  line-height: 19px;
+  letter-spacing: -0.5px;
+  color: #697785;
+}
+.cctg_subtit .aside_txt em {
+  color: #ff3b20;
+}
+.cctg_subject {
+  margin-top: 40px;
+}
+.cctg_subject .cctg_subject_tit {
+  font-family: "Spoqa-Bold", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", Arial, sans-serif;
+  font-weight: normal;
+  font-size: 20px;
+  line-height: 24px;
+  letter-spacing: -0.5px;
+  color: #262b2e;
+}
+.cctg_sec {
+  margin-top: 40px;
+}
+.cctg_sec + .cctg_sec {
+  margin-top: 80px;
+}
+.cctg_itemslide_sec {
+  margin-top: 0;
+}
+.com_tmpl_group {
+  max-width: 1280px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+.com_tmpl .emall_banner_item_group .emall_banner_container::before, .com_tmpl .emall_banner_item_group .emall_banner_container::after {
+  display: none;
+}
+.com_tmpl .emall_banner_item_group .emall_banner_container .emall_banner {
+  padding: 0;
+}
+.com_tmpl .emall_banner_item_group .emall_banner_container .emall_banner img {
+  border-radius: 12px;
+}
+.emall_category_area .emall_category.has-navigation > div {
+  padding: 0 60px;
+}
+.emall_category_area .emall_category.has-navigation .emall_btn_navigation_left {
+  left: 0;
+}
+.emall_category_area .emall_category.has-navigation .emall_btn_navigation_right {
+  right: 0;
+}
+.emall_btn_category_container {
+  margin-top: 20px;
+}
+.tmpl_seleted {
+  position: relative;
+}
+.tmpl_seleted ul {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+}
+.tmpl_seleted .tmpl_selected_item {
+  padding-right: 18px;
+}
+.tmpl_seleted .btn_clear {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+}
+.com_tmpl_group .com_tmpl_content + .tmpl_sort_wrap {
+  margin-top: 0 !important;
+}
+/*# sourceMappingURL=em_category.css.map */

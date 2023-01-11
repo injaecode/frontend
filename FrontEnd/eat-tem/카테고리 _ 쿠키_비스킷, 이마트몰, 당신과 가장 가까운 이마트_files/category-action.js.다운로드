@@ -1,0 +1,870 @@
+var currentScript = $('script').last();
+
+$(function(){
+	var isKeepSsgem = currentScript.data("keepssgem");
+
+	/////////////////// 클립
+
+	// 전체 클립
+	$(document).on("click", "button._js_cmlike_btn", function(){
+		if(settings.UserInfo.isLoginYn != 'Y') {
+			login('', function () {
+				location.reload();
+			});
+
+			return;
+		}
+		
+		if($(this).parents("#for_you_filter").size() > 0) return;
+
+		var clipObj = {};
+
+		$(this).parent().find("input").each(function(){
+			clipObj[$(this).attr("name")] = $(this).attr("value");
+		});
+
+		var action = "insert";
+		if($(this).parent().hasClass("on")) {
+			action = "delete";
+		}
+
+		clipObj["action"] = action;
+
+		triggerClip(clipObj, this);
+	});
+
+	// 포유 필터 클립
+	$(document).on("click", "#for_you_filter button._js_cmlike_btn", function(){
+		// 체크 해제 처리
+		var checkbox = $(this).parents("li").find("input[type=checkbox]");
+		var type = checkbox.data("ilparam-type");
+		var value = checkbox.data("ilparam-value");
+
+		if(checkbox.is(":checked")) {
+			itemLister.triggerClick(type, value, false);
+		}
+
+		// 클립 삭제 처리
+		var clipObj = {};
+		$(this).parent().find("input").each(function(){
+			clipObj[$(this).attr("name")] = $(this).attr("value");
+		});
+
+		clipObj["action"] = 'delete';
+
+		triggerClip(clipObj, this);
+	});
+
+	function triggerClip(clipObj, _this){
+		$.ajax({
+			url: "/disp/modifyForYouClip.ssg"
+			, method: "post"
+			, data : clipObj
+			, async : false
+		}).done(function(result) {
+			if(result.resultCode == "FORYOU_CLIP_FAIL"){
+				alert(result.resultMsg);
+				return;
+			}
+
+			if(clipObj['action'] == "insert") {
+				$(_this).parent().find("input[name=attnDtlcSeq]").val(result.result.attnDtlcSeq);
+
+				var type = $(_this).parent().find("input[name=ilparam-type]").val();
+				var value = $(_this).parent().find("input[name=ilparam-value]").val();
+				var text = $(_this).parent().find("input[name=ilparam-text]").val();
+				var isChecked = (itemLister.queryStore[type] &&  itemLister.queryStore[type].indexOf(value) > -1);
+
+				var inputType = type == 'shpp' || type == 'cls' ? 'radio' : 'checkbox';
+				var inputClass = type == 'shpp' || type == 'cls' ? 'custom_rdo' : 'cmflt_checkbox cmflt_checkbox_v2';
+
+				// FOR YOU 필터의 하트 아이콘 모양 통일화를 위한 로직 추가
+				var cloneClip = $(_this).parent().clone();
+				var clipIcon = cloneClip.find("span.cmlike_ico i")
+				if (clipIcon.length != 0 && clipIcon.attr("class") != "cmlike_secondary_xs") {
+					clipIcon.attr("class", "cmlike_secondary_xs");
+				}
+				var clipDiv = cloneClip.wrapAll("<div/>").parent().html();
+
+				var cnt = ($("#for_you_filter input:first").attr("id") || "forYouClip0").replace("forYouClip", "");
+				cnt++;
+
+				var clipTemplate = '<li>' +
+					'	<span class="' + inputClass + (isChecked ? ' on' : '') + '">' +
+					'		<input type="' + inputType + "\"" + (isChecked ? 'checked=\"checked\"' : '') + 'name="forYouClip" value="" id="forYouClip' + cnt + '" data-ilparam-type="' + type + '" data-ilparam-value="' + value + '" data-ilparam-text="' + text + '" class="clickable" data-react-tarea="' + IL_react_prefix + '|FOR YOU 필터|클립 해제">' +
+					'		<label for="forYouClip' + cnt + '"><span class="brd_txt">' + text + '</span></label>' +
+					'	</span>'+
+					clipDiv +
+					'</li>';
+
+				$("#for_you_filter .cmflt_list_check").prepend(clipTemplate);
+
+				var inputClip = $("input[name=attnTgtIdnfNo1][value='" + clipObj['attnTgtIdnfNo1'] +"']");
+				inputClip.siblings().find("[name=attnDtlcSeq]").val(result.result.attnDtlcSeq);
+				inputClip.parents("._js_cmlike").addClass("on");
+
+				if(clipObj['attnDivCd'] == '30') {
+					var clipBrand = $.grep(searchBrandList, function (obj) {
+						return obj.brandId == clipObj['attnTgtIdnfNo1']
+					});
+
+					if (clipBrand.length > 0) {
+						clipBrand[0]['clipYn'] = 'Y';
+						clipBrand[0]['attnDtlcSeq'] = result.result.attnDtlcSeq;
+					}
+
+					$("#bestBrandUl [data-ilparam-type='brandId'][data-ilparam-value='" + clipObj['attnTgtIdnfNo1'] +"']").siblings().find("[name=attnDtlcSeq]").val(result.result.attnDtlcSeq);
+				}
+
+				var clipLayer = $("#clip_noti_layer span").clone();
+				$(_this).append(clipLayer);
+
+				setTimeout(function(){
+					$(_this).find(".clip_info_layer").remove();
+				}, 3000)
+			} else {
+				$("#for_you_filter input[name=attnDtlcSeq][value='" + clipObj['attnDtlcSeq'] + "']").parents("li").remove();
+				$(_this).parent().find("input[name=attnDtlcSeq]").val("");
+
+				var inputClip = $("input[name=attnTgtIdnfNo1][value='" + clipObj['attnTgtIdnfNo1'] +"']");
+				inputClip.siblings().find("[name=attnDtlcSeq]").val("");
+				inputClip.parents("._js_cmlike ").removeClass("on");
+
+				if(clipObj['attnDivCd'] == '30') {
+					var clipBrand = $.grep(searchBrandList, function(obj){
+						return obj.brandId == clipObj['attnTgtIdnfNo1']
+					});
+
+					if(clipBrand.length > 0) {
+						clipBrand[0]['clipYn'] = 'N';
+						clipBrand[0]['attnDtlcSeq'] = '';
+					}
+				}
+
+				if(clipObj['attnDivCd'] == '70') {
+					$("#sizeMore [data-ilparam-type=sizeIds][data-ilparam-value='" + clipObj['attnTgtIdnfNo1'] + "']").prop("checked", false);
+					$("#sizeMore [data-ilparam-type=sizeIds][data-ilparam-value='" + clipObj['attnTgtIdnfNo1'] + "']").parents("td").removeClass("on");
+				}
+			}
+
+			if($("#for_you_filter .cmflt_list_check li").size() > 0) {
+				$("#for_you_filter_not_exist").hide();
+				$("#for_you_filter_exist").show();
+			} else {
+				$("#for_you_filter_not_exist").show();
+				$("#for_you_filter_exist").hide();
+			}
+		});
+	}
+
+	/////////////////// 필터
+	
+	// 스타일 필터
+	var shapeLiObj = $("#styleFilterShapeData li").clone();
+	var lengthLiObj = $("#styleFilterLengthData li").clone();
+	$(document).on("click", "#style_filter input[type=radio]", function(){
+		var value = $(this).data("ilparam-value");
+
+		$("#styleFilterShapeData li").remove();
+
+		var cnt = 0;
+
+		shapeLiObj.each(function() {
+			$(this).css("display","");
+
+			if($(this).find("input").data("ctg-value").indexOf(value) >= 0 || value =="") {
+				if(cnt < 6) {
+					$("#styleFilterShapeData .cmfltExpClist:eq(0)").append($(this));
+				} else {
+					$("#styleFilterShapeData .cmfltExpClist:eq(1)").append($(this));
+				}
+
+				cnt++;
+			} else {
+				$(this).hide();
+				$("#styleFilterShapeData .cmfltExpClist:eq(1)").append($(this));
+			}
+		});
+
+		var modCnt = 0;
+
+		$("#styleFilterShapeData .cmfltExpClist:eq(1)").find("li input[type=checkbox]").each(function(){
+			if($(this).data("ctg-value").indexOf(value) >= 0) {
+				modCnt++;
+			}
+		});
+
+		if(modCnt > 0) {
+			if(!$("#styleFilterShapeData .cmfltExpClist:eq(1)").hasClass("on")) {
+				$("#styleFilterShapeMore").show();
+			}
+		} else {
+			$("#styleFilterShapeMore").hide();
+		}
+
+		$("#styleFilterLengthData li").remove();
+
+		var cnt = 0;
+
+		lengthLiObj.each(function() {
+			$(this).css("display","");
+
+			if($(this).find("input").data("ctg-value").indexOf(value) >= 0 || value =="") {
+				if(cnt < 6) {
+					$("#styleFilterLengthData .cmfltExpClist:eq(0)").append($(this));
+				} else {
+					$("#styleFilterLengthData .cmfltExpClist:eq(1)").append($(this));
+				}
+
+				cnt++;
+			} else {
+				$(this).hide();
+				$("#styleFilterLengthData .cmfltExpClist:eq(1)").append($(this));
+			}
+		});
+
+		if(cnt == 0) {
+			$("#styleFilterLengthBox").hide();
+		} else {
+			$("#styleFilterLengthBox").show();
+		}
+
+		var modCnt = 0;
+
+		$("#styleFilterLengthData .cmfltExpClist:eq(1)").find("li input[type=checkbox]").each(function(){
+			if($(this).data("ctg-value").indexOf(value) >= 0) {
+				modCnt++;
+			}
+		});
+
+		if(modCnt > 0) {
+			if(!$("#styleFilterLengthData .cmfltExpClist:eq(1)").hasClass("on")) {
+				$("#styleFilterLengthMore").show();
+			}
+		} else {
+			$("#styleFilterLengthMore").hide();
+		}
+
+		$('#style_filter').find('[data-ctg-value]').each(function(){
+			if ( $(this).data("ctg-value").indexOf(value) >= 0) {
+				$(this).parents("li").show();
+			} else {
+				$(this).parents("li").hide();
+			}
+		});
+	});
+
+
+	$(document).on("click", "#prop_filter input[type=checkbox]", function(){
+		var bottomFilter = "";
+		var bottomFilterArr = [];
+		var topFilterArr = [];
+
+		$("#prop_filter").find(".cmflt_filbox_cts").each(function() {
+			bottomFilterArr = [];
+
+			$(this).find("input[type=checkbox]").each(function () {
+				var type = $(this).data("ilparam-type");
+				var value = $(this).data("ilparam-value");
+
+				itemLister.changeStatus(type, value, $(this).is(":checked"));
+
+				if($(this).is(":checked")) {
+					bottomFilterArr.push(value);
+				}
+			});
+			bottomFilter = bottomFilterArr.join("|")
+			if(bottomFilter != "") {
+				topFilterArr.push(bottomFilter);
+			}
+		});
+
+		itemLister.queryStore['propDtl'] = topFilterArr.join("^");
+		itemLister.update();
+	});
+
+	$(document).on("click", "#style_filter input[type=checkbox]", function(){
+		var bottomFilter = "";
+		var bottomFilterArr = [];
+		var topFilterArr = [];
+
+		$("#style_filter").find(".cmflt_filbox_cts").each(function() {
+			bottomFilterArr = [];
+
+			$(this).find("input[type=checkbox]").each(function () {
+				var type = $(this).data("ilparam-type");
+				var value = $(this).data("ilparam-value");
+
+				itemLister.changeStatus(type, value, $(this).is(":checked"));
+
+				if($(this).is(":checked")) {
+					bottomFilterArr.push(value);
+				}
+			});
+			
+			
+			bottomFilter = bottomFilterArr.join("|")
+			if(bottomFilter != "") {
+				topFilterArr.push(bottomFilter);
+			}
+		});
+
+		itemLister.queryStore['styleFilter'] = topFilterArr.join("^");
+		itemLister.update();
+	});
+
+	// 다면분류
+	$(document).on("click", "#cura_filter input[type=checkbox]", function(){
+		var lrnkFilter = "";
+		var priorFilter = "";
+		var lrnkFilterArr = [];
+		var priorFilterArr = [];
+		var topFilterArr = [];
+
+		$("#cura_filter").find(".cura_top_filter").each(function(){
+			priorFilterArr = [];
+			$(this).find(".cura_prior_filter").each(function() {
+				lrnkFilterArr = [];
+				$(this).find(".cura_lrnk_filter input[type=checkbox]").each(function(){
+					var type = $(this).data("ilparam-type");
+					var value = $(this).data("ilparam-value");
+
+					itemLister.changeStatus(type, value, $(this).is(":checked"));
+
+					if($(this).is(":checked")) {
+						lrnkFilterArr.push(value);
+					}
+				});
+
+				lrnkFilter = lrnkFilterArr.join("|");
+				if(lrnkFilter != "") {
+					priorFilterArr.push(lrnkFilter);
+				}
+			});
+
+			priorFilter = priorFilterArr.join("^");
+			if(priorFilter != "") {
+				topFilterArr.push(priorFilter);
+			}
+		});
+
+		itemLister.queryStore['clsFilter'] = topFilterArr.join("_");
+		itemLister.update();
+	});
+
+	// for_you, 상단 영역 제어, 체크박스와 라디오로 분리
+	$(document).on("click", ".etc_multi_toggle_filter input[type=checkbox]", function(){
+		var type = $(this).data("ilparam-type");
+		var value = $(this).data("ilparam-value");
+
+		itemLister.triggerClick(type, value, $(this).is(":checked"));
+	});
+
+	$(document).on("click", ".etc_multi_toggle_filter input[type=radio]", function(){
+		var type = $(this).data("ilparam-type");
+		var value = $(this).data("ilparam-value");
+
+		itemLister.triggerClick(type, value, true);
+	});
+
+	// 멀티선택, 토글 가능 영역 제어
+	$(document).on("click", ".multi_toggle_filter input[type=checkbox]", function(){
+		var filterStore = {};
+		var cookieStore = [];
+
+		// 현재 영역의 checked를 읽어서 처리
+		$(this).parents(".multi_toggle_filter").find("input[type=checkbox]").each(function(idx, obj){
+			var type = $(obj).data("ilparam-type");
+			var value = encodeURIComponent($(obj).data("ilparam-value"));
+
+			if(type) {
+				var v = filterStore[type] || [];
+
+				if($(obj).is(":checked")) {
+					v.push(value);
+				}
+
+				filterStore[type] = v;
+			}
+
+			itemLister.changeStatus(type, value, $(obj).is(":checked"));
+		});
+
+		var resultStore = {};
+		for(var key in filterStore) {
+			resultStore[key] = filterStore[key].join(",");
+		}
+
+		$.extend(itemLister.queryStore, resultStore);
+		itemLister.update();
+	});
+
+	$(document).on("click", '#shpp_filter input[type=radio]', function(){
+		var filterStore = {};
+		var cookieStore = [];
+
+		var type = $(this).data("ilparam-type");
+		var value = decodeURIComponent($(this).data("ilparam-value"));
+
+		if(!type || !value){
+			return ;
+		}
+
+		if(itemLister.queryStore[type] == value){
+			return ;
+		}
+
+		if(type && value){
+			filterStore[type] = [value];
+		}
+
+		/* 초기화 */
+		if("shpp".indexOf(type) > -1){
+			itemLister.queryStore['cls'] = [];
+			itemLister.queryStore['salestrNo'] = [];
+			itemLister.queryStore['pickuSalestr'] = [];
+		}
+
+		/* 초기화 */
+		if("cls".indexOf(type) > -1){
+			itemLister.queryStore['shpp'] = [];
+			itemLister.queryStore['salestrNo'] = [];
+			itemLister.queryStore['pickuSalestr'] = [];
+		}
+
+		if(type != "pickuSalestr" && value != "depick"){
+			$('#filter_picku_str_no').removeClass("show");
+		}
+
+		if(value != "picku"){
+			$('#filter_picku').parent().removeClass("show");
+		}
+
+		// 픽업 필터 선택
+		if("shpp".indexOf(type) > -1 && "picku".indexOf(value) > -1) {
+			var $picku_lower = $('.round_cell.picku_lower');
+			$picku_lower.each(function(){
+				$(this).removeClass("on");
+				$(this).find(':radio').removeAttr("checked");
+			});
+		}
+
+		if("cls".indexOf(type) > -1 && "department".indexOf(value) > -1) {
+			var $filter_sale_str_no_lower = $('#filter_sale_str_no .round_cell');
+			$filter_sale_str_no_lower.each(function(){
+				$(this).removeClass("on");
+				$(this).find(':radio').removeAttr("checked");
+			})
+		}
+
+		// 쓱배송 필터 유지
+		var cookieValue = [];
+		if($.cookie("listShpp")) {
+			cookieValue = $.cookie("listShpp").split(",");
+		}
+
+		if("shpp".indexOf(type) > -1 && "ssgem,smon".indexOf(value) > -1 && isKeepSsgem == 'Y') {
+			cookieStore.push(value)
+		}
+
+		// 그로서리 top 필터 제어
+		if (settings.curr_siteno == 7018) {
+			$("#category_top_shpp_list").find('[data-ilparam-type="' + type + '"][data-ilparam-value="' + value + '"]').prop("checked", true).trigger('change');
+			$("#category_top_shpp_list").find('[data-ilparam-type="' + type + '"][data-ilparam-value="' + value + '"]').parent('span').addClass('on');
+		}
+		itemLister.changeStatus(type, value, true);
+
+		var resultStore = {};
+
+		for(var key in filterStore) {
+			resultStore[key] = filterStore[key].join(",");
+		}
+
+		$.extend(itemLister.queryStore, resultStore);
+		$.cookie("listShpp", cookieStore.join(","), {'path' : '/'});
+
+		itemLister.update();
+	});
+
+	// 매장픽업 제어
+	$(document).on("click", '.dt_sub_store input[type=radio]', function(){
+		$(this).parents('.chk_store_pic').find('.toggle_opt').addClass("on")
+		console.log($(this).parents('.chk_store_pic').find(' .toggle_opt'));
+		itemLister.queryStore['shpp'] = $(this).data("ilparam-value");
+		itemLister.queryStore['pickuSalestr'] = [""];
+		itemLister.update(this);
+	});
+
+	$(document).on("click", "#viewtype a", function(){
+		$("#viewtype a").removeClass("on");
+		$(this).addClass("on");
+
+		itemLister.update(this);
+	});
+
+	$(document).on("click", ".delete_selected_param", function(){
+		var type = $(this).data("ilparam-type");
+		var value = decodeURIComponent($(this).data("ilparam-value"));
+		if(type == "price") {
+			if (settings.curr_siteno == 7018) {
+				GroceryCategoryPriceFilter.resetPrice();
+			} else{
+				reset_price();
+			}
+		} else if(type == "shpp" || type == "cls") {
+			$("#for_you_filter,#area_sort,#shpp_filter").find("[data-ilparam-type=" + type + "][data-ilparam-value='" + value + "']").each(function(){
+				$(this).parents(".custom_rdo").removeClass("on");
+			});
+
+			if (settings.curr_siteno == 7018) {
+				$("#category_top_shpp_list").find('[data-ilparam-type="' + type + '"]').prop("checked", false);
+				$("#shpp_filter").find('[data-ilparam-type="' + type + '"]').parent('span').removeClass('on');
+				$("#shpp_filter").find('[data-ilparam-type="' + type + '"]').prop("checked", false).trigger('change');
+			}
+
+			deleteQueryStore(type, value);
+		} else {
+			// lnb 영역 제외 부분 동기화
+			$("#for_you_filter,#area_sort").find("[data-ilparam-type=" + type + "][data-ilparam-value='" + value + "']").prop("checked", false);
+			$("#for_you_filter,#area_sort").find("[data-ilparam-type=" + type + "][data-ilparam-value='" + value + "']").each(function(){
+				$(this).parents(".cmflt_checkbox,.custom_chk").removeClass("on");
+			});
+
+			itemLister.triggerClick(type, value, false);
+
+			if(type == 'sizeIds') {
+				// 신발 사이즈가 없는 카테고리에서
+				if($("#shoes_size_table [data-ilparam-type=" + type + "][data-ilparam-value='" + value + "']:disabled").size() > 0) {
+					itemLister.queryStore['sizeIds'] = $.grep(itemLister.queryStore['sizeIds'].split(","), function(v){
+						return v != value;
+					});
+
+					itemLister.update();
+				}
+
+				$("#shoes_size_table [data-ilparam-type=" + type + "][data-ilparam-value='" + value + "']").prop("checked", false);
+				$("#shoes_size_table [data-ilparam-type=" + type + "][data-ilparam-value='" + value + "']").parents("td").removeClass("on");
+			}
+		}
+		ssg_react.directCall({tarea : IL_react_prefix + '|선택한필터|항목별 해제'});
+	});
+
+	$(document).on("click", "#reset_filter", function(){
+		location.href = "?dispCtgId=" + itemLister.queryStore['dispCtgId'];
+	});
+
+	///////////////////////////////////////////// 카테고리 선택
+	$(document).on("click", "#category_filter a", function(){
+		var dispCtgId = $(this).data("ilparam-value");
+
+		// 혜택, 배송, 신발사이즈는 유지
+		var queryStore = {
+			dispCtgId : dispCtgId
+			, shpp : itemLister.queryStore['shpp'] || ""
+			, cls : itemLister.queryStore['cls'] || ""
+			, benefit : itemLister.queryStore['benefit'] || ""
+			, sizeIds : itemLister.queryStore['sizeIds'] || ""
+		};
+
+		itemLister.queryStore = queryStore;
+
+		if($("#category_filter").data("depth") == 1) {
+			itemLister.updateQueryString();
+			location.href = "?" + itemLister.queryString;
+		} else {
+			itemLister.update(null, "#area_lnb,#area_sort,#area_disp_ctg_title");
+		}
+	});
+
+
+	///////////////////////////////////////////// 점포선택
+
+	$(document).on("click", "#filter_sale_str_no input[type=radio]", function(){
+		if($("#shpp_filter [data-ilparam-value=department]").is(":checked")) {
+			itemLister.queryStore['salestrNo'] = $(this).val();
+		}
+
+		itemLister.update();
+	});
+
+	$(document).on("click", "#filter_picku_str_no input[type=radio]", function(){
+		if($("#shpp_filter [data-ilparam-value=depick]").is(":checked")) {
+			itemLister.queryStore['pickuSalestr'] = $(this).val();
+		}
+
+		itemLister.update();
+	});
+
+	///////////////////////////////////////////// 브랜드
+
+	// 레이어 팝업
+	$(document).on("click","#pop_brand_layer", function(){
+		// 바닥페이지 브랜드ID 저장
+		var brandIds = itemLister.queryStore.brandId ? itemLister.queryStore.brandId.split(",") : [];
+		SearchBrandFilter.selectedBrandId = brandIds;
+
+		$("#brandMore input[name^=tyBrand]").parents(".cmflt_checkbox").removeClass("on");
+		$("#brandMore input[name^=tyBrand]").prop("checked", false);
+
+		for(var idx in brandIds) {
+			$("#brandMore input[name^=tyBrand][data-ilparam-value='" + brandIds[idx] + "']").parents(".cmflt_checkbox").addClass("on");
+			$("#brandMore input[name^=tyBrand][data-ilparam-value='" + brandIds[idx] + "']").prop("checked", true);
+		}
+	});
+
+	// 브랜드 검색
+	$(document).on("keyup", "#brand_name", function(){
+		var keyWord = $("#brand_name").val();
+		var selectedBrandList = [];
+
+		if(keyWord != "") {
+			$.grep(searchBrandList,function(brand) {
+				if(brand.brandNm.toLowerCase().indexOf(keyWord.toLowerCase()) > -1) {
+					selectedBrandList.push(brand)
+				}
+			});
+		} else {
+			selectedBrandList = searchBrandList;
+		}
+
+		selectedBrandList = selectedBrandList.slice(0,5);
+
+		$("#brand_list").html("");
+		var brandIds = itemLister.queryStore.brandId ? itemLister.queryStore.brandId.split(",") : [];
+
+		for(var i=0;i<selectedBrandList.length;i++) {
+			var brandHtml = SearchBrandFilter.brandTemplate().replaceAll("{{cbName}}", "btBrand" + i)
+			.replaceAll("{{brandId}}", selectedBrandList[i].brandId)
+			.replaceAll("{{brandNm}}", selectedBrandList[i].brandNm)
+			.replaceAll("{{itemCount}}", getCommaAdd(selectedBrandList[i].itemCount))
+			.replaceAll("{{clipOn}}",  selectedBrandList[i].clipYn == "Y" ? "on" : "")
+			.replaceAll("{{attnDtlcSeq}}", selectedBrandList[i].attnDtlcSeq)
+			.replaceAll("{{recom}}", " ");
+
+			// 이미 선택된 브랜드에 대한 체킹 작업
+			if ($.inArray(selectedBrandList[i].brandId, brandIds) > -1) {
+				brandHtml = brandHtml.replaceAll("{{on}}", "on");
+				brandHtml = brandHtml.replaceAll("{{checked}}", 'checked="checked"');
+			} else {
+				brandHtml = brandHtml.replaceAll("{{on}}", "");
+				brandHtml = brandHtml.replaceAll("{{checked}}", "");
+			}
+
+			// IE 대응을 위한 <li/> 태그를 먼저 붙인후 html 추가
+			$("#brand_list").append($("<li/>").html(brandHtml));
+		}
+	});
+
+	// 레이어 브랜드 선택시 임시 저장 - 확인시 적용
+	$(document).on("click", "#brandMore input[type=checkbox]", function(){
+		var selectedBrandList = SearchBrandFilter.selectedBrandId;
+		var resultBrandList = [];
+
+		if($(this).is(":checked")) {
+			resultBrandList = selectedBrandList;
+			resultBrandList.push($(this).data("ilparam-value") + "")
+		} else {
+			for(var i in selectedBrandList) {
+				if(selectedBrandList[i] != $(this).data("ilparam-value") + "") {
+					resultBrandList.push(selectedBrandList[i])
+				}
+			}
+		}
+
+		SearchBrandFilter.selectedBrandId = resultBrandList;
+	});
+
+	// 레이어 팝업 검색
+	$(document).on("click", "#btn_pop_brand_search", function(){
+		itemLister.queryStore.brandId = SearchBrandFilter.selectedBrandId.join(",");
+		itemLister.update();
+
+		// 바닥 페이지갱신
+		$("input[type=checkbox][data-ilparam-type=brandId]").parents(".cmflt_checkbox").removeClass("on");
+		$("input[type=checkbox][data-ilparam-type=brandId]").prop("checked", false);
+
+
+		for(var idx in SearchBrandFilter.selectedBrandId) {
+			itemLister.changeStatus("brandId", SearchBrandFilter.selectedBrandId[idx], true);
+		}
+
+		oSsgbrdSearchLayerPopup.closeLayer();
+	});
+
+	// 바닥 브랜드 선택시 - 토글처리
+	$(document).on("click", "#brand_filter input[type=checkbox]", function(){
+		var type = $(this).data("ilparam-type");
+		var value = $(this).data("ilparam-value");
+
+		itemLister.triggerClick(type, value, $(this).is(":checked"));
+		itemLister.changeStatus(type, value, $(this).is(":checked"));
+	});
+
+	///////////////////////////////////////////// 가격대구간
+
+	$(document).on("click", "#price_filter .price_btn", function(){
+		$("#minsellprc").val("");
+		$("#maxsellprc").val("");
+
+		var minsellprc = "";
+		var maxsellprc = "";
+
+		if($(this).hasClass("on")) {
+			minsellprc = $(this).data("minsellprc") + "";
+			maxsellprc = $(this).data("maxsellprc") + "";
+		}
+
+		itemLister.queryStore['minsellPrc'] = minsellprc;
+		itemLister.queryStore['maxsellPrc'] = maxsellprc;
+
+		itemLister.update();
+	});
+
+	$(document).on("submit", "#direct_price_search", function(e){
+		return false;
+	});
+
+	$(document).on("click", "#btn_price_search", function(){
+		$("#price_filter .price_btn").removeClass("on");
+
+		var minsellPrc = $("#minsellprc").val();
+		var maxsellPrc = $("#maxsellprc").val();
+
+		if (isNaN(maxsellPrc) || isNaN(minsellPrc)) {
+			alert($.i18n.prop('i18n.front.search.keyword.가격구간입력검증'));
+			
+			return false;
+		}
+		
+		if (maxsellPrc == '' || minsellPrc == '') {
+			alert($.i18n.prop('i18n.front.search.keyword.가격구간입력검증'));
+
+			return false;
+		} else {
+			itemLister.queryStore['minsellPrc'] = minsellPrc;
+			itemLister.queryStore['maxsellPrc'] = maxsellPrc;
+
+			itemLister.update();
+		}
+	});
+
+	$(document).on("click", "#reset_price", function(){
+		reset_price();
+	});
+
+	function reset_price(){
+		delete itemLister.queryStore["minsellPrc"];
+		delete itemLister.queryStore["maxsellPrc"];
+
+		$("#price_filter .price_btn").removeClass("on");
+
+		$("#minsellprc").val("");
+		$("#maxsellprc").val("");
+
+		itemLister.update();
+	}
+
+	///////////////////////////////////////////// 신발사이즈
+	
+	$(document).on("click", "#filchk_size", function(){
+		if($(this).prop("checked")) {
+			filterShoesSize.setByMySize();
+		} else {
+			filterShoesSize.clearSize();
+		}
+
+		for(var idx in filterShoesSize._mySize) {
+			itemLister.changeStatus("sizeIds", filterShoesSize._mySize[idx], $(this).prop("checked"));
+		}
+	});
+
+
+	$(document).on("click", "#pop_shoes_size_layer", function(){
+		filterShoesSize.updateMySize();
+	});
+
+	$(document).on("click", "#reset_size", function(){
+		var sizeIds = itemLister.queryStore["sizeIds"].split(",");
+
+		for(var idx in sizeIds) {
+			itemLister.changeStatus("sizeIds", sizeIds[idx], false);
+		}
+
+		filterShoesSize.clearSize();
+	});
+
+	$(document).on("mouseover","#set_size", function(){
+		$(".size_check_layer").show();
+		layerEffet('.size_check_layer');
+	})
+
+	/* queryStore에서 삭제 필요한 파라미터 삭제 */
+	function deleteQueryStore(type, value){
+		var replacedQuery = itemLister.queryStore[type];
+		var filter = itemLister.queryStore[type];
+		var index = -1;
+		var filters;
+
+		if(filter){
+			filters = filter.split(",");
+			for(var i = 0; i < filters.length; i++){
+				if(filters[i] == value){
+					index = i;
+				}
+			}
+
+			if(index > -1){
+				filters.splice(index, 1);
+				replacedQuery = filters.join(",");
+			}
+		}
+
+		if(replacedQuery != itemLister.queryStore[type]){
+			itemLister.queryStore[type] = replacedQuery;
+			itemLister.update();
+		}
+	}
+
+	$('#category_top_shpp_list').on('click', 'input', function(e) {
+		isClickAction = true;
+		$("#ajaxTarget").val("item");
+		var filterValue = $(this).data("ilparam-value");
+		var filterType = $(this).data("ilparam-type");
+		var checked = $("#shpp_filter").find('[data-ilparam-type="' + filterType + '"][data-ilparam-value="' + filterValue + '"]').prop("checked");
+		if (settings.curr_siteno == 7018 && checked) {
+			// 배송필터 아이콘 해제
+			$("#for_you_filter,#area_sort,#shpp_filter").find("[data-ilparam-type=" + filterType + "][data-ilparam-value='" + filterValue + "']").each(function(){
+				$(this).parents(".custom_rdo").removeClass("on");
+			});
+
+			$("#category_top_shpp_list").find('[data-ilparam-type="' + filterType + '"]').prop("checked", false);
+			$("#shpp_filter").find('[data-ilparam-type="' + filterType + '"]').parent('span').removeClass('on');
+			$("#shpp_filter").find('[data-ilparam-type="' + filterType + '"]').prop("checked", false).trigger('change');
+
+			deleteQueryStore(filterType, filterValue);
+		} else {
+			// 쓱데이, 빅스마일데이는 혜택 필터에 위치 하므로 따로 클릭이벤트 설정
+			if (filterType == "ssgday" || filterType == "bigsmileday") {
+				$("#shpp_filter").find('[data-ilparam-value="' + filterValue + '"]').trigger("click");
+			} else {
+				$("#shpp_filter").find('[data-ilparam-value="' + filterValue + '"]').trigger("click");
+			}
+			if (typeof ssg_sa != 'undefined') ssg_sa.click("f_shpp", "", filterValue.split("=")[1], "", "0");
+		}
+	});
+
+	$('#mclsCtgTab').on('click', 'button', function(e) {
+		var linkUrl = $(this).data("ilparam-linkurl");
+		location.href = linkUrl;
+	});
+});
+
+function changePageSize(pageSize){
+	itemLister.queryStore["pageSize"] = pageSize;
+	itemLister.update();
+}
+
+function changeSort(sort){
+    itemLister.queryStore["sort"] = sort;
+    itemLister.update();
+}

@@ -1,0 +1,157 @@
+/**
+ * 그로서리 gnb ajax 관련 로직
+ */
+
+function initGroceryGnb() {
+	//명절코너
+	$.ajax({
+		type: "GET",
+		url: "/common/ajaxGiftBanr.ssg",
+		cache : false,
+		dataType: "json",
+		success : function(data) {
+			if (data.resultCode == 'SUCCESS') {
+				if(data.result.htmlCntt != null){
+					var giftCornr = data.result.htmlCntt;
+					if(giftCornr != null && giftCornr != ''){
+						$("#giftBanrHtml").html(giftCornr);
+					}
+				}
+			}
+		}
+	});
+
+	//공식브랜드관 메뉴
+	$.ajax({
+		type: "GET",
+		url: "/common/ajaxSpecialBanr.ssg",
+		cache : false,
+		dataType: "json",
+		success : function(data) {
+			if (data.resultCode == 'SUCCESS') {
+				if(data.result.specialBanrList != null){
+					var banrList = data.result.specialBanrList;
+					var innerHtml = "<ul class='emgnb_store_list' data-react-tarea-cd='00042_000000090'>";
+
+					banrList.forEach(function(banr,index){
+						innerHtml += "<li data-react-unit-type='banr' data-react-unit-id='"+ banr.banrId +"'><a href='"+ banr.banrLnkdUrl +"' class='emgnb_store_link clickable' data-react-tarea-dtl-cd='t00056'><img src='"+ settings.cdn.cdnDomain +banr.imgFileNm +"' alt='"+ banr.banrRplcTextNm +"'></a></li>";
+					})
+
+					innerHtml += "<li data-react-unit-type='text' data-react-unit-text='[{\"type\":\"tarea_addt_val\",\"value\":\"공식브랜드관_전체보기\"}]'><a href='/special/index.ssg?Egnb=speidx' class='emgnb_store_link ty_total clickable' data-react-tarea-dtl-cd='t00060'>전체보기</a></li>";
+					innerHtml += "</ul>";
+					$("#special_banr_list").html(innerHtml);
+
+				}
+			}
+		}
+	});
+}
+
+//배송지 텍스트 & 배송지 레이어
+function getMbrBaseAddr() {
+	var innerHtml = "",
+		ajaxUrl = "",
+		btnAfter1Html = "",
+		btnAfter2Html = "",
+		btnAfter4Html = " onclick=\"openPopupZipcdShppInfo();\"";  // with shipping.js
+	if(settings.UserInfo.isLoginYn == "Y") {
+		$.ajax({
+			type: "GET",
+			url: "/shipping/getMbrBaseAddrGrocery.ssg",
+			dataType : "json",
+			async : false,
+			cache : false,
+			success: function(resultHtml) {
+				var result = {};
+				if( typeof resultHtml != 'object' ){
+					if( resultHtml.indexOf('}<p') > -1 ){
+						result = JSON.parse(resultHtml.substring(0, resultHtml.indexOf('<p')));
+					}else{
+						result = JSON.parse(resultHtml);
+					}
+				}else{
+					result = resultHtml;
+				}
+
+				btnAfter1Html = " onclick=\"OpenPopupSetDelivery('" + result.mbrId + "','" + result.cntryCd+"','606','630');\"";
+				btnAfter2Html = " onclick=\"openShowPopupDelivery('" + result.trSaleStrNo + "','','6');\"";
+
+				if( result.mbrBascAddr != null && result.mbrBascAddr != '' ) {
+					var mbrAddr =  result.mbrBascAddr;
+
+					$("#gro_loc_login").attr('style', 'display:none');
+					$("#location_store").attr('style', 'display:block');
+					$("#gro_loc_name").html(result.locAntnmNm);
+					$("#gro_loc_store").html(result.emSaleStrNm);
+					$("#gro_loc_timeText").html(" "+result.emFastShippTimeTable);
+
+					//배송레이어
+					innerHtml =  "<div class='ssg_ship_top'>";
+					innerHtml += "  <p class='ssg_ship_txt'>선택된 배송지 <em>" + result.locAntnmNm + "</em></p>";
+					innerHtml += "  <p class='ssg_ship_address'>" + mbrAddr + "</p>";
+					innerHtml += "</div>";
+					innerHtml += "<ul class='ssg_ship_info'>";
+					if(result.emFastShippTimeTable != ''){
+						innerHtml += "<li class='ty_em'>"+result.emFastShippTimeTable+"</li>";
+					}
+					if(result.trFastShippTimeTable != ''){
+						innerHtml += "<li class='ty_tr'>"+result.trFastShippTimeTable+"</li>";
+					}
+					if(result.mnFastShippTimeTable != ''){
+						innerHtml += "<li class='ty_mnmorning'>"+result.mnFastShippTimeTable+"</li>";
+					}
+					innerHtml += "</ul>";
+					innerHtml += "<div class='ssg_ship_btns'>";
+					innerHtml += "   <button class='btn_ty_active clickable' data-react-tarea='GNB|쓱배송시간확인(로그인후)|배송지변경'" + btnAfter1Html + ">배송지 변경</button>";
+					innerHtml += "   <button class='btn_ty_active clickable' data-react-tarea='GNB|쓱배송시간확인(로그인후)|쓱배송시간_확인'" + btnAfter2Html + ">쓱-배송시간 확인</button>";
+					innerHtml += "   <button class='btn_ty_default clickable' data-react-tarea='GNB|쓱배송시간확인|쓱배송_가능지역찾기'" + btnAfter4Html +">쓱-배송 가능지역 찾기</button>";
+					innerHtml += "</div>";
+
+					$("#gro_fast_shipping_layer").html(innerHtml);
+
+				} else {
+					$("#gro_loc_login").attr('style', 'display:block');
+					$("#location_store").attr('style', 'display:none');
+					$("#gro_loc_login").html("배송지를 설정하고 쓱-배송 시간을 확인해보세요");
+					$("#gro_loc_name").html("");
+					$("#gro_loc_timeText").html("");
+
+					innerHtml =  "<div class='ssg_ship_top'>";
+					innerHtml += "  <p class='ssg_ship_txt'><em>배송지를 설정하고 쓱-배송 시간을 확인해보세요</em></p>";
+					innerHtml += "</div>";
+					innerHtml += "<div class='ssg_ship_btns'>";
+					innerHtml += "   <button class='btn_ty_active clickable' data-react-tarea='GNB|쓱배송시간확인(로그인후)|배송지변경'" + btnAfter1Html + ">배송지 변경</button>";
+					innerHtml += "   <button class='btn_ty_active clickable' data-react-tarea='GNB|쓱배송시간확인(로그인후)|쓱배송시간_확인'" + btnAfter2Html + ">쓱-배송시간 확인</button>";
+					innerHtml += "   <button class='btn_ty_default clickable' data-react-tarea='GNB|쓱배송시간확인|쓱배송_가능지역찾기'" + btnAfter4Html +">쓱-배송 가능지역 찾기</button>";
+					innerHtml += "</div>";
+				}
+				$("#gro_fast_shipping_layer").html(innerHtml);
+			},
+			error: function(e){
+				console.log(e);
+			}
+		});
+	} else {
+		$("#gro_loc_name").html("");
+		$("#gro_loc_login").attr('style', 'display:block');
+		$("#location_store").attr('style', 'display:none');
+		$("#gro_loc_login").html("로그인 후 쓱-배송시간을 확인해보세요");
+		$("#gro_loc_timeText").html("");
+
+		innerHtml =  "<div class='ssg_ship_top'>";
+		innerHtml += "  <p class='ssg_ship_txt'>쓱-배송시간은<br>로그인 후 확인 가능합니다.</p>";
+		innerHtml += "</div>";
+		innerHtml +=  "<div class='ssg_ship_btns'>";
+		innerHtml += "  <button class='btn_ty_default clickable' onclick='login();' data-react-tarea='GNB|쓱배송시간확인|로그인'>로그인하기</button>";
+		innerHtml += "  <button class='btn_ty_active clickable'" + btnAfter4Html + " data-react-tarea='GNB|쓱배송시간확인|쓱배송_가능지역찾기'>쓱-배송 가능지역 찾기</button>";
+		innerHtml += "</div>";
+		$("#gro_fast_shipping_layer").html(innerHtml);
+	}
+}
+
+
+// INIT
+$(function(){
+	initGroceryGnb();
+	deferredObj.done(getMbrBaseAddr);
+});
