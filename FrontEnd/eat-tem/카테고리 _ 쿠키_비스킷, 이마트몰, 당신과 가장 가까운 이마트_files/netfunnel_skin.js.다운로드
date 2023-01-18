@@ -1,0 +1,66 @@
+if(typeof NetFunnel == "object"){
+	
+	//모바일 ssgSkin
+	NetFunnel.tstr = ' \
+		<div id="NetFunnel_Skin_Top" class="ly_cmnotipop_wrap ly_netfunnel" style="display: block;"> \
+			<div class="ly_cmnotipop"> \
+				<button type="button" class="cmnotipop_tbtn" onclick="NetFunnel.countdown_stop();"> \
+					<span class="blind">팝업 닫기</span> \
+					<i class="icon ty_sm icon_close" aria-hidden="true"></i> \
+				</button> \
+				<div class="cmnotipop_detail"> \
+					<div class="cmnotipop_detail_inr"> \
+						<strong class="cmnotipop_tit">먼저 온 고객님들이 많아<br>잠시 줄을 서고 있습니다.</strong> \
+						<div class="cmnotipop_tx"> \
+							<p class="cmnotipop_dsc">대기가 끝나면 자동으로 연결됩니다.<br>한정수량 상품은 대기 중 품절될 수 있습니다.</p> \
+						</div> \
+						<div class="cmnotipop_subtx"> \
+							<div class="cmnotipop_subtx_inr"> \
+								<p class="cmnotipop_subdsc">예상 대기 시간</p> \
+								<p class="cmnotipop_subdsc_time"><span id="NetFunnel_Loading_Popup_TimeLeft" class="%H시간 %M분 %02S초^ ^false"></span></p> \
+								<div class="cmnotipop_img"><img src="https://sui.ssgcdn.com/ui/m_ssg/img/common/pop_netfunnel_ing.gif" alt=""></div> \
+							</div> \
+						</div> \
+						<div class="cmnotipop_tx"> \
+							<p class="cmnotipop_dsc">재접속하시면 맨 뒷 순서가 되니<br>조금만 기다려주세요.</p> \
+						</div> \
+					</div> \
+				</div> \
+			</div> \
+		</div>';
+	NetFunnel.SkinUtil.add('ssgSkin',{
+		prepareCallback : function() {
+			$("#NetFunnel_Skin_Top").show();
+		},
+		htmlStr:NetFunnel.tstr
+	},'mobile');
+	
+	//PC ssgSkin
+	NetFunnel.tstr = ' \
+		<div class="ssg-layer-popup cm_lypop cm_lypop_netfunnel" id="NetFunnel_Skin_Top" role="dialog" style="cursor: default; display: block;" tabindex="0"> \
+			<div class="cm_lypop_content"> \
+				<p class="netfunnel_tit">먼저 온 고객님들이 많아<br>잠시 줄을 서고 있습니다.</p> \
+				<div class="netfunnel_tx"> \
+					<p class="netfunnel_dsc">대기가 끝나면 자동으로 연결됩니다.<br>한정수량 상품은 대기 중 품절될 수 있습니다.</p> \
+				</div> \
+				<div class="netfunnel_subtx"> \
+					<div class="netfunnel_subtx_inr"> \
+						<p class="netfunnel_subdsc">예상 대기 시간</p> \
+						<p class="netfunnel_subdsc_time"><span id="NetFunnel_Loading_Popup_TimeLeft" class="%H시간 %M분 %02S초^ ^false"></p> \
+						<div class="netfunnel_img"><img src="https://sui.ssgcdn.com/ui/m_ssg/img/common/pop_netfunnel_ing.gif" alt=""></div> \
+					</div> \
+				</div> \
+				<div class="netfunnel_tx"> \
+					<p class="netfunnel_dsc">재접속하시면 맨 뒷 순서가 되니 조금만 기다려주세요.</p> \
+				</div> \
+			</div> \
+			<button type="button" class="cm_lypop_btnclose cm_lypop_close" onclick="NetFunnel.countdown_stop();"><span class="blind">넷퍼넬 팝업닫기</span></button> \
+		</div> \
+		';
+	NetFunnel.SkinUtil.add('ssgSkin',{
+		prepareCallback : function() {
+			$("#NetFunnel_Skin_Top").show();
+		},
+		htmlStr:NetFunnel.tstr
+	},'normal');
+}

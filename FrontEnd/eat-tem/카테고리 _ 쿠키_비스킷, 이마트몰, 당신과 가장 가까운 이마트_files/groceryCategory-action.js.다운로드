@@ -1,0 +1,58 @@
+var GroceryCategoryPriceFilter = {
+
+    priceChange : function(obj){
+        var minsellprc = "";
+        var maxsellprc = "";
+
+        minsellprc = $(obj).data("minsellprc") + "";
+        maxsellprc = $(obj).data("maxsellprc") + "";
+
+        if($("#minsellprc").val() === "" && $("#maxsellprc").val() === ""){
+            itemLister.queryStore['minsellPrc'] = (itemLister.queryStore['minsellPrc'] || "") === minsellprc ?  "" : minsellprc;
+            itemLister.queryStore['maxsellPrc'] = (itemLister.queryStore['maxsellPrc'] || "") === maxsellprc ? "" : maxsellprc;
+        }else{
+            $("#minsellprc").val("");
+            $("#maxsellprc").val("");
+            itemLister.queryStore['minsellPrc'] = minsellprc;
+            itemLister.queryStore['maxsellPrc'] = maxsellprc;
+        }
+
+        itemLister.update();
+    },
+
+    inputPrice : function(){
+        $("#price_filter .round_cell").removeClass("on");
+
+        var minsellPrc = $("#minsellprc").val();
+        var maxsellPrc = $("#maxsellprc").val();
+
+        if (isNaN(maxsellPrc) || isNaN(minsellPrc)) {
+            alert($.i18n.prop('i18n.front.search.keyword.가격구간입력검증'));
+
+            return false;
+        }
+
+        if (maxsellPrc == '' || minsellPrc == '') {
+            alert($.i18n.prop('i18n.front.search.keyword.가격구간입력검증'));
+
+            return false;
+        } else {
+            itemLister.queryStore['minsellPrc'] = minsellPrc;
+            itemLister.queryStore['maxsellPrc'] = maxsellPrc;
+
+            itemLister.update();
+        }
+    },
+
+    resetPrice : function (){
+        delete itemLister.queryStore["minsellPrc"];
+        delete itemLister.queryStore["maxsellPrc"];
+
+        $("#price_filter .round_cell").removeClass("on");
+
+        $("#minsellprc").val("");
+        $("#maxsellprc").val("");
+
+        itemLister.update();
+    }
+}

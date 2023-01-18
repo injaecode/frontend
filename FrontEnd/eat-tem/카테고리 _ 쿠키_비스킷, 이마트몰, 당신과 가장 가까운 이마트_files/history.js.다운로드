@@ -1,0 +1,1051 @@
+/**
+ * 히스토리 관련 공통 스크립트
+ *  - resource.front
+ */
+
+var historySsgDomainObj = ssg.domain;
+var historySsg = {
+	skyscaper : null
+	,
+	initHistory : function() {
+		historySsg.reInitHistoryAction = false;
+		historySsg.createHistory();
+	},
+	reInitHistoryAction : false
+	,
+	reInitHistory : function() {
+		if ( $("ul.history_list").size() == 1 && !settings.isMobile ) {
+			historySsg.reInitHistoryAction = true;
+			historySsg.createHistory();
+		}
+	},
+	property : {
+		"historyCntPerPage" : 50,
+		"historyCntMax" : 100
+	},
+	// 타입별 URL정보
+	pageUrl : {
+		item    : "/item/itemView.ssg",
+		dealItem : "/item/dealItemView.ssg",
+		ctg     : "/disp/category.ssg",
+		plan    : "/plan/planShop.ssg",
+        wow     : "/plan/wow.ssg",
+        derby   : "/plan/derby.ssg",
+        star   : "/plan/starBrand.ssg",
+        life   : "/contents/lifeMagazine.ssg",
+        recipe : "/recipe/recipe/detail.ssg",	// 레시피 미정
+        shop   : "/plan/shopAttack.ssg",
+        brand   : "/disp/brandShop.ssg",	// BN MO 동일
+        brand_sm_mo : "/disp/brandMain.ssg",
+        store	: "/store/specialShop.ssg",	// 스타필드매장
+        event   : "/event/eventDetail.ssg",
+        nevent   : "/nevnt/eventDetail.ssg",
+        search	: "/search.ssg"
+	},
+
+    // 사이트별 정보
+    siteInfo : {
+        "6001" : {
+            name        : "이마트몰",
+            iconClass   : "em",
+            iconClassMo : "em",
+            domain      : historySsgDomainObj.emart
+        },
+        "6002" : {
+            name        : "트레이더스",
+            iconClass   : "tr",
+            iconClassMo : "tr",
+            domain      : historySsgDomainObj.traders
+        },
+        "6003" : {
+            name        : "부츠",
+            iconClass   : "bt",
+            iconClassMo : "bt",
+            domain      : historySsgDomainObj.boots
+        },
+        "6004" : {
+            name        : "신세계몰",
+            iconClass   : "sm",
+            iconClassMo : "sm",
+            domain      : historySsgDomainObj.small
+        },
+        "6005" : {
+            name        : "SSG.COM",
+            iconClass   : "",
+            iconClassMo : "ssg",
+            domain      : historySsgDomainObj.ssg
+        },
+        "6009" : {
+            name        : "신세계백화점",
+            iconClass   : "sd",
+            iconClassMo : "sd",
+            domain      : historySsgDomainObj.sdept
+        },
+        "6100" : {
+            name        : "하우디",
+            iconClass   : "hwd",
+            iconClassMo : "hwd",
+            domain      : historySsgDomainObj.howdy
+        },
+        "6200" : {
+            name        : "신세계라이브쇼핑",
+            iconClass   : "tv",
+            iconClassMo : "tv",
+            domain      : historySsgDomainObj.tv
+        },
+        "6300" : {
+            name        : "S.I.VILLAGE",
+            iconClass   : "si",
+            iconClassMo : "si",
+            domain      : historySsgDomainObj.sivillage
+        },
+        "6400" : {
+            name        : "STARFIELD",
+            iconClass   : "sf",
+            iconClassMo : "sf",
+            domain      : historySsgDomainObj.starfield
+        },
+        "7008" : {
+            name        : "프리미엄아울렛",
+            iconClass   : "outlet",
+            iconClassMo : "outlet",
+            domain      : historySsgDomainObj.outlet
+        },
+        "7009" : {
+            name        : "새벽배송",
+            iconClass   : "mnmorning",
+            iconClassMo : "mnmorning",
+            domain      : historySsgDomainObj.morning
+        },
+        "7010" : {
+            name        : "백화점식품관",
+            iconClass   : "mndeptfood",
+            iconClassMo : "mndeptfood",
+            domain      : historySsgDomainObj.deptfood
+        },
+        "7011" : {
+            name        : "까사미아",
+            iconClass   : "mncasamia",
+            iconClassMo : "mncasamia",
+            domain      : historySsgDomainObj.casamia
+        },
+        "7012" : {
+            name        : "CHICOR",
+            iconClass   : "mnchicor",
+            iconClassMo : "mnchicor",
+            domain      : historySsgDomainObj.chicor
+        },
+        "7013" : {
+            name        : "trip",
+            iconClass   : "mntrip",
+            iconClassMo : "mntrip",
+            domain      : historySsgDomainObj.trip
+        },
+        "7015" : {
+        	name        : "starbucks",
+            iconClass   : "mnstarbucks",
+            iconClassMo : "mnstarbucks",
+            domain      : historySsgDomainObj.starbucks
+        },
+		"7018" : {
+			name        : "grocery",
+			iconClass   : "em",
+			iconClassMo : "em",
+			domain      : historySsgDomainObj.grocery
+		}
+    },
+
+    getToday : function() {
+        return this.today;
+    },
+
+    // 히스토리 전체삭제
+    deleteHistoryAll : function() {
+		var url = 'frontapi.ssg.com/dp/api-webflux/v1/history/deleteHistory';
+		if (typeof settings !== 'undefined' && settings.zone !== 'prod') {
+			if (settings.zone == 'local') {
+				url = '//' + 'dev' + '-' + url;
+			} else {
+				url = '//' + settings.zone + '-' + url;
+			}
+		} else {
+			url = '//' + url;
+		}
+    	if (confirm("전체 최근 본 쇼핑정보를 삭제하시겠습니까?")) {
+    		$('.cmhistory_loading').show();
+			$.ajax({
+				url: url,
+				cache: false,
+				dataType: "json",
+				headers: {
+					'Accept': 'application/json',
+					'Content-Type': 'application/json',
+				},
+				xhrFields: {
+					withCredentials: true
+				},
+				method: 'post',
+				data: JSON.stringify({"params": {"infloSiteNo": settings.curr_siteno, "deleteAllYn": "Y", "dispDvicDivCd": settings.isMobile?"20":"10"}}),
+				success: function (data) {
+					if (data.resultCode == '200') {
+						historySsg.renderAfterDeleteAll();
+					} else {
+						alert("최근 본 쇼핑정보 전체삭제 중 오류가 발생했습니다. 잠시후 다시 시도해 주세요.");
+					}
+				},
+				error: function (e) {
+					alert("최근 본 쇼핑정보 전체삭제 중 오류가 발생했습니다. 잠시후 다시 시도해 주세요.");
+				},
+				complete: function () {
+					$('.cmhistory_loading').hide();
+				}
+			});
+    	}
+    },
+
+    renderAfterDeleteAll : function() {
+		if (settings.isMobile) {
+            $("#_cmhistory_scroll .cmhistory_lst > li").remove();
+            $('.cmhistory_nodata').show();
+            historySsg.refreshHistoryScroll();
+		} else {
+			$("ul.ssg_history_list > li").remove();
+			$('.ssg_history_nodata').show();
+			$('.txt_count').text("0");
+			$('#gnb_util_thumb').hide();
+		}
+    },
+
+    deleteAction : function(srchSeq) {
+    	$liObj = $('li[id="history_'+srchSeq+'"]');
+
+		var historyMsaData = {
+			srchSeq			: $liObj.find('input[name="srchSeq"]').val(),
+			srchDivCd: $liObj.find('input[name="srchDivCd"]').val(),
+			siteNo: $liObj.find('input[name="siteNo"]').val(),
+			itemId: $liObj.find('input[name="srchTgtIdnfNo1"]').val(),
+			infloSiteNo: $liObj.find('input[name="infloSiteNo"]').val()
+		};
+		historySsg.deleteHistory(historyMsaData);
+    },
+
+    // 히스토리 삭제
+    deleteHistory : function(historyMsaData) {
+		var url = 'frontapi.ssg.com/dp/api-webflux/v1/history/deleteHistory';
+		if (typeof settings !== 'undefined' && settings.zone !== 'prod') {
+			if (settings.zone == 'local') {
+				url = '//' + 'dev' + '-' + url;
+			} else {
+				url = '//' + settings.zone + '-' + url;
+			}
+		} else {
+			url = '//' + url;
+		}
+		$('.cmhistory_loading').show();
+		$.ajax({
+			url: url,
+			method: 'post',
+			cache: false,
+			dataType: "json",
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json',
+			},
+			contentType: 'application/json',
+			crossDomain: true,
+			xhrFields: {
+				withCredentials: true
+			},
+			data: JSON.stringify({
+				"params": {
+					"infloSiteNo": settings.curr_siteno,
+					"dispDvicDivCd":"10",
+					"historyList": [historyMsaData]
+				}
+			}),
+			success: function (data) {
+				if (data.resultCode == '200') {
+					var liObj = settings.isMobile ? $(
+						"#_cmhistory_scroll .cmhistory_lst > li") : $(
+						"ul.ssg_history_list > li");
+					var cntObj = $('.txt_count');
+
+					// 삭제전 사이즈
+					var liSize = liObj.length;
+
+					$('li[id="history_' + historyMsaData.srchSeq + '"]').remove();
+					liSize--;
+
+					if (liSize < 1) {
+						liSize = 0;
+						$('#gnb_util_thumb').hide();
+						// $('#icon_eye').show();
+						historySsg.renderAfterDeleteAll();
+					} else {
+						// 삭제후 사이즈
+						if (!settings.isMobile) {
+							cntObj.text(liSize);
+						}
+					}
+				} else {
+					alert("최근 본 쇼핑정보 삭제 중 오류가 발생했습니다. 잠시후 다시 시도해 주세요.");
+				}
+			},
+			error: function (e) {
+				alert("최근 본 쇼핑정보 삭제 중 오류가 발생했습니다. 잠시후 다시 시도해 주세요.");
+			},
+			complete: function () {
+				$('.cmhistory_loading').hide();
+			}
+		});
+    },
+
+    // 히스토리 여러건 삭제
+    deleteHistoryMulti: function() {
+    	var delTgtHistArr = new Array();
+    	var liObjArr = new Array();
+
+    	$('#_cmhistory_scroll').find('input[name=cmhistory_chk]:checked').each(function() {
+    		var $liObj = $('#history_' + $(this).val());
+    		var historyData = {
+    				srchSeq			: $liObj.find('input[name="srchSeq"]').val(),
+    				srchDivCd		: $liObj.find('input[name="srchDivCd"]').val(),
+    				siteNo  		: $liObj.find('input[name="siteNo"]').val(),
+    				srchTgtIdnfNo1  : $liObj.find('input[name="srchTgtIdnfNo1"]').val(),
+    				srchTgtIdnfNo2	: $liObj.find('input[name="srchTgtIdnfNo2"]').val(),
+    				srchwdDtlc		: $liObj.find('input[name="srchwdDtlc"]').val()
+    	        };
+    		delTgtHistArr.push(historyData);
+    		liObjArr.push($liObj);
+    	});
+
+		if (delTgtHistArr.length == 0) {
+			alert('삭제할 쇼핑정보를 선택해주세요.');
+			return;
+		}
+
+		$('.cmhistory_loading').show();
+		$.ajax({
+            url : "/comm/ajaxDeleteHistoryMulti.ssg",
+            method: 'post',
+            cache : false,
+            dataType : "json",
+            contentType : 'application/json',
+            data : JSON.stringify(delTgtHistArr),
+            success : function(data) {
+            	if (data.resultCode == '0000') {
+            		$.each(liObjArr, function(idx, obj) {
+            			$(obj).remove();
+            		});
+            		historySsg.refreshHistoryScroll();
+            	} else {
+            		alert("최근 본 쇼핑정보 삭제 중 오류가 발생했습니다. 잠시후 다시 시도해 주세요.");
+            	}
+            },
+            error : function(e) {
+            	alert("최근 본 쇼핑정보 삭제 중 오류가 발생했습니다. 잠시후 다시 시도해 주세요.");
+            },
+            complete : function() {
+            	$('.cmhistory_loading').hide();
+            }
+        });
+    },
+
+    makeSalestrNm : function(shppSalestrNm) {
+    	var salestrNm = shppSalestrNm;
+    	var strIdx = salestrNm.indexOf('NE.O');
+
+    	if ( strIdx > -1 ) {
+    		salestrNm = 'emart ' + salestrNm.substring(strIdx, strIdx+8);
+    	}
+
+    	return salestrNm;
+    },
+
+    // 현재 사용자의 히스토리 정보를 획득함
+    createHistory : function() {
+    	var data = {};
+
+    	// object가 존재하면 data set
+    	if (!(typeof historyInfoDto === 'undefined') && historyInfoDto != null) {
+       		data = historyInfoDto;
+       		historyInfoDto = null; // 재등록 방지
+       		data.infloSiteNo = Clip.getInfloSiteNo();
+       		if (data.infloSiteNo == '6101') {
+       			data = {}; // thethowdy는 히스토리 생성안함
+       		}
+    	}
+
+    	if (settings.isMobile) {
+    		// 모바일 검색구분코드 필터링
+    		data.srchDivCds = $('.cmhistory_sort > li.on').map(function() {
+	    			return $(this).data('srchDivCd');
+	    		}).get().join(',');
+
+    		$('.cmhistory_loading').show();
+    	}
+
+    	var historyPass = false;
+    	if(settings.isMobile) {
+    		historyPass = settings && settings.emergency && settings.emergency.HISTORY_MO_PASS == 'Y'; /* EMERGENCY!! */
+    	} else {
+    		historyPass = settings && settings.emergency && settings.emergency.HISTORY_PC_PASS == 'Y'; /* EMERGENCY!! */
+    	}
+
+		if ( !historyPass ) {
+	        $.ajax({
+	            url : "/comm/ajaxHistoryList.ssg",
+	            cache : false,
+	            dataType : "json",
+	            data : data,
+				success: function (data) {
+					historySsg.createMsaHistory();
+				}
+		    });
+		} else {
+			if ( !settings.isMobile ) {
+				// historySsg_reform.initSkyscraper();
+			}
+		}
+    },
+
+	createMsaHistory: function () {
+		var url = 'frontapi.ssg.com/dp/api-webflux/v1/history/historyList';
+		if (typeof settings !== 'undefined' && settings.zone !== 'prod') {
+			if (settings.zone == 'local') {
+				url = '//' + 'dev' + '-' + url;
+			} else {
+				url = '//' + settings.zone + '-' + url;
+			}
+		} else {
+			url = '//' + url;
+		}
+		$.ajax({
+			url: url,
+			cache: false,
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json'
+			},
+			contentType: "application/josn",
+			crossDomain: true,
+			xhrFields: {
+				withCredentials: true
+			},
+			dataType: "json",
+			method: 'post',
+			cors: true,
+			data: JSON.stringify({"params": {"infloSiteNo": settings.curr_siteno, "dispDvicDivCd":"10"}}),
+			success : function(data) {
+				if (settings.isMobile) {
+					historySsg.makeHistoryHtmlMo(data.historyList);
+
+				} else {	// PC의 경우 우측 스카이스크레퍼가 있는 경우만 rendering
+					// $('.sky_haeder strong.num').text("0");
+					historySsg.makeHistoryHtmlPC(data.data);
+				}
+			}
+		});
+	},
+
+    getLinkUrl : function(history, siteInfo) {
+        var a = /\+/g, e = function (s) { return encodeURIComponent((s+"").replace(a, " ")); };
+
+        var url = location.protocol + "//" + siteInfo.domain;
+
+        switch ( history.srchDivCd ) {
+	        case '10' :		// item
+	        	if ( history.dealItemYn == 'Y' ) {
+	        		url += (historySsg.pageUrl.dealItem + "?itemId=" + history.srchTgtIdnfNo1);
+	        	} else {
+	        		url += (historySsg.pageUrl.item + "?itemId=" + history.srchTgtIdnfNo1);
+	        	}
+	        	// #172873
+	       		url += ("&siteNo="+ history.siteNo + "&salestrNo=" + history.salestrNo);
+	        	// #108459
+	        	url += ('&tarea=history_' + settings.curr_siteno);
+	        	break;
+	        case '70' :		// 항공
+	        	if ( settings.isMobile ) {
+	        		url = history.lnkdUrl;
+	        	} else {
+	        		url = history.lnkdUrl2;
+	        	}
+	        	break;
+	        case '71' :		// 호텔
+	        	if ( settings.isMobile ) {
+	        		url = history.lnkdUrl;
+	        	} else {
+	        		url = history.lnkdUrl2;
+	        	}
+	        	break;
+	        default :
+	        	url = '';
+	        	break;
+        }
+        return url;
+    },
+
+    makeHistoryInfo : function(hData) {
+    	var html = [];
+    	html.push("        <input type='hidden' name='srchSeq' value='"+hData.srchSeq+"'/>");
+    	html.push("        <input type='hidden' name='srchDivCd' value='"+hData.srchDivCd+"'/>");
+    	html.push("        <input type='hidden' name='siteNo' value='"+hData.siteNo+"'/>");
+    	html.push("        <input type='hidden' name='srchTgtIdnfNo1' value='"+hData.itemId+"'/>");
+    	html.push("        <input type='hidden' name='srchTgtIdnfNo2' value='"+hData.infloSiteNo+"^"+hData.srchSalestrNo+"'/>");
+    	html.push("        <input type='hidden' name='infloSiteNo' value='"+hData.infloSiteNo+"'/>");
+    	html.push("        <input type='hidden' name='srchwdDtlc' value=''/>");
+    	return html.join("");
+    },
+
+	makeShppInfoHtml: function (data) {
+		var html = [];
+		if (data.benefitGrp2 !== undefined) {
+			for (var i = 0; i < data.benefitGrp2.length; i++) {
+				if (data.benefitGrp2[i].type == '90') {
+					// 이마트
+					html.push('<div class="cm_mall_ship em ty_s">');
+					html.push('<span class="cm_ship_tx">쓱배송</span>');
+					html.push('</div>');
+					break;
+				} else if (data.benefitGrp2[i].type == '91') {
+					// 트레이더스
+					html.push('<div class="cm_mall_ship tr ty_s">');
+					html.push(
+						'<span class="cm_ship_tx"><em>traders</em>쓱배송</span>');
+					html.push('</div>');
+					break;
+				} else if (data.benefitGrp2[i].type == '92') {
+					// 새벽배송
+					html.push('<div class="cm_mall_ship mnmorning ty_s">');
+					html.push('<span class="cm_ship_tx">새벽배송</span>');
+					html.push('</div>');
+					break;
+				}
+			}
+		}
+		return html.join("");
+	},
+
+	getDateStr: function (dateStr) {
+		var yyyyMMdd = String(dateStr);
+		var sYear = yyyyMMdd.substring(0,4);
+		var sMonth = yyyyMMdd.substring(4,6);
+		var sDate = yyyyMMdd.substring(6,8);
+
+		var date = new Date(Number(sYear), Number(sMonth)-1, Number(sDate));
+
+		var week = ['일', '월', '화', '수', '목', '금', '토'];
+		return  sYear.substring(2,4)+"."+sMonth+"."+sDate+"("+week[date.getDay()]+")";
+	},
+
+    makeHistoryHtmlPC : function(historyList) {
+        var length = historyList.length;
+        var html = [];
+		var lastItemImg = '';
+        for (var i = 0 ; i < length; i++) {
+            var h = historyList[i];
+            var url = "";
+            var siteNo = h.infloSiteNo;
+            var siteInfo = this.siteInfo[siteNo];
+            if (siteInfo != null) {
+				if (lastItemImg == '') {
+					if (h.srchDivCd == '70') {
+						lastItemImg = h.tripInfo.tcityImgUrl + '&edit=c&w=120&h=120';
+					} else if (h.srchDivCd == '71') {
+						lastItemImg = h.tripInfo.hotelTcityImgUrl;
+					} else if (h.adultItemAddImgYn == 'Y' && adultYn == 'N') {
+						lastItemImg = ssg.trans + "?src=/ui/ssg/img/common/Img_adult_500x500.png&w=120&h=120";
+					} else {
+						lastItemImg = getItemImgPath(h.itemId, '120');
+					}
+				}
+                url = this.getLinkUrl(h, siteInfo);
+                switch(h.srchDivCd) {
+                case "10" : // 상품
+					html.push('<li id="history_' + h.srchSeq + '" onclick="javascript:setCommonGnbCookie(\'useGnbAdvertCk\',\'\',-1);" data-react-tarea-cd="00042_000000455">');
+					html.push('	<div class="cmhistory_unit" data-react-unit-type="item" data-react-unit-text=\'[{"type":"text","value":"최근본"}]\'>');
+					html.push('		<a href="' + h.itemLnkd + '" class="cmhistory_unit_link clickable" onclick="ssg_react_v2.direct_call(this);" data-react-tarea="공통|최근본|상품_클릭" data-react-tarea-dtl-cd="t00060">');
+					html.push('			<div class="cmhistory_unit_thumb">');
+					html.push('				<img src="' + getItemImgPath(h.itemId, '200') + '" alt="상품 이미지">');
+					if (h.adultItemAddImgYn == 'Y' && h.adultYn == 'N') {
+						html.push('						<span className="adult19_img ty_19 ty_overlay">');
+						html.push('							<span className="blind">19세 이상만 구매가능해요</span>');
+						html.push('						</span>');
+					}
+					html.push('			</div>');
+					html.push('			<div class="cmhistory_unit_detail">');
+					html.push(historySsg.makeShppInfoHtml(h));
+					html.push('				<div class="cmhistory_unit_tit">');
+					html.push('					<span class="cmhistory_tit_brand">');
+					html.push('						<span class="cm_mall_text">');
+					html.push(historySsg.makeMallInfoHtml(h));
+					html.push('						</span>'+ h.brandNm);
+					html.push('					</span>');
+					html.push('					<span class="cmhistory_tit_name">' + h.itemNm + '</span>');
+					html.push('				</div>');
+					html.push('				<div class="cmhistory_unit_pricewrap">');
+					if (h.strikeOutPrc != "") { // 최적가와 판매가가 같지 않을 경우 판매가 노출
+						html.push('					<div class="cmhistory_ty_oldpr">');
+						html.push('						<div class="old_price">');
+						html.push('							<del><span class="blind">정상가격</span><em class="ssg_price">' + numberFormat(h.strikeOutPrc) + '</em><span class="ssg_tx">원</span></del>');
+						html.push('						</div>');
+						html.push('					</div>');
+					}
+					html.push('					<div class="cmhistory_ty_newpr">');
+					if (h.prcChngRate != "") {
+						html.push('						<div class="discount_rate"><span class="blind">할인율</span><span>' + h.prcChngRate + '%</span>');
+						html.push('						</div>');
+					}
+					html.push('						<div class="new_price">');
+					html.push('							<span class="blind">판매가격</span>');
+					html.push('							<em class="ssg_price">' + numberFormat(h.displayPrc) + '</em>');
+					html.push('							<span class="ssg_tx">원' + (h.tildeDispYn == "Y" ? '<span class="cm_tx_opt">~</span>' : '')+'</span>');
+					html.push('						</div>');
+					html.push('					</div>');
+					html.push('				</div>');
+					html.push('			</div>');
+					html.push('		</a>');
+					html.push('	</div>');
+					html.push('	<button type="button" class="cmhistory_unit_delete js_cmhistory_unit_delete" onclick="javascript:historySsg.deleteAction('+h.srchSeq+');" data-react-unit-type="text" data-react-unit-text=\'[{"type":"tarea_addt_val","value":"선택삭제"}]\'>');
+					html.push('		<i class="icon icon_close clickable" aria-hidden="true" onclick="ssg_react_v2.direct_call(this);" data-react-tarea="공통|최근본|선택삭제_클릭" data-react-tarea-dtl-cd="t00060"></i>');
+					html.push('		<span class="blind">해당 상품 삭제</span>');
+					html.push('	</button>');
+					html.push(historySsg.makeHistoryInfo(h));
+					html.push('</li>');
+                    break;
+
+                case "70" : // 항공
+					html.push('<li id="history_' + h.srchSeq + '" onclick="javascript:setCommonGnbCookie(\'useGnbAdvertCk\',\'\',-1);">');
+					html.push('<div class="cmhistory_unit ty_mntrip">');
+					html.push('	<a href="'+ h.tripInfo.webLpageUrl +'" class="cmhistory_unit_link">');
+					html.push('		<div class="cmhistory_unit_thumb">');
+					html.push('			<img src="' + h.tripInfo.tcityImgUrl + '&edit=c&w=50&h=50" onerror="this.onerror=null;this.src=\'' + getItemNoImgPath('50') + '\'" alt="상품 이미지">');
+					html.push('		</div>');
+					html.push('		<div class="cmhistory_unit_detail">');
+					html.push('			<div class="cmhistory_unit_tit">');
+                    html.push('    <span class="cmhistory_tit_brand">');
+                    html.push('      <span class="cm_mall_text">');
+                    html.push('        <i class="mntrip">'+ h.siteNm +'</i>');
+                    html.push('      </span> ' + h.tripInfo.dparTcityNm + '→' + h.tripInfo.arvlTcityNm + ' </span>');
+					html.push('				<span class="cmhistory_tit_name">' + h.tripInfo.ftTripTypeNm + '</span>');
+					html.push('				<span class="cmhistory_tit_date">' + historySsg.getDateStr(h.tripInfo.dparDt) + ' ~ ' + historySsg.getDateStr(h.tripInfo.arvlDt) + '</span>');
+					html.push('			</div>');
+					html.push('		</div>');
+					html.push('	</a>');
+					html.push('</div>');
+					html.push('	<button type="button" class="cmhistory_unit_delete js_cmhistory_unit_delete" onclick="javascript:historySsg.deleteAction('+h.srchSeq+');">');
+					html.push('		<i class="icon icon_close" aria-hidden="true" data-react-unit-type="text" data-react-unit-text=\'[{"type":"tarea_addt_val","value":"최근본"}]\'></i>');
+					html.push('		<span class="blind clickbale" onclick="ssg_react_v2.direct_call(this);" data-react-tarea="공통|최근본|선택삭제_클릭" data-react-tarea-dtl-cd="t00060">해당 상품 삭제</span>');
+					html.push('	</button>');
+					html.push(historySsg.makeHistoryInfo(h));
+					html.push('</li>');
+                	break;
+
+                case "71" : // 호텔
+					html.push('<li id="history_' + h.srchSeq + '" onclick="javascript:setCommonGnbCookie(\'useGnbAdvertCk\',\'\',-1);">');
+					html.push('<div class="cmhistory_unit ty_mntrip">');
+					html.push('	<a href="'+ h.tripInfo.webLpageUrl +'" class="cmhistory_unit_link">');
+					html.push('		<div class="cmhistory_unit_thumb">');
+					html.push('			<img src="'+ h.tripInfo.hotelTcityImgUrl +'" onerror="this.onerror=null;this.src=\'' + getItemNoImgPath('50') + '\'" alt="상품 이미지">');
+					html.push('		</div>');
+					html.push('		<div class="cmhistory_unit_detail">');
+					html.push('			<div class="cmhistory_unit_tit">');
+                    html.push('    <span class="cmhistory_tit_brand">');
+                    html.push('      <span class="cm_mall_text">');
+                    html.push('        <i class="mntrip">' + h.siteNm +'</i>');
+                    html.push('      </span> ' + h.tripInfo.hotelNm + ' </span>');
+					html.push('				<span class="cmhistory_tit_name">' + h.tripInfo.hotelCntryCity + '</span>');
+					html.push('				<span class="cmhistory_tit_date">' + historySsg.getDateStr(h.tripInfo.chinDt) + ' ~ ' + historySsg.getDateStr(h.tripInfo.choutDt) + '</span>');
+					html.push('			</div>');
+					html.push('		</div>');
+					html.push('	</a>');
+					html.push('</div>');
+					html.push('	<button type="button" class="cmhistory_unit_delete js_cmhistory_unit_delete" onclick="javascript:historySsg.deleteAction('+h.srchSeq+');">');
+					html.push('		<i class="icon icon_close" aria-hidden="true" data-react-unit-type="text" data-react-unit-text=\'[{"type":"tarea_addt_val","value":"최근본"}]\'></i>');
+					html.push('		<span class="blind clickbale" onclick="ssg_react_v2.direct_call(this);" data-react-tarea="공통|최근본|선택삭제_클릭" data-react-tarea-dtl-cd="t00060">해당 상품 삭제</span>');
+					html.push('	</button>');
+					html.push(historySsg.makeHistoryInfo(h));
+					html.push('</li>');
+                	break;
+                }
+            }
+        }
+
+		$('.ssg_history_loading').hide();
+
+		if (html.length > 0) {
+			if ( historySsg.reInitHistoryAction )  {
+				$('ul.ssg_history_list').html('');
+			}
+
+			$("ul.ssg_history_list").html($("ul.ssg_history_list").html() + html.join(""));
+			html = [];
+
+			$('.txt_count').text($('.ssg_history_list > li').length);
+			$('#gnb_util_thumb_img').attr('src', lastItemImg);
+			$('#gnb_util_thumb').show();
+			// $('#icon_eye').hide();
+			$('.ssg_history_nodata').hide();
+		} else {
+			$('#gnb_util_thumb').hide();
+			// $('#icon_eye').show();
+			$('.ssg_history_nodata').show();
+		}
+},
+	makeMallInfoHtml: function (h) {
+		var html = [];
+		var mallInfo = h.siteNo;
+
+		if(mallInfo == "6005") {
+			html.push('<i class="ssg">SSG</i>');
+		} else if(mallInfo == "6004") {
+			html.push('<i class="sm">신세계몰</i>');
+		} else if(mallInfo=="6009") {
+			html.push('<i class="sd">신세계백화점</i>');
+		} else if(mallInfo=="6001") {
+			html.push('<i class="em">이마트몰</i>');
+		} else if(mallInfo=="6002") {
+			html.push('<i class="tr">트레이더스</i>');
+		} else if(mallInfo=="7009") {
+			html.push('<i class="mnmorning">새벽배송</i>');
+		} else if(mallInfo=="7015") {
+			html.push('<i class="mnstarbucks">STARBUCKS</i>');
+		} else if(mallInfo=="6200") {
+			html.push('<i class="tv">신세계라이브쇼핑</i>');
+		} else if(mallInfo=="6300") {
+			html.push('<i class="si">S.I빌리지</i>');
+		} else if(mallInfo=="7008") {
+			html.push('<i class="outlet">프리미엄아울렛</i>');
+		} else if(mallInfo=="7011") {
+			html.push('<i class="mncasamia">까사미아</i>');
+		} else if(mallInfo=="7012") {
+			html.push('<i class="mnchicor">CHICOR</i>');
+		} else if(mallInfo=="7013") {
+			html.push('<i class="mntrip">여행</i>');
+		}
+		return html.join("");
+	},
+
+	makeShppInfoHtml: function (data) {
+		var html = [];
+		if (data.benefitGrp2 !== undefined) {
+			for (var i = 0; i < data.benefitGrp2.length; i++) {
+				if (data.benefitGrp2[i].type == '90') {
+					// 이마트
+					html.push('<div class="cm_mall_ship em ty_s">');
+					html.push('<span class="cm_ship_tx">쓱배송</span>');
+					html.push('</div>');
+					break;
+				} else if (data.benefitGrp2[i].type == '91') {
+					// 트레이더스
+					html.push('<div class="cm_mall_ship tr ty_s">');
+					html.push('<span class="cm_ship_tx"><em>traders</em>쓱배송</span>');
+					html.push('</div>');
+					break;
+				} else if (data.benefitGrp2[i].type == '92') {
+					// 새벽배송
+					html.push('<div class="cm_mall_ship mnmorning ty_s">');
+					html.push('<span class="cm_ship_tx">새벽배송</span>');
+					html.push('</div>');
+					break;
+				}
+			}
+		}
+		return html.join("");
+	},
+
+    makeClipInfoHtml : function(hData) {
+    	var attnDivCd = '';
+    	var attnDivDtlCd = '';
+    	var srchDivNm = '';
+
+    	switch(hData.srchDivCd) {
+	    case "10" :     // 상품 - 전몰
+	    	attnDivCd = '10';
+	    	attnDivDtlCd = '10';	// 10:일반, 20:단골
+	    	srchDivNm = '상품';
+	    	break;
+    	}
+
+    	var html = [];
+    	if (attnDivCd) {
+    		html.push('<div class="cmhistory_bt_area">');
+    		html.push('    <span class="cmlike _js_cmlike interestIt">');
+        	html.push('        <input type="hidden" name="attnDivCd" value="' + attnDivCd + '" />');
+        	html.push('        <input type="hidden" name="attnDivDtlCd" value="' + attnDivDtlCd + '" />');
+        	html.push('        <input type="hidden" name="siteNo" value="' + hData.siteNo + '" />');
+        	html.push('        <input type="hidden" name="attnTgtIdnfNo1" value="' + hData.srchTgtIdnfNo1 + '" />');
+        	html.push('        <input type="hidden" name="attnTgtIdnfNo2" value="' + (attnDivCd == '10' ? hData.salestrNo : hData.siteNo) + '" />');
+        	html.push('        <input type="hidden" name="infloSiteNo" value="' + hData.siteNo + '" />');
+    		html.push('        <button class="cmlike_btn _js_cmlike_btn sel_clip clickable" data-react-tarea="최근본|목록_' + srchDivNm + '|클립|' + hData.title1 + '">');
+    		html.push('    			<span class="cmlike_ico">');
+    		html.push('    				<i class="cmlike_secondary_m"></i>');
+    		html.push('    				<span class="sr_off"><span class="blind">관심상품 취소</span></span>');
+    		html.push('    				<span class="sr_on"><span class="blind">관심상품 등록</span></span>');
+    		html.push('    			</span>');
+    		html.push('    </span>');
+    		html.push('</div>');
+    	}
+    	return html.join("");
+    },
+
+    makeHistoryHtmlMo : function(historyList) {
+		var length = historyList.length;
+		var html = [];
+		var lastItemImg = '';
+
+		for (var i = 0; i < length; i++) {
+			var h = historyList[i];
+			var siteInfo = this.siteInfo[settings.curr_siteno];
+
+			if (siteInfo != null) {
+				if (lastItemImg == '') {
+					if ( h.srchDivCd == '70' ) {
+						lastItemImg = settings.cdn.trans + '?src=' + h.tcityImgUrl + '&edit=c&w=300&h=200';
+					}else if (h.srchDivCd == '71') {
+						lastItemImg =  h.hotelTcityImgUrl ;
+					} else if ( h.adultItemTypeCd == '10' && h.adultYn == 'N' ) {
+						lastItemImg = ssg.trans + "?src=/ui/ssg/img/common/Img_adult_500x500.png&w=120&h=120";
+
+					} else {
+						lastItemImg = getItemImgPath(h.itemId, '120');
+					}
+				}
+
+				switch (h.srchDivCd) {
+					case '10' : // 상품
+						var itemTitle = h.itemNm;
+
+						html.push('<li class="cmhistory_type_product" id="history_' + h.srchSeq + '" onclick="javascript:setCommonGnbCookie(\'useGnbAdvertCk\',\'\',-1);">');
+						html.push('    <div class="cmhistory_unit_box">');
+						html.push('        <div class="cmhistory_cell cmhistory_h_form">');
+						html.push('            <span class="cmhistory_form_chk">');
+						html.push('                <input type="checkbox" name="cmhistory_chk" id="cmhistory_chk' + h.srchSeq + '" value="' + h.srchSeq + '">');
+						html.push('                <label for="cmhistory_chk' + h.srchSeq + '" class="blind">상품 ' + itemTitle + '</label>');
+						html.push('            </span>');
+						html.push('         </div>');
+						html.push('         <div class="cmhistory_cell cmhistory_h_link">');
+						html.push('             <a href="' + h.itemLnkd + '" class="clickable" data-react-tarea="최근본|목록_상품|클릭|' + itemTitle + '"'
+							+ 'onclick="javascript:setCommonGnbCookie(\'useGnbAdvertCk\',\'\',-1);"' + '>');
+						html.push('                 <div class="cmhistory_h_txt">');
+						html.push(historySsg.makeShppInfoHtml(h));
+						html.push('                      <span class="cmhistory_tx">' + itemTitle + '</span>');
+						if (settings.locale == 'ko-KR') {
+							html.push('                        <span class="cmhistory_tx_price"><em class="ssg_price">' + numberFormat(h.displayPrc) + '</em><span class="ssg_tx">원</span></span>');
+						}
+						html.push('                  </div>');
+						html.push('                  <div class="cmhistory_h_thmb">');
+						if (h.adultItemTypeCd == '10' && h.adultYn == 'N') {
+							html.push('		<div class="cmhistory_thmb">');
+							html.push('		  <img class="ssg_lazy loaded" src="' + getItemImgPath(h.itemId, 120) + '" data-src="' + getItemImgPath(h.itemId, 120) + '" alt="상품 이미지" data-ll-status="loaded">');
+							html.push('		  <span class="adult19_img ty_19 ty_overlay">');
+							html.push('			<span class="blind">19세 이상만 구매가능해요</span>');
+							html.push('		  </span>');
+							html.push('		</div>');
+						} else {
+							html.push('                        <div class="cmhistory_thmb"><img class=\"ssg_lazy\" src="' + getItemImgPath(h.itemId, 120) + '" data-src="' + getItemImgPath(h.itemId, 120)
+								+ '" onerror="this.onerror=null;this.src=\'' + getItemImgPath(h.itemId, 120) + '\'" alt="' + replaceSpecial(itemTitle) + '"></div>');
+						}
+						html.push('                  </div>');
+						html.push('              </a>');
+						html.push('          </div>');
+						html.push('          <div class="cmhistory_cell cmhistory_h_add">');
+						html.push('                <div class="cmhistory_bt_area">');
+						html.push('                    <button type="button" class="cmhistory_bt_cart" onclick="frontCommCart.put(this, \'\');" class="clickable" data-react-tarea="최근본|목록_상품|장바구니|'
+							+ itemTitle + '"><i class="icon ty_md icon_cart"><span class="blind">장바구니 담기</span></i></button>');
+						html.push('                    <span style="display:none" class="disp_cart_data" data-cart-type="10" data-cart-inflo-site-no="' + h.infloSiteNo + '" data-cart-ordqty="'
+							+ h.minOnetOrdPsblQty + '">' + h.jsonOfCartData + '</span>');
+						html.push('                </div>');
+						html.push(historySsg.makeClipInfoHtml(h));
+						html.push('          </div>');
+						html.push('      </div>');
+						html.push('    </div>');
+						html.push(historySsg.makeHistoryInfo(h));
+						html.push('</li>');
+						break;
+					case "70" : // 항공
+						html.push('<li class="cmhistory_type_product" id="history_' + h.srchSeq + '" onclick="javascript:setCommonGnbCookie(\'useGnbAdvertCk\',\'\',-1);">');
+
+						html.push('    <div class="cmhistory_unit_box cmhistory_ty_trip">');
+						html.push('        <div class="cmhistory_cell cmhistory_h_form">');
+						html.push('            <span class="cmhistory_form_chk">');
+						html.push('                <input type="checkbox" name="cmhistory_chk" id="cmhistory_chk' + h.srchSeq + '" value="' + h.srchSeq + '">');
+						html.push('                <label for="cmhistory_chk' + h.srchSeq + '" class="blind">상품 ' + h.tripInfo.dparTcityNm + h.tripInfo.arvlTcityNm + h.tripInfo.dparDt + h.tripInfo.arvlDt
+							+ h.tripInfo.ftTripTypeNm + '</label>');
+						html.push('            </span>');
+						html.push('         </div>');
+						html.push('         <div class="cmhistory_cell cmhistory_h_link">');
+						html.push(
+							'                <a href="' + h.tripInfo.appLpageUrl + '" class="clickable" data-react-tarea="최근본|목록_항공|클릭|' + h.tripInfo.dparTcityNm + '-' + h.tripInfo.arvlTcityNm
+							+ '"' + 'onclick="javascript:setCommonGnbCookie(\'useGnbAdvertCk\',\'\',-1);"' + '>');
+						html.push('                 <div class="cmhistory_h_txt">');
+						html.push('                      <span class="cm_mall_text">');
+						html.push('                          <i class="' + siteInfo.iconClassMo + '">' + siteInfo.name + '</i>');
+						html.push('                      </span>');
+						html.push('                      <span class="cmhistory_tx">' + h.tripInfo.dparTcityNm + ' <i>→</i> ' + h.tripInfo.arvlTcityNm + '</span>');
+						html.push('                      <span class="cmhistory_tx_flightdate">' + h.tripInfo.dparDt + '<br>~ ' + h.tripInfo.arvlDt + '</span>');
+						html.push('                      <span class="cmhistory_tx">' + h.tripInfo.ftTripTypeNm + '</span>');
+						html.push('                  </div>');
+						html.push('                  <div class="cmhistory_cell cmhistory_h_thmb">');
+						html.push('                      <div class="cmhistory_thmb"><img class=\"ssg_lazy\" src="' + settings.cdn.trans + '?src=' + h.tripInfo.tcityImgUrl
+							+ '&edit=c&w=300&h=200" data-src="' + settings.cdn.trans + '?src=' + h.tcityImgUrl + '&edit=c&w=300&h=200" onerror="this.onerror=null;this.src=\'' + getItemNoImgPath(
+								'150') + '\'" alt="항공 상품 이미지"></div>');
+						html.push('                  </div>');
+						html.push('                </a>');
+						html.push('          </div>');
+						html.push('    </div>');
+						html.push(historySsg.makeHistoryInfo(h));
+						html.push('</li>');
+						break;
+
+					case "71" : // 호텔
+						html.push('<li class="cmhistory_type_product" id="history_' + h.srchSeq + '" onclick="javascript:setCommonGnbCookie(\'useGnbAdvertCk\',\'\',-1);">');
+
+						html.push('    <div class="cmhistory_unit_box cmhistory_ty_trip">');
+						html.push('        <div class="cmhistory_cell cmhistory_h_form">');
+						html.push('            <span class="cmhistory_form_chk">');
+						html.push('                <input type="checkbox" name="cmhistory_chk" id="cmhistory_chk' + h.srchSeq + '" value="' + h.srchSeq + '">');
+						html.push('                <label for="cmhistory_chk' + h.srchSeq + '" class="blind">상품 ' + h.tripInfo.hotelNm + h.tripInfo.hcityNm + h.tripInfo.chinDt + h.tripInfo.choutDt
+							+ h.tripInfo.hotelCntryCity + '</label>');
+						html.push('            </span>');
+						html.push('         </div>');
+						html.push('         <div class="cmhistory_cell cmhistory_h_link">');
+						html.push('                <a href="' + h.tripInfo.appLpageUrl + '" class="clickable" data-react-tarea="최근본|목록_호텔|클릭|' + h.tripInfo.hotelNm + '-' + h.tripInfo.hcityNm + '"'
+							+ 'onclick="javascript:setCommonGnbCookie(\'useGnbAdvertCk\',\'\',-1);"' + '>');
+						html.push('                 <div class="cmhistory_h_txt">');
+						html.push('                      <span class="cm_mall_text">');
+						html.push('                          <i class="' + siteInfo.iconClassMo + '">' + siteInfo.name + '</i>');
+						html.push('                      </span>');
+						html.push('                      <span class="cmhistory_tx">' + h.tripInfo.hotelNm + ' , ' + h.tripInfo.hcityNm + '</span>');
+						html.push('                      <span class="cmhistory_tx_flightdate">' + h.tripInfo.chinDt + '<br>~ ' + h.tripInfo.choutDt + '</span>');
+						html.push('                      <span class="cmhistory_tx">' + h.tripInfo.hotelCntryCity + '</span>');
+						html.push('                  </div>');
+						html.push('                  <div class="cmhistory_cell cmhistory_h_thmb">');
+						html.push('                      <div class="cmhistory_thmb"><img class=\"ssg_lazy\" src="' + h.tripInfo.hotelTcityImgUrl + '" data-src="' + h.tripInfo.hotelTcityImgUrl
+							+ '" onerror="this.onerror=null;this.src=\'' + getItemNoImgPath('150') + '\'" alt="호텔 상품 이미지"></div>');
+						html.push('                  </div>');
+						html.push('                </a>');
+						html.push('          </div>');
+						html.push('    </div>');
+						html.push(historySsg.makeHistoryInfo(ajaxHist));
+						html.push('</li>');
+						break;
+				}
+			}
+		} // ~for(historyList)
+
+        $('.cmhistory_loading').hide();
+
+    	if (html.length > 0) {
+    		if (lastItemImg && !$('.cmfloating_thmbhistory').attr('src')) {
+    			$('.cmfloating_thmbhistory').attr('src', lastItemImg);
+    			$('.cmfloating_icohistory, .cmfloating_thmbhistory').toggle();
+    		}
+    		$('#_cmhistory_wrap .cmhistory_nodata').hide();
+    		$("#_cmhistory_scroll .cmhistory_lst").html(html.join(''));
+
+    		Clip.readyClipBtn();
+    	} else {
+    		$("#_cmhistory_scroll .cmhistory_lst").empty();
+    		$('#_cmhistory_wrap .cmhistory_nodata').show();
+    	}
+
+        historySsg.refreshHistoryScroll();
+    },
+
+    refreshHistoryScroll : function() {
+    	if (_oSSGViewHistory) {
+    		_oSSGViewHistory.refreshScroll();
+    	}
+    },
+};
+
+var specials = { "&" : "&amp;", "<" : "&lt;", ">" : "&gt;", '"' : '&quot;', "'" : '&#39;', "/" : '&#x2F;' };
+function replaceSpecial(str) {
+	if ( str != null && str != '' ) {
+	    return str.replace(/[&<>"'\/]/g, function (s) {
+	        return specials[s];
+	    });
+	}
+}
+
+// 행사 종료 기간 체크
+function isEnd(val) {
+    if (val == null) return true;
+
+    var nowDate = new Date();
+    var endString = "KST "+nowDate.getFullYear();
+
+    var endDate = null;
+
+    if ( val.length > 19 && val.lastIndexOf(endString) > -1 ) {
+    	// other date format String - ex) Wed Aug 27 00:00:00 KST 2014
+
+    	endDate = new Date(val.substr(0,11) + nowDate.getFullYear() + val.substr(10,10) + "GMT+0900");
+    } else {
+	    var date = getDateTime(val, 0).split(".");
+	    var time = getDateTime(val, 1).split(":");
+
+	    if (date == "" || time == "") return true;
+
+	    endDate = new Date(date[0], date[1] - 1, date[2], time[0], time[1], time[2]);
+    }
+
+    return historySsg.getToday() > endDate;
+}
+
+// 숫자 3자리마다 콤마
+function numberFormat(val) {
+    var reg = /(^[+-]?\d+)(\d{3})/;
+    val += ''; // 숫자를 문자열로 변환
+
+    while (reg.test(val)) {
+        val = val.replace(reg, '$1' + ',' + '$2');
+    }
+
+    return val;
+}
+
+function getDateTime(val, index) {
+    if (val == null) {
+        return "";
+    }
+
+    var dateTime = val.split(" ");
+
+    if (dateTime == null || dateTime.length != 2) {
+        return "";
+    }
+
+    return dateTime[index];
+}
+
+/////////////////////////////////////////////////////////////////////
+
+var _oSSGViewHistory;
+
+var ssgHistoryInitFn = function() {
+	// thehowdy 독립몰, member에서 히스토리 사용 안함
+	if ($(location).attr('hostname').indexOf('thehowdy') == -1
+			&& $(location).attr('hostname').indexOf('member.ssg.com') == -1) {
+
+		if (settings.isMobile) {
+			_oSSGViewHistory = new ssg.View.history(); // ssg.view.layout
+
+			// 히스토리 필터
+			$('.cmhistory_sort').on('click', 'button', function(e) {
+				e.preventDefault();
+				historySsg.initHistory();
+			});
+		}
+
+		historySsg.initHistory();
+	}
+}
+
+if (typeof deferredObj === 'undefined') {
+	$(document).ready(ssgHistoryInitFn);
+} else {
+    deferredObj.done(ssgHistoryInitFn);
+}

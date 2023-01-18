@@ -1,0 +1,90 @@
+@charset "UTF-8";
+body, p, h1, h2, h3, h4, h5, h6, ul, ol, li, dl, dt, dd, table, th, td, form, fieldset, legend, input, textarea, button, select { margin: 0; padding: 0; }
+
+body, input, textarea, select, button, table { font-family: "Spoqa-Regular", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", Arial, sans-serif; font-size: 12px; line-height: 1.5em; }
+
+img, fieldset, table, th, td { border: 0; }
+
+ul, ol { list-style: none; }
+
+em, address { font-style: normal; }
+
+button { overflow: visible; border: 0; cursor: pointer; }
+
+a { text-decoration: none; }
+
+a:hover, a:active, a:focus { text-decoration: none; }
+
+table { border-spacing: 0; border-collapse: collapse; }
+
+hr { display: none; }
+
+.blind, legend { overflow: hidden; position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; border: 0; line-height: 0; white-space: normal; word-wrap: break-word; word-break: break-all; clip: rect(0, 0, 0, 0); }
+
+.blind:before, legend:before { display: block; width: 0; height: 0; font-size: 0; content: "\00a0"; }
+
+caption { overflow: hidden; width: 1px; height: 1px; margin-top: -1px; padding: 0; font-size: 1px; line-height: 0; color: transparent; white-space: nowrap; text-overflow: ellipsis; *height: 0; text-indent: -999px\9; }
+
+caption.blind, caption .blind { position: static; margin: -1px 0 0; *height: 0; }
+
+caption.blind:before, caption .blind:before { display: none; }
+
+img { vertical-align: middle; }
+
+#wrap { position: relative; width: 100%; min-width: 1280px; }
+
+#container { position: relative; min-height: 500px; z-index: 1; }
+
+#content { width: 1280px; margin: 0 auto; }
+
+#footer { z-index: 10; }
+
+#header_other { z-index: 200; position: relative; margin-top: -1px; }
+
+/* 스카이스크래퍼, left윙배너 */
+#wrap .sky_scraper { top: 260px; }
+
+.leftbnr_wing { position: absolute; left: 50%; top: 260px; width: 83px; height: auto; margin-left: -602px; z-index: 200; }
+
+.leftbnr_wing img { vertical-align: top; }
+
+.leftbnr_wing .bn_blist_benefit { overflow: hidden; position: relative; width: 77px; padding: 3px 0; border: 1px solid #e5e5e5; border-radius: 4px; background: #fff; }
+
+.leftbnr_wing .bn_blist_benefit .bx-controls-direction { padding: 3px 0; line-height: 0; text-align: center; }
+
+.leftbnr_wing .bn_blist_benefit .bx-controls-direction a { display: inline-block; overflow: hidden; background: url(../img/sprites/sp_leftwing.png) 0 0 no-repeat; line-height: 999px; vertical-align: top; width: 18px; height: 18px; margin: 0 1px; }
+
+.leftbnr_wing .bn_blist_benefit .bx-controls-direction .bx-next { background-position: -20px 0; }
+
+.leftbnr_wing .promotion_card_v2 { position: relative; margin-bottom: 6px; }
+
+.leftbnr_wing .promotion_card_v2 .bn_blist { overflow: hidden; width: 77px; height: 109px; }
+
+.leftbnr_wing .promotion_left { position: relative; margin-bottom: 6px; }
+
+.leftbnr_wing .promotion_left .bn_blist { overflow: hidden; width: 77px; }
+
+.leftbnr_wing .promotion_left .bn_blist li { display: none; }
+
+.leftbnr_wing .promotion_left .bn_blist li:first-child, .leftbnr_wing .promotion_left .bx-wrapper .bn_blist li { display: block; }
+
+/* paginate */
+.paginate { text-align: center; margin: 10px auto; }
+
+.paginate a, .paginate span.gap, .paginate strong { display: inline-block; position: relative; margin: 0; padding: 0 8px 0 7px; font-size: 12px; font-family: "Spoqa-Regular", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", Arial, sans-serif; color: #333; line-height: normal; text-decoration: none; vertical-align: middle; color: #666; border: 1px solid #e5e5e5; line-height: 21px; height: 21px; overflow: hidden; text-align: center; }
+
+.paginate a:hover, .paginate a:active, .paginate a:focus { background-color: #f4f4f4; }
+
+.paginate strong { color: #ffffff; background: #747474; border-color: #747474; }
+
+.paginate a.btn_first, .paginate a.btn_prev, .paginate a.btn_next, .paginate a.btn_last { padding: 0; background-image: url(../img/sprites/sp_paginate.gif); background-repeat: no-repeat; background-color: #f4f4f4; }
+
+.paginate a.btn_first { background-position: 0 0; width: 51px; }
+
+.paginate a.btn_prev { background-position: 0 -25px; width: 49px; }
+
+.paginate a.btn_next { background-position: 0 -50px; width: 49px; }
+
+.paginate a.btn_last { background-position: 0 -75px; width: 61px; }
+
+/*# sourceMappingURL=mall_with_common_layout.css.map */

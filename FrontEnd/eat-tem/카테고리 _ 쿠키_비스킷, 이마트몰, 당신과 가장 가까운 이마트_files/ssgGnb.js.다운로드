@@ -1,0 +1,888 @@
+
+/**
+ * jquery.cookie 사용 금지
+ */
+
+/**
+ * ssgGnbAjx 호출후 실행되야될 펑션 모음
+ * @type {jQuery.Deferred}
+ */
+var deferredObj = new $.Deferred();
+
+function logout(ref, wiselogParamStr) {
+	var domain = settings.domain.protocol + settings.domain.domain + settings.domain.context;
+
+	if(settings.UserInfo.mbrTypeCd == '30' ) {
+		domain = settings.domain.protocol + settings.domain.sfcDomain + settings.domain.context;
+	}
+
+	if( ref ) {
+		ref = "?retURL=" + encodeURIComponent(ref);
+	} else {
+		if( location.hostname.indexOf("pay.") > -1 || location.hostname.indexOf("member.") > -1 ) {
+			var retUrl = location.protocol + '//' + settings.domain.ssg;
+			if(settings.isThehowdy){	//thehowdy
+				retUrl = location.protocol + '//' + settings.domain.thehowdy;
+			} else if(settings.UserInfo.mbrTypeCd == '30'){	//SFC
+				retUrl = location.protocol + '//' + settings.domain.sfc.ssg;
+			}
+			ref = "?retURL=" + encodeURIComponent(retUrl);
+		} else if (location.hostname.indexOf("event.ssg.com") > -1) {
+			var retUrl = location.protocol + '//' + settings.domain.ssg;
+			ref = "?retURL=" + encodeURIComponent(retUrl);
+		} else {
+			var retUrl = location.protocol + '//' + window.location.hostname;
+			ref = "?retURL=" + encodeURIComponent(retUrl);
+		}
+	}
+
+	var newWiselogParamStr = '';
+
+	if(wiselogParamStr) {
+		newWiselogParamStr = '&' + wiselogParamStr;
+	}
+
+	location.href = domain + "/member/logout.ssg" + ref + newWiselogParamStr;
+}
+
+function fn_joinSite(ref) {
+	if( settings.UserInfo.isLoginYn == 'Y' && settings.UserInfo.mbrTypeCd == '90' ) {
+		logout(ref);
+	} else if ( settings.UserInfo.isLoginYn == 'N' || settings.UserInfo.isLoginYn == '' ) {
+		location.href = ref;
+	}
+}
+
+function goCustomer() {
+	var domain = settings.domain.ssg;
+	var Nethru_domain = Nethru_getDomain();
+	var aplSiteNo = "";
+
+	if( location.href.indexOf("emart.ssg.com") > -1 ) {
+		aplSiteNo = settings.siteno.emall;
+	}else if( location.href.indexOf("shinsegaemall.ssg.com") > -1 ) {
+		aplSiteNo = settings.siteno.small;
+	}else if( location.href.indexOf("www.ssg.com") > -1) {
+		aplSiteNo = settings.siteno.scom;
+	}else if( location.href.indexOf("department.ssg.com") > -1 ) {
+		aplSiteNo = settings.siteno.sdept;
+	}else if( location.href.indexOf("grocery.ssg.com") > -1 || settings.curr_siteno == '7018' ) {
+		aplSiteNo = settings.siteno.grocery;
+	}else{
+		aplSiteNo = settings.siteno.scom;
+	}
+
+	// 쿠키 저장
+	Nethru_SetCookie("infloSiteNo", aplSiteNo, null, "/", Nethru_domain);
+	// 고객센터로 이동
+	location.href = location.protocol + "//"+domain+"/customer/main.ssg?aplSiteNo="+aplSiteNo;
+}
+
+/**
+ * 페이스북 기본 가입자가 장바구니, 바로구매, MYSSG에 접근할 경우
+ * 페이스북연동가입 > 정보입력 페이지 (팝업)
+ * Example  : popupFormFacebook()
+ */
+function popupFormFacebook(ref) {
+	if (!ref) {
+		ref = location.href;
+	}
+
+	alert('Facebook을 통한 회원가입 시 약관 동의 및 개인정보 등록을 나중에 입력하기로 선택하셨습니다.\n정상적인 서비스 이용을 위해 나머지 정보를 입력해 주세요. 확인을 누르시면 해당 페이지로 이동합니다.');
+
+	var SSL_DOMAIN = settings.domain.protocol + settings.domain.domain + settings.domain.context;
+	popupWin(SSL_DOMAIN + "/member/popup/formFacebook.ssg?fcbookJoinRetURL=" + escape(ref), "", 900, 1208, "yes", "no");
+}
+
+/**
+ * 모바일 페이스북 기본 가입자가 장바구니, 바로구매, MYSSG에 접근할 경우
+ * 모바일 페이스북연동가입 > 4정보입력 페이지
+ * Example  : mobileFormFacebook()
+ */
+function mobileFormFacebook(ref, bypass) {
+	var ref = ref || location.href;
+	var bypass = bypass || '';
+
+	alert('Facebook을 통한 회원가입 시 약관 동의 및 개인정보 등록을 나중에 입력하기로 선택하셨습니다.\n정상적인 서비스 이용을 위해 나머지 정보를 입력해 주세요. 확인을 누르시면 해당 페이지로 이동합니다.');
+
+	var SSL_DOMAIN = settings.domain.protocol + settings.domain.domain + settings.domain.context;
+	document.location.href = SSL_DOMAIN + "/member/join/formFacebook.ssg?fcbookJoinRetURL=" + escape(ref) + "&bypass=" + bypass;
+}
+
+function initGnb(callBack) {
+	deferredObj.done(function (result) {
+		if (!result.isMobile) {
+			initPc(result);
+		} else {
+			initMobile(result);
+		}
+	});
+
+	var ajaxSsgGnbUrl = location.protocol + '//' + settings.domain.ssg;
+	if (settings.zone === 'local' || location.host.indexOf('event.ssg.com') >= 0) {
+		ajaxSsgGnbUrl = '';
+	}
+	$.ajax({
+		url: ajaxSsgGnbUrl + '/comm/ajaxSsgGnb.ssg',
+		cache: false,
+		data: {
+			thehowdy: location.hostname.indexOf('thehowdy.ssg.com') > -1 ? 'Y' : 'N'
+		},
+		dataType: 'jsonp',
+		timeout: (location.hostname.indexOf("pay.") < 0 ? 20000 : 3000),
+		success: function (result) {
+			// commEnv의 값을 설정함.
+			UserInfo = result.userInfo;
+			// settings의 값을 설정함.
+			settings.isMobile = result.isMobile;
+			settings.UserInfo = result.userInfo;
+			settings.UserInfo.mbrLoginId2 = $.cookie('MEMBER_ID') == undefined ? '' : $.cookie('MEMBER_ID');
+			settings.emSaleStrNo = result.emSaleStrNo;
+			settings.emRsvtShppPsblYn = result.emRsvtShppPsblYn;
+			settings.emergency = result.emergency;
+			settings.nativeAppYn = result.nativeAppYn;
+
+			try {
+				if (settings.emergency.CART_SOLDOUT_ITEM != undefined && settings.emergency.CART_SOLDOUT_ITEM != '' && settings.emergency.CART_SOLDOUT_ITEM != 'NONE') {
+					emergencyItemIds = settings.emergency.CART_SOLDOUT_ITEM;
+				}
+			} catch (e) {
+			}
+
+			deferredObj.resolve(result);
+
+			if (typeof callBack === 'function') {
+				callBack(UserInfo);
+			}
+		}
+	});
+}
+
+function initPc(result) {
+	var today = new Date();
+	var year = today.getFullYear();
+	var month = ('0' + (today.getMonth() + 1)).slice(-2);
+	var day = ('0' + today.getDate()).slice(-2);
+	var eventDate = year + month + day;
+	//멤버십 랜덤 문구 추가(로그인,등급 구분없이 3개중 1개 노출, 문구 갯수 변경시 랜덤 카운트도 변경해야함)
+	var mbrspRanInt = Math.floor((Math.random() * 3));
+	var mbrspStrs = [
+		"무료배송 쿠폰에 5% 적립까지"
+		,"장보기 할 때 마다 5% 적립"
+		,"스타벅스 음료 사이즈업 매월 2회"
+	];
+
+	if($("#gnbMbrspText .gnb_mmbrs_txt").length > 0) {
+		$("#gnbMbrspText .gnb_mmbrs_txt").html(mbrspStrs[mbrspRanInt]);
+	}
+
+	// 사용자별 인증 정보를 구성함.
+	if ( result.userInfo.isLoginYn == "Y" ) {
+		var str = result.userInfo.userNm;
+		if (result.userInfo.mbrTypeCd == "90") {
+			str += "님(비회원)";
+			$("#loginBtn").remove();
+			$("#joinBtn, #logoutBtn").show();
+			$("#logoutBtn").attr("class", "loginYesArea");
+		} else if (result.userInfo.emplYn == "Y") {
+			str += "님(임직원)";
+		} else if (result.userInfo.mbrcoNm != null) {
+			str += "님(" + result.userInfo.mbrcoNm.substring(0, 8) + ")";
+		} else {
+			str += "님";
+		}
+
+		if ($("#gnbUserInfoArea.gnbUserInfoArea a").length > 0) {
+			$("#gnbUserInfoArea.gnbUserInfoArea a").html(str);
+			//비회원 아닐 경우 랜딩 링크 변경
+			if (result.userInfo.mbrTypeCd != "90") {
+				$("#gnbUserInfoArea.gnbUserInfoArea a").attr("href", location.protocol + '//' + settings.domain.ssg + "/myssg/main.ssg?gnb=myssg");
+			}
+		} else {
+			$("#gnbUserInfoArea.gnbUserInfoArea").html(str);
+		}
+		$("#gnbUserInfoArea.gnbUserInfoArea").show();
+
+		//가입회원 멤버십 문구 변경
+		var mbrspStr = "스마일클럽 이용 중입니다.";
+		if (result.userInfo.mbrspMbrDivCd == "2003" || result.userInfo.mbrspMbrDivCd == "2004") {
+			if (result.userInfo.mbrspPaymtTypeCd == "10") {
+				mbrspStr = "스마일클럽 무료 이용 중입니다.";
+			} else {
+				mbrspStr = "스마일클럽 이용 중입니다.";
+			}
+
+			if ($("#gnbMbrspText .gnb_mmbrs_txt").length > 0) {
+				$("#gnbMbrspText .gnb_mmbrs_txt").html(mbrspStr);
+				//가입회원 링크 변경
+				$("#gnbMbrspText a").attr("href", settings.domain.protocol + settings.domain.mssg + settings.domain.context + "/myssg/mbrStatus.ssg");
+			}
+		}
+		//쓱배송 근접시간 가져오기
+		if ($("#deliveryTimeTable").length > 0 ) {
+			//배송지 정보
+			$.ajax({
+				url: "/common/ajaxShippAddr.ssg",
+				cache: false,
+				dataType: "json",
+				success: function (data) {
+					if (data.resultCode == 'SUCCESS') {
+						if (data.result.retMbrNshpploc != null) {
+							var innerHtml_em = "";
+							var innerHtml_tr = "";
+							var innerHtml_mn = "";
+							var emFastShippTime = data.result.emFastShippTimeTable;
+							var trFastShippTime = data.result.trFastShippTimeTable;
+							var mnFastShippTime = data.result.mnFastShippTimeTable;
+
+							if(emFastShippTime != '') {
+								innerHtml_em =  "<li class='swiper-slide' id='emFastShippTimeTable'>";
+								innerHtml_em +=  "<div class='ssgcar_item ty_em' data-react-unit-type='text' data-react-unit-text='[{\"type\":\"tarea_addt_val\",\"value\":\"배송정보\"}]'>";
+								innerHtml_em +=  "<a href='javascript:getShppOrdDgr(\"6001\");' className='ssgcar_item_link clickable' data-react-tarea='공통|플로팅|배송정보' data-react-tarea-dtl-cd='t00060'>";
+								innerHtml_em +=  "<div class='ssgcar_img'><span class='blind'>이마트 쓱배송</span></div>";
+								innerHtml_em +=  "<div class='ssgcar_bubble'>";
+								innerHtml_em +=  "<p class='ssgcar_bubble_txt' id='emFastShippTime'> "+emFastShippTime;
+								innerHtml_em +=  "</p></div></a></div>"
+								innerHtml_em +=  "</li>";
+							}
+
+							if(trFastShippTime !=''){
+								innerHtml_tr =  "<li class='swiper-slide' id='trFastShippTimeTable'>";
+								innerHtml_tr +=  "<div class='ssgcar_item ty_tr' data-react-unit-type='text' data-react-unit-text='[{\"type\":\"tarea_addt_val\",\"value\":\"배송정보\"}]'>";
+								innerHtml_tr +=  "<a href='javascript:getShppOrdDgr(\"6002\");' className='ssgcar_item_link clickable'>";
+								innerHtml_tr +=  "<div class='ssgcar_img'><span class='blind'>트레이더스 쓱배송</span></div>";
+								innerHtml_tr +=  "<div class='ssgcar_bubble'>";
+								innerHtml_tr +=  "<p class='ssgcar_bubble_txt' id='emFastShippTime'> "+trFastShippTime;
+								innerHtml_tr +=  "</p></div></a></div>"
+								innerHtml_tr +=  "</li>";
+							}
+
+							if(mnFastShippTime !=''){
+								innerHtml_mn =  "<li class='swiper-slide' id='trFastShippTimeTable'>";
+								innerHtml_mn +=  "<div class='ssgcar_item ty_mnmorning' data-react-unit-type='text' data-react-unit-text='[{\"type\":\"tarea_addt_val\",\"value\":\"배송정보\"}]'>";
+								innerHtml_mn +=  "<a href='javascript:getShppOrdDgr(\"7009\");' className='ssgcar_item_link clickable'>";
+								innerHtml_mn +=  "<div class='ssgcar_img'><span class='blind'>새벽배송</span></div>";
+								innerHtml_mn +=  "<div class='ssgcar_bubble'>";
+								innerHtml_mn +=  "<p class='ssgcar_bubble_txt' id='emFastShippTime'> "+mnFastShippTime;
+								innerHtml_mn +=  "</p></div></a></div>"
+								innerHtml_mn +=  "</li>";
+							}
+
+							if ($("#deliveryTimeTable").length > 0 ) {
+								$("#deliveryTimeTable").html(innerHtml_em + innerHtml_tr + innerHtml_mn);
+							}
+
+						} else {
+							var innerHtml = "";
+							if ($("#deliveryTimeTable").length > 0 ) {
+								innerHtml =  "<li class='swiper-slide' id='emFastShippTimeTable'>";
+								innerHtml +=  "<div class='ssgcar_item ty_em'>";
+								innerHtml +=  "<a href='javascript:getModMyShppLoc();' className='ssgcar_item_link'>";
+								innerHtml +=  "<div class='ssgcar_img'><span class='blind'>이마트 쓱배송</span></div>";
+								innerHtml +=  "<div class='ssgcar_bubble'>";
+								innerHtml +=  "<p class='ssgcar_bubble_txt' id='emFastShippTime'>  배송지를 설정하고 배송시간을 확인해보세요";
+								innerHtml +=  "</p></div></a></div>"
+								innerHtml +=  "</li>";
+								$("#deliveryTimeTable").html(innerHtml);
+							}
+						}
+
+					}
+				}
+			});
+
+
+		}
+
+		if (location.hostname.indexOf("thehowdy.ssg.com") > -1) {
+			$("#member_message").show();
+		}
+
+		setVvipView('pc', result);
+
+		setMbrProgOrdCnt();
+
+	}else{
+		//비로그인시 배송시간 문구
+		var innerHtml = "";
+		if ($("#deliveryTimeTable").length > 0 ) {
+			innerHtml =  "<li class='swiper-slide' id='emFastShippTimeTable'>";
+			innerHtml +=  "<div class='ssgcar_item ty_em'>";
+			innerHtml +=  "<a href='#' onclick=\"login('','','','gnb=login');return false;\" className='ssgcar_item_link'>";
+			innerHtml +=  "<div class='ssgcar_img'><span class='blind'>이마트 쓱배송</span></div>";
+			innerHtml +=  "<div class='ssgcar_bubble'>";
+			innerHtml +=  "<p class='ssgcar_bubble_txt' id='emFastShippTime'>  로그인 후 배송시간을 확인해보세요";
+			innerHtml +=  "</p></div></a></div>"
+			innerHtml +=  "</li>";
+			$("#deliveryTimeTable").html(innerHtml);
+		}
+	}
+
+	var mbrCartCnt = Number(result.cartCnt);
+	if (!isNaN(mbrCartCnt) && mbrCartCnt > 0) {
+		if ($("#cartCntInfoBtn").length > 0) { // thehowdy
+			$("#cartCntInfoBtn").find("#cartCnt").text(mbrCartCnt);
+		} else if ($("#mbrCartCntInfo").length > 0) {
+			$("#mbrCartCntSpan").text(mbrCartCnt > 99 ? "99+" : mbrCartCnt);
+			$("#mbrCartCntInfo").show();
+		}
+
+		if ($("#skyCartCntInfo").length > 0) { //플로팅 영역
+			$("#skyCartCntSpan").text(mbrCartCnt > 99 ? "99+" : mbrCartCnt);
+			$("#skyCartCntInfo").show();
+		}
+	}else{
+		$("#mbrCartCntInfo").hide();
+		$("#skyCartCntInfo").hide();
+	}
+
+	var gnbCartPreviewPass = settings && settings.emergency && settings.emergency.GNB_CART_PREVIEW_PASS == 'Y'; /* EMERGENCY!! */
+	if(!gnbCartPreviewPass) {
+		$('#utilCartPreviewGo').on('cartLayerGoOpened', function(){
+			var resultHtml = '',
+				loadingHtml = '',
+				aItemHtml = '',
+				mallIconCss = { 6001: 'em', 6002: 'tr', 6003: 'bt', 6004: 'sm', 6009: 'sd', 6100: 'hwd', 6200: 'tv', 6300: 'siv', 7008: 'outlet',
+					7009: 'mnmorning', 7010: 'mndeptfood', 7011: 'mncasamia', 7012: 'mnchicor', 7013: 'mntrip', 7015: 'mnstarbucks'},
+				cartPreLayerObj = $('#utilCartPreviewGo > div.util_cart_layer'),
+				numFormatRegex = /(\d)(?=(\d{3})+(?!\d))/g,
+				maxCount,
+				cartType10Count = 0, //일반장바구니 개수
+				aItem,
+				aItemPrice,
+				customFloor = function(value) {
+					var digits = Math.pow(10, 2),
+						num = Math.floor(value * digits) / digits;
+					return num.toFixed(2);
+				},
+				getFormattedValue = function(value) {
+					var result = value;
+					if(settings.locale == 'ko-KR') {
+						result = (value + "").replace(numFormatRegex, '$1,');
+					} else {
+						result = (customFloor(value * settings.exchangeRate) + "").replace(numFormatRegex, '$1,');
+					}
+					return result;
+				};
+			if(initPc.cartPreviewProgress) {
+				return;
+			}
+
+			initPc.cartPreviewProgress = true;
+			$('#utilCartPreviewGo').addClass('on');
+
+			loadingHtml += '<p class="util_cart_loading"><span class="blind">상품 목록 로딩중입니다.</span></p>';
+			loadingHtml += '<dl class="util_cart_total"><dd class="util_cart_totaldsc"><em class="util_cart_pointx2">로딩중 ..</em></dd></dl>';
+			cartPreLayerObj.html(loadingHtml);
+
+			$.ajax({
+				url: '//' + settings.domain.oapi + '/front/cart/gnb.ssg?locale=' + settings.locale,
+				type: 'GET',
+				dataType: 'jsonp',
+				jsonp: 'callback',
+				timeout: 5000,
+				success: function(result) {
+					if(result.resCd === '0000') {
+						if(result.cartGnbItemList.length > 0) {
+							maxCount = result.cartGnbItemList.length > 5 ? 5 : result.cartGnbItemList.length;
+							resultHtml += '<em class="util_cart_tit">최근 담은 상품 입니다</em>';
+							resultHtml += '<ul class="util_cartlst">';
+							for(var x = 0; x < maxCount; x++) {
+								aItem = result.cartGnbItemList[x];
+								aItemPrice = getFormattedValue(aItem.ssgPrice);
+
+								if(aItem.cartTypeCd === '10') {
+									cartType10Count++;
+								}
+
+								aItemHtml += '<li class="util_cartlst_item' + (aItem.bsellId != '' ? ' ty_bundle' : '' ) + '">';
+								aItemHtml += '    <div class="util_cartlst_thmb">';
+
+								if ( aItem.bsellId != '' ) {
+									// 업셀링 상품
+									for(var i = 0; i < aItem.bsellGnbItemList.length; i++) {
+										aItemHtml += '        <a href="' + aItem.bsellGnbItemList[i].itemUrl + '" class="clickable" data-react-tarea="몰공통|GNB|상품상세" aria-hidden="true">';
+										aItemHtml += '            <img src="' + aItem.bsellGnbItemList[i].itemImgPath + '" onerror="this.onerror=null;this.src=\'' + aItem.noImagePath + '\'" alt="' + aItem.bsellGnbItemList[i].itemNm + '" class="util_cartlst_img">';
+										aItemHtml += '        </a>';
+									}
+								} else {
+									// 일반
+									aItemHtml += '        <a href="' + aItem.itemUrl + '" class="clickable" data-react-tarea="몰공통|GNB|상품상세" aria-hidden="true">';
+									aItemHtml += '            <img src="' + aItem.itemImgPath + '" onerror="this.onerror=null;this.src=\'' + aItem.noImagePath + '\'" alt="' + aItem.itemNm + '" class="util_cartlst_img">';
+									aItemHtml += '        </a>';
+								}
+
+								if (aItem.sellPsblYn != 'Y') {
+									aItemHtml += '    <span class="util_cartlst_soldout notranslate"><em class="tx_ko">일시품절</em><em class="tx_gl">Sold Out</em></span>';
+								}
+
+								aItemHtml += '    </div>';
+								aItemHtml += '    <dl class="util_cartlst_infoarea">';
+
+								if ( aItem.bsellId != '') {
+									// 업셀링 상품
+									aItemHtml += '        <dt>';
+
+									for(var i = 0; i < aItem.bsellGnbItemList.length; i++) {
+										aItemHtml += '        <a href="' + aItem.bsellGnbItemList[i].itemUrl + '" class="util_cartlst_name notranslate clickable" data-react-tarea="몰공통|GNB|상품상세">' + aItem.bsellGnbItemList[i].itemNm + '</a>';
+									}
+
+									aItemHtml += '        </dt>';
+								} else {
+									// 일반
+									aItemHtml += '        <dt><a href="' + aItem.itemUrl + '" class="util_cartlst_name notranslate clickable" data-react-tarea="몰공통|GNB|상품상세">' + aItem.itemNm + '</a></dt>';
+								}
+
+								aItemHtml += '        <dd class="util_cartlst_icon"><span class="cm_mall_ic ty_circle_s notranslate"><i class="' + (mallIconCss[aItem.siteNo] || 'ssg') +'"><span class="blind">' + (settings.sitenm[aItem.siteNo] || settings.sitenm['6005']) + '</span></i></span></dd>';
+								aItemHtml += '        <dd class="util_cartlst_info">' + (aItem.cartTabType == '10' ? '새벽배송' : aItem.cartTabType == '20' ? '쓱배송' : '택배배송') + '</dd>';
+
+								if(settings.locale == 'ko-KR') {
+									aItemHtml += '        <dd class="util_cartlst_info">' + (aItem.ordQty + "").replace(numFormatRegex, '$1,') + '개</dd>';
+								} else {
+									aItemHtml += '        <dd class="util_cartlst_info notranslate">' + (aItem.ordQty + "").replace(numFormatRegex, '$1,') + '</dd>';
+								}
+
+								aItemHtml += '        <dd class="util_cartlst_info"><span class="util_cartlst_price"><em class="ssg_price">' + aItemPrice + '</em><span class="ssg_tx">원</span></span></dd>';
+								aItemHtml += '    </dl>';
+								aItemHtml += '</li>';
+							}
+							resultHtml += aItemHtml;
+							resultHtml += '</ul>';
+							resultHtml += '<a href="javascript:ssgGnb.fn_btnClickCart();" class="util_cart_more clickable" data-react-tarea="몰공통|GNB|장바구니확인">총 ' + (result.itemTot + "").replace(numFormatRegex, '$1,') + '개 상품 장바구니에서 확인하기</a>';
+							$(cartPreLayerObj).html(resultHtml);
+						} else {
+							resultHtml += '<em class="util_cart_empty">장바구니에 담은 상품이 없습니다</em>';
+							$(cartPreLayerObj).addClass('ty_empty');
+							$(cartPreLayerObj).html(resultHtml);
+						}
+					}
+				}
+			}).always(function() {
+				initPc.cartPreviewProgress = false;
+				if(typeof ssg_react !== 'undefined' && typeof ssg_react.directCall === 'function') {
+					ssg_react.directCall({tarea: '몰공통|GNB|레이어_열림'})
+				}
+			});
+		});
+	} else {
+		$('#utilCartPreviewGo').removeClass('active_preview');
+		$('a.util_cart_btnpreview').append($("#mbrCartCntSpan"));
+	}
+
+	// 제휴 채널 팝업
+	openB2ePop();
+}
+
+function getShppOrdDgr(siteNo) {
+	if ( UserInfo.isLoginYn == 'N' ) {
+		login();
+		return;
+	}
+	var url = "https://" + settings.domain.mssg + "/common/showMEmallDelivery.ssg?siteNo=" + siteNo +"&isPop=Y";
+	popupWin(url, "배송가능 회차조회", 810, 724, "yes", "no");
+}
+
+function getModMyShppLoc() {
+	if ( settings.UserInfo.isLoginYn != 'Y' ) {
+		login();
+		return;
+	}
+
+	var url = settings.domain.protocol + settings.domain.domain + "/comm/popup/shpplocList.ssg";
+	popupWin(url + "?callbackUrl=" + encodeURIComponent(location.href), "", 750, 822, "yes", "no");
+}
+
+function setVvipView(dType, result) {
+	try {
+		if (result.userInfo.vvipYn != 'Y') return;
+		if (dType == 'pc') {
+			setTimeout(function() {
+				setBirthdayLogo(dType, result);
+			}, 200);
+		} else if (dType == 'mobile') {
+			if (!setBirthdayLogo(dType, result)) {
+				if (typeof(setSsgMainVvipBanr) == 'function') {
+					setSsgMainVvipBanr();
+				}
+			}
+		}
+	} catch (e) {
+		var console = window.console || {log:function(){}};
+		console.log(e);
+	}
+}
+
+// GNB 생일 로고/배너 표시
+function setBirthdayLogo(dType, result) {
+	if (dType == 'pc') {
+		if (location.hostname.indexOf("www.ssg.com") < 0 || location.pathname.indexOf("/myssg/") > -1) {
+			return false;
+		}
+	}
+
+	var birthday = result.userInfo.birthday;
+	var userNm = result.userInfo.userNm;
+	var mbrTypeCd = result.userInfo.mbrTypeCd;
+
+	if (!birthday) { return false; }
+	var todayDate = new Date();
+	var monDate = new Date(todayDate.getTime());
+	monDate.setDate(monDate.getDate() - (todayDate.getDay() == 0 ? 6 : todayDate.getDay() - 1));
+	monDate.setHours(0, 0, 0, 0);
+	var sunDate = new Date(todayDate.getTime());
+	sunDate.setDate(sunDate.getDate() + (todayDate.getDay() == 0 ? 0 : 7 - todayDate.getDay()));
+	sunDate.setHours(23, 59, 59, 999);
+	var birthDate = new Date(todayDate.getFullYear(), Number(birthday.substring(0, 2))-1, Number(birthday.substring(2, 4)));
+
+	if (monDate.getTime() <= birthDate.getTime() && birthDate.getTime() <= sunDate.getTime()) {
+
+		if (dType == 'pc') {
+			var vvipVal = "name_x";
+			if ((mbrTypeCd == "10" || mbrTypeCd == "20" || mbrTypeCd == "25" || mbrTypeCd == "30")
+				&& userNm && userNm.length < 5) {
+				vvipVal = "name_o";
+			}
+			$('#logoSection').vvipLogo({
+				ty: 'bg_birthday',
+				vvip: vvipVal,
+				msg1: 'HAPPY', msg2: 'BIRTHDAY',
+				name: userNm,
+				link: location.protocol + '//' + settings.domain.ssg
+			});
+		}
+
+		// SSG/MSSG 메인 생일배너 표시
+		if (typeof(setSsgMainBirthDayBanr) == 'function') {
+			setSsgMainBirthDayBanr({ name: userNm, month: birthday.substring(0, 2), day: birthday.substring(2, 4) });
+			return true;
+		}
+	}
+
+	return false;
+}
+
+// GNB 상단 진행주문수 표시
+function setMbrProgOrdCnt(mobileYn) {
+	if(typeof mobileYn == 'undefined' || mobileYn == '') {
+		mobileYn = 'N';
+	}
+
+	var gnbOrdShppCnt = settings && settings.emergency && settings.emergency.GNB_ORD_SHPP_CNT_OFF == 'Y'; /* EMERGENCY!! */
+	if (gnbOrdShppCnt) {
+		return;
+	}
+	var ajaxUrl = "/comm/ajaxGetMbrProgOrdCnt.ssg";
+	var ajaxTimeOut = location.hostname.indexOf("pay.")<0?20000:3000;
+
+	if (location.hostname.indexOf("pay.") > -1 || location.hostname.indexOf("member.") > -1 || location.hostname.indexOf("tour.") > -1) {
+		ajaxUrl = "https://" + settings.domain.ssg + ajaxUrl;
+	}
+
+	$.ajax({
+		url: ajaxUrl,
+		dataType: "jsonp",
+		timeout: ajaxTimeOut,
+		success: function(result) {
+			if (result && !isNaN(result.mbrProgOrdCnt) && result.mbrProgOrdCnt > 0) {
+				if(mobileYn == 'Y') {
+					// 모바일 개편
+					if($('#bottomOrderInfoLi').length) {
+						$("#bottomOrderCntSpan").after(result.mbrProgOrdCnt > 99 ? "99+" : result.mbrProgOrdCnt);
+						$("#bottomOrderCnt").show();
+					}
+				} else {
+					$("#mbrProgOrdCntSpan").text(result.mbrProgOrdCnt > 99 ? "99+" : result.mbrProgOrdCnt);
+					$("#mbrProgOrdCntSpan").show();
+				}
+			}
+		}
+	});
+}
+
+function initMobile(result) {
+	// 모바일용 공통 정보 셋팅
+	if ( result.userInfo.isLoginYn == "Y" ) {
+		if(location.hostname.indexOf("thehowdy.ssg.com") > 0) {
+			var userNmStr = result.userInfo.userNm;
+
+			if (result.userInfo.mbrTypeCd == "90") {
+				userNmStr += "(비회원)님";
+			} else if (result.userInfo.emplYn == "Y") {
+				userNmStr += "(임직원)님";
+			} else if (result.userInfo.mbrcoNm != null) {
+				userNmStr += "(" + result.userInfo.mbrcoNm.substring(0, 8) + ")님";
+			} else {
+				userNmStr += "님";
+			}
+
+			var innerHTML = $("#lnb_logoutText").html() + userNmStr;
+			$("#lnb_logoutText").html(innerHTML);
+			$("#lnb_logoutText").show();
+		}else if(location.hostname.indexOf("grocery.ssg.com") > 0 || location.hostname.indexOf("event.ssg.com") > 0 || settings.curr_siteno == '7018') {
+			//배송지 정보
+			$.ajax({
+				url: "/common/ajaxShippAddr.ssg",
+				cache : false,
+				dataType: "json",
+				success : function(data) {
+					if (data.resultCode == 'SUCCESS') {
+						if(data.result.retMbrNshpploc != null){
+							var deliveryNm = data.result.retMbrNshpploc.shpplocAntnmNm;
+							if(data.result.shareShpplocYn == "Y"){
+								deliveryNm = data.result.retMbrNshpplocDto.cartNm;
+							}
+
+							$("#deliveryNm").html("<em>"+deliveryNm+"</em>");
+						}else{
+							$("#deliveryNm").html("배송지를 등록해주세요");
+						}
+
+					}
+				}
+			});
+
+
+		} else {
+			var lnbLoginTxt = result.userInfo.userNm + "님";
+			var lnbGradeTxt = "";
+
+			if(result.userInfo.mbrTypeCd != '90') {
+				if ( result.userInfo.mbrGrdCd == "50" ) {
+					lnbGradeTxt = '<i class="clnb_ic clnb_ic_vip">VIP</i>';
+				} else if ( result.userInfo.mbrGrdCd == "40" ) {
+					lnbGradeTxt = '<i class="clnb_ic clnb_ic_gold">GOLD</i>';
+				} else if ( result.userInfo.mbrGrdCd == "30" ) {
+					lnbGradeTxt = '<i class="clnb_ic clnb_ic_silver">SILVER</i>';
+				} else if ( result.userInfo.mbrGrdCd == "20" ) {
+					lnbGradeTxt = '<i class="clnb_ic clnb_ic_bronze">BRONZE</i>';
+				} else if ( result.userInfo.mbrGrdCd == "10" ) {
+					lnbGradeTxt = '<i class="clnb_ic clnb_ic_family">FAMILY</i>';
+				} else {
+					lnbGradeTxt = '<i class="clnb_ic clnb_ic_family">FAMILY</i>';
+				}
+			}
+			$("#lnbUserNm").html(lnbLoginTxt);
+			$("#lnbGradeNm").html(lnbGradeTxt);
+
+			setVvipView('mobile', result);
+		}
+	}
+
+	if(location.hostname.indexOf("thehowdy.ssg.com") > 0) {
+		if(typeof(result.cartCnt) == "number" && result.cartCnt > 0){
+			var str = result.cartCnt > 99 ? "99+" : result.cartCnt;
+			$("#cartCnt").text(str);
+		}
+
+	} else {
+		if(typeof(result.cartCnt) == "number" && result.cartCnt > 0){
+			var str = result.cartCnt > 99 ? "99+" : result.cartCnt;
+			// gnb 장바구니
+			if($('#cartCntSpan').length) {
+				$('#cartCntSpan').after(str);
+			}
+			// 검색 레이어 장바구니
+			if($('#searchCartCntSpan').length) {
+				$('#searchCartCntSpan').after(str);
+			}
+			// 상품상세 헤더 장바구니
+			if($('#itemCartCntSpan').length) {
+				$('#itemCartCntSpan').after(str);
+			}
+
+			if($("#topCartCnt").length) {
+				// 타이틀 우측영역 에서 장바구니
+				$("#topCartCnt").after(str);
+			}
+
+			// old mHeader
+			// if($("#cartCnt").length && $("#cartCnt").parents('span.pd_numbx').length) {
+			// 	$("#cartCnt").text(str);
+			// 	$("#cartCnt").parents('span.pd_numbx').show();
+			// 	// 타이틀 우측영역 에서 장바구니
+			// 	$("#topCartCnt").text(str);
+			// }
+
+		}
+	}
+
+	if(typeof isApp !== 'undefined') {
+		if(isApp != 'Y' && location.hostname.indexOf("thehowdy.ssg.com") < 0 && location.hostname.indexOf("howdy.ssg.com") < 0) {
+			openB2ePop('mobile');
+		}
+	}
+
+	setMbrProgOrdCnt('Y');
+}
+
+// 제휴채널 통해서 들어왔지만 B2E회원의 경우 제휴혜택 적용 팝업
+function openB2ePop(type) {
+	var beforeCkwhere = getCookieVal("before_ckval");
+
+	if ( settings.domain.isHttpFlag == true && typeof ckwhereVal !== "undefined" && ckwhereVal != "" && beforeCkwhere != "" &&
+		location.hostname.indexOf("pay.") < 0 && settings.UserInfo.isLoginYn == "Y" && ckwhereVal != beforeCkwhere ) {
+
+		var affPopCkwhereCommon = [ "shinhan", "ssg_shinhan", "shcard", "hanamall", "hanaskcard_mail",
+			"hanaskcard", "hanacard", "ssg_hanask", "kbmall", "kbcardshop_m",
+			"kbcardshop_happy", "kbcardshop", "ssg_kbcard", "lottemall", "s_lottemall",
+			"ssg_ltcard", "hyundaicard", "hamall", "hcard", "ssg_hdcard",
+			"sconnect", "scardmall", "sscard_sc", "sscard", "sscard_m",
+			"ssg_sscard", "citicard_mobile", "citicard_coupon", "citicard", "asiana",
+			"asianaclub", "ssg_asiana", "hanafos", "s_hanafos", "ssg_hanafos",
+			"cashbagmob" ];
+		var affPopCkwherePc		= [ "naver1", "naver", "naver_happy", "mnaver", "s_naver",
+			"mssg_naver", "ssg_naver", "m_daumsh", "daumsh", "daum_shop",
+			"daum_mobile", "mssg_daum", "ssg_daum", "enuri", "m_enuri",
+			"s_enuri", "enuri_happy", "menur", "mssg_enuri", "ssg_enuri",
+			"danawa", "danawa1", "s_danawa", "danawa_happy", "mssg_danawa",
+			"ssg_danawa", "BB", "bestbuyer_happy", "bestbuyer", "shcard_smart",
+			"nhcard", "pointpark_happy", "pointpark_ktf", "pointpark", "ollehhari",
+			"megapass", "s_megapass", "olleh", "ssg_megapass", "thiat01",
+			"pointbanking", "ssg_thiat", "cashbagmall", "cashmail", "cashbagmall_mail",
+			"cashbagmall_banner", "s_cashbagmall", "ssg_cashbag", "ctland", "cland",
+			"ssg_ctland" ];
+		var affPopCkwhereMobile = [ "hdmail", "hdcoupon", "hanamall_banner", "ssg_hana", "asiana_mobile",
+			"asianaclub_mobile", "s_cashbagmob", "ssg_mcashbag" ];
+
+		var checkAffPopCkwhere = [];
+
+		if(type == 'mobile') {
+			checkAffPopCkwhere = affPopCkwhereCommon.concat(affPopCkwhereMobile);
+		} else {
+			checkAffPopCkwhere = affPopCkwhereCommon.concat(affPopCkwherePc);
+		}
+
+		for (var idx in checkAffPopCkwhere) {
+			if ( checkAffPopCkwhere[idx] == beforeCkwhere && getCookieVal(beforeCkwhere) != "Y") {
+
+				if(type == 'mobile') {
+					var b2ePopHtml = [];
+
+					b2ePopHtml.push('<div class="cb_box">');
+					b2ePopHtml.push('	<div class="cb_thum" id="com_channel_ban_sub">');
+					b2ePopHtml.push('		<a href="javascript:void(0);">');
+					b2ePopHtml.push('			<img src="' + location.protocol + '//static.ssgcdn.com/ui/common/img/popup/pop_b2e.jpg" alt="제휴혜택안내">');
+					b2ePopHtml.push('		</a>');
+					b2ePopHtml.push('	</div>');
+					b2ePopHtml.push('	<div class="cb_list_area">');
+					b2ePopHtml.push('		<ul>');
+					b2ePopHtml.push('			<li><a href="javascript:openB2ePopClose();" class="cb_today">오늘 하루 보지 않기<span><em class="blind">닫기</em></span></a></li>');
+					b2ePopHtml.push('			<li><a href="javascript:openB2ePopClose();" class="cb_close">닫기</a></li>');
+					b2ePopHtml.push('		</ul>');
+					b2ePopHtml.push('	</div>');
+					b2ePopHtml.push('</div>');
+
+					$("#notice_b2e_pop").html(b2ePopHtml.join(''));
+				}
+
+				$("#notice_b2e_pop").show();
+				return;
+			}
+		}
+	}
+}
+
+function openB2ePopClose() {
+	var beforeCkwhere = getCookieVal("before_ckval");
+	setCookieVal(beforeCkwhere, "Y", 1);
+	$("#notice_b2e_pop").html('');
+	$("#notice_b2e_pop").hide();
+}
+
+function getCookieVal(name){
+	var nameOfCookie = name + "=";
+	var x = 0;
+	var endOfCookie;
+	while ( x <= document.cookie.length) {
+		var y = (x+nameOfCookie.length);
+		if ( document.cookie.substring( x, y ) == nameOfCookie ) {
+			if ( (endOfCookie=document.cookie.indexOf( ";", y )) == -1 ) endOfCookie = document.cookie.length;
+			return decodeURIComponent( document.cookie.substring( y, endOfCookie ) );
+		}
+		x = document.cookie.indexOf( " ", x ) + 1;
+		if (x == 0) break;
+	}
+	return "";
+}
+
+function setCookieVal(name, value, expire, domain) {
+	var endDate = new Date();
+	endDate.setDate(endDate.getDate() + expire);
+	var cookieStr = name + "=" + encodeURIComponent(value) + "; path=/; expires=" + endDate.toGMTString() + ";";
+	if (typeof domain != 'undefined' && domain) {
+		cookieStr += ' domain=' + domain + ';';
+	}
+	document.cookie = cookieStr;
+}
+
+// INIT
+$(function(){
+	// CK_WHERE값 전역변수
+	var value = getCookieVal("where");
+	var ckwhere_idx = value.indexOf("CK_WHERE=");
+
+	if ( ckwhere_idx >=0 ) {
+		window.ckwhereVal = value.substr(ckwhere_idx+9);
+		var ckwhere_e_idx = ckwhereVal.indexOf("&");
+		if ( ckwhere_e_idx >= 0 ) {
+			window.ckwhereVal = ckwhereVal.substr(0, ckwhere_e_idx);
+		}
+	}
+
+	initGnb();
+
+	if(typeof ssg_react !== 'undefined' && typeof ssg_react.init === 'function') {
+		ssg_react.init();
+	}
+
+	if(typeof ssg_react_v2 !== 'undefined' && typeof ssg_react_v2.init === 'function') {
+		ssg_react_v2.init();
+	}
+
+	if(typeof ssg_ad !== 'undefined' && typeof ssg_ad.init === 'function') {
+		ssg_ad.init();
+	}
+
+	deferredObj.done(function() {
+		var cstalkOpen = function() {
+			var zonePrefix = '';
+			if(settings.zone == 'local') {
+				zonePrefix = 'dev-';
+			} else if(settings.zone != 'prod') {
+				zonePrefix = settings.zone + '-';
+			}
+			var cstalkUrl = 'https://' + zonePrefix + 'talk.ssg.com/webchat?gateType=cs&siteNo=' + (settings.curr_siteno || '6005');
+			window.open(cstalkUrl, 'SSGTALK_WEB', 'width=680, height=650, resizable=yes');
+		}
+		$('._cstalk_open_pc').on('click', function() {
+			if(settings.UserInfo.isLoginYn == 'N') {
+				var currUrl = document.location.href;
+				login('', function() {
+					$.cookie('CSTALK_POPUP_OPEN', 'Y', {expires: 1, path: '/', domain: '.ssg.com'});
+					//바닥 페이지 리로딩
+					var currUrl = document.URL;
+					document.location.href = currUrl;
+				});
+			} else {
+				cstalkOpen();
+			}
+		});
+
+		try {
+			$("div > ul.gnb_mall_lst > li > a").on("click", function (e) {
+				//console.log('몰탭클릭 : ' +  $(e.currentTarget).find('span.gnb_mall_name').html());
+				gtmPush({
+					event: 'click_gnb_mall',
+					gnb_mall: $(e.currentTarget).find('span.gnb_mall_name').html()
+				});
+			});
+		} catch (e) {
+		}
+
+		var cstalkPopupOpen = $.cookie('CSTALK_POPUP_OPEN');
+		$.cookie('CSTALK_POPUP_OPEN', null, { path: '/', domain: '.ssg.com' });
+		if ( cstalkPopupOpen != null && cstalkPopupOpen == 'Y' ) {
+			cstalkOpen();
+		}
+	});
+});
