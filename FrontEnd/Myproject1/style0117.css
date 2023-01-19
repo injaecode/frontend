@@ -1,0 +1,223 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    text-decoration: none;
+}
+
+li{
+    list-style-type: none; 
+    justify-content: space-around;
+}
+a{
+    text-decoration: none;
+    color:inherit;
+}
+.clear{
+    clear:both;
+}
+#page{
+    background: #EBA204;
+    position:fixed;
+    width:100%
+}
+
+.wrapper{
+    display:flex;
+    margin: 0 auto;
+    max-width: calc(100% - 400px);
+    background: #EBA204;
+
+    justify-content: space-between;
+}
+.topcontent{
+    display: flex;
+    align-items:center;padding-right:30px;
+}
+.topcontent .logo{
+    font-family: 'Shrikhand', cursive;
+    color:aliceblue;
+    font-size: 21px;
+    margin-right: 50px;
+    width:100px;
+    
+}
+.yellow{color:#E7F26D}
+
+.topcontent .toplinks{
+    font-size: 13px;
+    margin-left: 80px;
+    display:flex;
+    font-weight: bold;
+    font-family: 'Gowun Batang', serif;
+    
+}
+.topcontent .toplinks li a{
+    padding:7px 17px;
+    display:inline-block;
+    color:white;
+}
+
+.topcontent .toplinks li:hover a{
+    text-shadow: 2px 3px 5px #D95000;
+}
+
+.search-box{
+    position:relative;
+    display:block;
+    float:right;
+    width:350px;
+    height: 30px; ;
+    background-color: #fff;
+    margin-right:100px;
+    border-radius: 30px;
+    }
+.search-box:hover{
+    box-shadow: 2px 3px 5px #D95000;
+}
+.search-txt{
+    position:relative;
+    border:none;
+    outline:none;
+    width:80%;
+    margin: 3px 0 0 25px;
+    font-family: 'Gowun Dodum', sans-serif;
+    font-size: 15px;
+    
+} 
+search-btn{     
+    float: right;
+    width: 40px;
+    height: 30px;
+    border:none;
+    margin-top:5px;
+    outline:none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+search-btn i{width:100px;height:100px;}
+
+#main {
+    height:100vh;
+    display: flex;
+    align-items: center;
+    border:1px solid red;
+    overflow: hidden;
+}
+
+.slide-container{
+      width:100%;
+      height:85vh;
+      display:flex;
+      align-items:center;
+      overflow: hidden;
+      background:linear-gradient(to right, #F7B148, #FDF2E0)
+
+    }
+    .image-slider{
+      width:70%; 
+      height:600px;
+      position:absolute;
+      left:0;
+      display: flex;
+      justify-content:center;
+      align-items: center;
+      transition:.7s;
+    }
+    .slides-div{
+      display:flex;
+      align-items: center;
+      margin:0 30px 0 30px;
+    }
+    .img{
+      position:relative;
+      width:250px;
+      height:250px;
+      transition:.5s;
+      filter:saturate(10%);
+      text-align: center; 
+      color:white;
+      font-weight: bold;
+      text-shadow: 1px 1px 3px black;
+      line-height:26px;
+      font-family: 'Gowun Dodum', sans-serif;
+      border-radius: 10px;
+
+
+    }
+    #img1{background-image: url(./bisquit1.jpg);
+      width: 250px;height:250px;}
+    #img2{background-image: url(./cake1.jpg);
+      width: 250px;height:250px;}
+    #img3{background-image: url(./icecream1.jpg);
+      width: 250px;height:250px;}
+    #img4{background-image: url(./jelly1.jpg);
+      width: 250px;height:250px;}
+    #img5{background-image: url(./snack1.jpg);
+      width: 250px;height:250px;}
+      
+    .star{color:#FFC000;}
+    .button{
+      position:absolute;
+      width:250px;
+      height:250px;
+      transition: .5s;
+      background-color: rgba(0, 0, 0, .4);
+      border-radius: 10px;
+    }
+    .button:hover{
+      background-color: rgba(0, 0, 0, .2);
+    }
+    #slider-span1:target~.image-slider #img1,
+    #slider-span1:target~.image-slider #button-1{
+      width: 290px;
+      height:290px; 
+      background-color: transparent;
+      filter:saturate(100%)
+    }
+
+    #slider-span2:target~.image-slider #img2,
+    #slider-span2:target~.image-slider #button-2{
+      width: 290px;
+      height:290px; 
+      background-color: transparent;
+      filter:saturate(100%)
+    }
+    #slider-span3:target~.image-slider #img3,
+    #slider-span3:target~.image-slider #button-3{
+      width: 290px;
+      height:290px; 
+      background-color: transparent;
+      filter:saturate(100%)
+    }
+ 
+    #slider-span4:target~.image-slider #img4,
+    #slider-span4:target~.image-slider #button-4{
+      width: 290px;
+      height:290px; 
+      background-color: transparent;
+      filter:saturate(100%)
+    }
+    #slider-span5:target~.image-slider #img5,
+    #slider-span5:target~.image-slider #button-5{
+      width: 290px;
+      height:290px;  
+      background-color: transparent;
+      filter:saturate(100%)
+    }
+    
+    #slider-span1:target~.image-slider{
+      left:60%;
+    }
+    #slider-span2:target~.image-slider{
+      left:30%;
+    }
+
+    #slider-span4:target~.image-slider{
+      left:-30%;
+    }
+    #slider-span5:target~.image-slider{
+      left:-60%;
+    }

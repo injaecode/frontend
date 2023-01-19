@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #container {
+  height: 200px;
+  width: 800px;
+  border: 1px solid #333;
+  overflow: hidden;
+  margin: 25px auto;
+}
+
+#box {
+  background: orange;
+  height: 180px;
+  width: 400px;
+  margin: 10px;
+  -webkit-animation-name: move;
+  -webkit-animation-duration: 4s;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-direction: right;
+  -webkit-animation-timing-function: linear;
+}
+#box1 {
+  background: orange;
+  height: 180px;
+  width: 400px;
+  margin: 10px;
+  -webkit-animation-name: move;
+  -webkit-animation-duration: 200s;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-direction: right;
+  -webkit-animation-timing-function: linear;
+}
+#box2 {
+  background: orange;
+  height: 180px;
+  width: 400px;
+  margin: 10px;
+  -webkit-animation-name: move;
+  -webkit-animation-duration: 4s;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-direction: right;
+  -webkit-animation-timing-function: linear;
+}
+
+#box:hover {
+  -webkit-animation-play-state: paused;
+}
+
+@-webkit-keyframes move {
+  0% {
+    margin-left: -40px;
+  }
+  100% {
+    margin-left: 80px;
+  }
+}
+
+    </style>
+</head>
+<body>
+    <!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>HTML</title>
+  <link rel="stylesheet" href="main2.css" type="text/css" />
+</head>
+
+<body>
+  <div id="container">
+    <div id="box">as</div>
+    <div id="box1">bb</div>
+    <div id="box2">cc</div>
+    <div id="box3">dd</div>
+    <div id="box4">as</div>
+  </div>
+</body>
+
+</html>
+</body>
+</html>

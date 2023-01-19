@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .slider-wrap{
+            width:450px;
+            border:1px solid red;
+        }
+        .slide{
+            display:grid;
+            grid-auto-flow: column;
+            scroll-behavior: auto;
+            gap:1.2rem;
+            overflow-y: auto;
+            overscroll-behavior-x: contain;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: none;
+            scroll-snap-stop:none;
+        }
+
+        .slide::-webkit-scrollbar{
+            display: none;
+        }
+        .card{
+            scroll-snap-align:start;
+            border-radius: 30px;
+            min-height:200px;
+            min-width:300px;
+            display:flex;
+            align-items: center;
+            justify-content: center;
+
+        }
+        .card:nth-child(odd){
+            background:linear-gradient(-229deg, yellow,hotpink);
+        }
+           .card:nth-child(even){
+            background:linear-gradient(-229deg, pink,skyblue);
+        }
+ 
+    </style>
+</head>
+<body>
+    <div class="slider-wrap">
+        <div class="slide">    
+            <article class="card">1</article>
+            <article class="card">2</article>
+            <article class="card">3</article>
+            <article class="card">4</article>
+            <article class="card">5</article>
+        </div>
+    </div>
+</body>
+</html>

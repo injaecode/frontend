@@ -1,0 +1,81 @@
+body{margin:0 auto; background-color:#f0f4c3;}
+#page {margin:20px 80px;} 
+
+li{list-style-type: none; justify-content: space-around;}
+a{text-decoration: none;color:rgb(49, 49, 49);}
+.clear{clear:both;}
+.header{height:15vh;display:block;
+position:relative;}
+
+.logo{position:relative;display:inline;}
+.topinfo{float:right;}
+.topinfo ul{display:inline; padding:4px;}
+.topinfo li{display:inline; margin-left:5px;
+    font-family: 'Fredoka One', cursive;}
+.search-box{
+    position:relative;
+    display:block;
+    margin:-25px 0 0 110px; width:400px;
+    height: 30px;  left:270px;
+    background-color: #fff;
+    border: 1px solid #bdc192;;
+    border-radius: 30px;
+    box-shadow: 0px 0px .5px 1px #959689
+    }
+.serch-box:hover{
+    background-color:#f0f4c357
+}
+.search-txt{
+    position:relative;
+    border:none;
+    outline:none;
+    width:80%;
+    margin-left: 25px;
+    font-family: 'Gowun Dodum', sans-serif;
+    font-size: 18px;
+} 
+search-btn{     
+    float: right;
+    width: 40px;
+    height: 40px;
+    border:none;
+    outline:none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+/* ==========================탑======================== */
+nav{margin:0;padding:0;font-family: 'Gowun Dodum', sans-serif;
+    display:flex;flex-direction: row;width:100%;}
+/* .category{background-color:#bdc192;
+     border-radius: 15px 15px 0 0;width:20%; height:50px;}
+.category:hover{background-color:#f6e381; color:#f6e381; }
+.category h1{padding-left: 10px;text-align: center; margin:5px;} */
+
+
+
+
+.navigation{border:3px solid #bdc192;
+    display:inline-block; flex-direction:row;
+    justify-content: space-between; height:45px;
+    border-radius: 15px 15px 0 0;margin-left:3px;width:78%}
+.navigation ul{margin: 10px 10px 10px 50px; padding:0;}
+.navigation li{display:inline-block;align-self: center; margin: 0;
+    font-size: 20px;padding:0 10px;}
+.navigation li:hover{font-weight: bolder; color:white !important;transition: 0.5s;}
+
+.grid{
+    display:grid;
+    grid-template-columns: 250px 5fr 1fr;
+}
+
+.sidebar{width:250px;}
+
+.main{height:100vh;align-content: stretch;
+}
+
+.side-r{height:100vh;
+border:1px solid black;
+}
+.footer {text-align: center; height:5vh; padding-top: 10px;
+    background-color: #bdc192;font-family: 'Fredoka One', cursive;}
