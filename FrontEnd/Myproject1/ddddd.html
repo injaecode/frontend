@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+
+.slidebox{
+  max-width: 100%;
+  width:100%;
+  height:400px;
+  margin:0 auto;
+  border:red 1px solid;
+  overflow-x: hidden;
+}
+.slidebox .slideitem img{
+  border-radius: 10px;
+}
+.slidelist{ 
+  height:400px; 
+  overflow-x: hidden;
+
+}
+.slideitem{
+  white-space: nowrap;
+  overflow: hidden; float: left !important; 
+  animation: slide infinite 4s alternate;
+  height:400px;
+}
+
+.slidelist:hover .slideitem{
+  animation-play-state: paused;
+}
+.slidebox .slideitem{
+  position:relative;
+  display:inline-block;
+  vertical-align: middle;
+  width:100%;
+  height:100%;
+
+}
+.slideitem .slide-review{
+  height:320px; width:600px;display:inline-block;
+  align-self: center; 
+  border-radius: 20px;
+  background-color: white;
+  padding:20px;
+  box-shadow: 5px 5px 10px#eaecd7;
+  
+}
+/* @keyframes slide {
+  0% {
+    margin-left: 0px;
+  }
+  50% {
+    margin-left: -100px;
+  }
+  100% {
+    margin-left: -200px;
+  }
+} */
+.star{
+  color:#fd5523;
+}
+.slideitem div .review-txt{
+  padding-top:70px;
+  background-color: transparent;
+  font-size: 20px;
+}
+
+.slideitem div a{float:left;}
+
+    </style>
+</head>
+<body>
+    <div class="slidebox">
+
+        <ul class="slidelist">
+          <li class="slideitem">
+            <div class="slide-review">
+              <a><img src="https://sitem.ssgcdn.com/06/40/56/item/1000522564006_i1_290.jpg" alt=""></a>
+              <div class="review-txt"> <span class="star">★★★★★</span><br>빈츠 상위버전! <br>바삭 달달한 맛 추천😘 <br> <br> - 아이디: wod**ow011  </div>
+            </div>
+          </li>
+          <li class="slideitem">
+            <div class="slide-review">
+              <a><img src="https://sitem.ssgcdn.com/61/89/00/item/1000519008961_i1_290.jpg" alt="" ></a>
+              <div class="review-txt"> <span class="star">★★★★★</span><br>빈츠 상위버전! <br>바삭 달달한 맛 추천😘 <br> <br> - 아이디: wod**ow011  </div>
+            </div>
+          </li>
+          <li class="slideitem">
+            <div class="slide-review">
+              <a><img src="https://sitem.ssgcdn.com/45/79/32/item/1000518327945_i1_290.jpg" alt="" ></a>
+              <div class="review-txt"> <span class="star">★★★★★</span><br>빈츠 상위버전! <br>바삭 달달한 맛 추천😘 <br> <br> - 아이디: wod**ow011  </div>
+            </div>
+          </li>
+          <li class="slideitem">
+            <div class="slide-review">
+              <a> <img src="https://sitem.ssgcdn.com/40/77/15/item/1000476157740_i1_290.jpg" alt="" ></a>
+              <div class="review-txt"> <span class="star">★★★★★</span><br>빈츠 상위버전! <br>바삭 달달한 맛 추천😘 <br> <br> - 아이디: wod**ow011  </div>
+            </div>
+          </li>
+          <li class="slideitem">
+            <div class="slide-review">
+              <a> <img src="https://sitem.ssgcdn.com/02/38/54/item/1000465543802_i1_290.jpg" alt="" ></a>
+              <div class="review-txt"> <span class="star">★★★★★</span><br>빈츠 상위버전! <br>바삭 달달한 맛 추천😘 <br> <br> - 아이디: wod**ow011  </div>
+            </div>
+          </li>
+        </ul>
+
+    </div>
+</body>
+</html>

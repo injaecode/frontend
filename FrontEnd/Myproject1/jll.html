@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+   <style>
+    body{
+      padding:0;
+      margin:0;
+      width:70%;
+      height:300px;
+      display:flex;
+      align-items: center;
+      background-color: antiquewhite;
+      overflow:hidden;
+    }
+    .slide-container{
+      width:70%;
+      height:275px;
+      display:flex;
+      align-items:center;
+      overflow: hidden;
+
+    }
+    .image-slider{
+      width:70%;
+      height:250px;
+      position:absolute;
+      left:0;
+      display: flex;
+      justify-content:center;
+      align-items: center;
+      transition:.7s;
+    }
+    .slides-div{
+      display:flex;
+      align-items: center;
+      margin:0 30px 0 30px;
+    }
+    .img{
+      position:relative;
+      width:250px;
+      height:250px;
+      transition:.5s;
+      filter:saturate(100%);
+      text-align: center; 
+      color:white;
+      font-weight: bold;
+      text-shadow: 1px 1px 3px black;
+      line-height:26px;
+      font-family: 'Gowun Dodum', sans-serif;
+      border-radius: 10px;
+
+
+    }
+    #img1{background-image: url(./bisquit1.jpg);
+      width: 250px;height:250px;}
+    #img2{background-image: url(./cake1.jpg);
+      width: 250px;height:250px;}
+    #img3{background-image: url(./icecream1.jpg);
+      width: 250px;height:250px;}
+    #img4{background-image: url(./jelly1.jpg);
+      width: 250px;height:250px;}
+    #img5{background-image: url(./snack1.jpg);
+      width: 250px;height:250px;}
+      
+    .star{color:#FFC000;}
+    .button{
+      position:absolute;
+      width:250px;
+      height:250px;
+      transition: .5s;
+      background-color: rgba(0, 0, 0, .4);
+      border-radius: 10px;
+    }
+    .button:hover{
+      background-color: rgba(0, 0, 0, .2);
+    }
+    #slider-span1:target~.image-slider #img1,
+    #slider-span1:target~.image-slider #button-1{
+      width: 290px;
+      height:290px; 
+      background-color: transparent;
+      filter:saturate(100%)
+    }
+
+    #slider-span2:target~.image-slider #img2,
+    #slider-span2:target~.image-slider #button-2{
+      width: 290px;
+      height:290px; 
+      background-color: transparent;
+      filter:saturate(100%)
+    }
+    #slider-span3:target~.image-slider #img3,
+    #slider-span3:target~.image-slider #button-3{
+      width: 290px;
+      height:290px; 
+      background-color: transparent;
+      filter:saturate(100%)
+    }
+ 
+    #slider-span4:target~.image-slider #img4,
+    #slider-span4:target~.image-slider #button-4{
+      width: 290px;
+      height:290px; 
+      background-color: transparent;
+      filter:saturate(100%)
+    }
+    #slider-span5:target~.image-slider #img5,
+    #slider-span5:target~.image-slider #button-5{
+      width: 290px;
+      height:290px;  
+      background-color: transparent;
+      filter:saturate(100%)
+    }
+    
+    #slider-span1:target~.image-slider{
+      left:60%;
+    }
+    #slider-span2:target~.image-slider{
+      left:30%;
+    }
+
+    #slider-span4:target~.image-slider{
+      left:-30%;
+    }
+    #slider-span5:target~.image-slider{
+      left:-60%;
+    }
+    
+    
+   </style>
+</head>
+<body>
+  <div class="slide-container">
+    <span class="slider-span" id="slider-span1"></span>
+    <span class="slider-span" id="slider-span2"></span>
+    <span class="slider-span" id="slider-span3"></span>
+    <span class="slider-span" id="slider-span4"></span>
+    <span class="slider-span" id="slider-span5"></span>
+   
+
+  <div class="image-slider">
+    <div class="slides-div" id="slide1">
+      <div class="img" id="img1"><span class="star">★★★★★</span><br>빈츠 상위버전! <br>바삭 달달한 맛 추천😘</div>
+      <a href="#slider-span1" class="button" id="button-1"></a>
+    </div>
+    <div class="slides-div" id="slide2">
+      <div class="img" id="img2"><span class="star">★★★★</span><br>진리의 딸바<br>새콤해서 덜 느끼해용</div>
+      <a href="#slider-span2" class="button" id="button-2"></a>
+    </div>
+    <div class="slides-div" id="slide3">
+      <div class="img" id="img3"><span class="star">★★★☆</span><br>죄책감 한숟갈 덜어낸 맛🐷 <br>프로틴 충전했으니 암튼 다이어트 맞음</div>
+      <a href="#slider-span3" class="button" id="button-3"></a>
+    </div>
+    <div class="slides-div" id="slide4">
+      <div class="img" id="img4"><span class="star">★★</span><br>음..하리보 드세요</div>
+      <a href="#slider-span4" class="button" id="button-4"></a>
+    </div>
+    <div class="slides-div" id="slide5">
+      <div class="img" id="img5"><span class="star">★★★</span><br>한 번은 먹어볼만하지만<br>꼬북칩은 초코츄러스가 진리</div>
+      <a href="#slider-span5" class="button" id="button-5"></a>
+    </div>
+   
+  </div>
+</div>
+</body>
+</html>
+/* 
+.slider-container {
+    display: block;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    margin:0 5px;
+    border-radius: 10px;
+
+}
+
+  .slider {
+    width: 100%;
+    max-width: 800px;
+    height: 80%;
+    margin: 10px;
+    text-align: center;
+    border-radius: 20px;
+    overflow: hidden;
+    position: relative;
+    background-color: aliceblue;
+    
+
+  }
+  
+  .slides {
+    display: flex;
+    align-content:space-between;
+    overflow-x: scroll;
+    position: relative;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+  }
+  
+  .slide:nth-of-type(even) {
+    background-color: transparent;
+  }
+  
+  .slide {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    width: 100%;
+    height: 250px;
+    scroll-snap-align: center;
+    margin-right: 0px;
+    box-sizing: border-box;
+    transform-origin: center center;
+    transform: scale(1);
+   
+  }
+  
+  .slide__text {
+    font-size: 40px;
+    font-weight: bold;
+    font-family: 'Gowun Dodum', sans-serif;
+  }
+  .star{
+    color:#FFC000;
+  }
+  .review{
+    font-family: 'Gowun Dodum', sans-serif;
+    margin-left:15px;;
+  }
+  .slide a {
+    background: none;
+    border: none;
+  }
+  
+  a.slide__prev,
+  .slider::before {
+    transform: rotate(135deg);
+    -webkit-transform: rotate(135deg);
+    left: 2%;
+  }
+  
+  a.slide__next,
+  .slider::after {
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+    right: 2%;
+  }
+  
+  .slider::before,
+  .slider::after,
+  .slide__prev,
+  .slide__next {
+    position: absolute;
+    top: 48%;
+    width: 15px;
+    height: 15px;
+    border: solid black;
+    border-width: 0 4px 4px 0;
+    padding: 3px;
+    box-sizing: border-box;
+  }
+  
+  .slider::before,
+  .slider::after {
+    content: "";
+    z-index: 1;
+    background: none;
+    pointer-events: none;
+  }
+  
+  .slider__nav {
+    box-sizing: border-box;
+    position: absolute;
+    bottom: 5%;
+    left: 50%;
+    width: 200px;
+    margin-left: -100px;
+    text-align: center;
+  }
+  
+  .slider__navlink {
+    display: inline-block;
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+    border:.5px solid black;
+    background-color: whitesmoke;
+    margin: 0 10px 0 10px;
+  }
+  
+  .slider__navlink:checked{background-color:#FFC000;}
+  #article1 h2{font-size: ;} */

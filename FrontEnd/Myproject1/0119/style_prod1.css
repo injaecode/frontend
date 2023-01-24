@@ -1,0 +1,22 @@
+li{
+    list-style-type: none; 
+    justify-content: space-around;
+    
+  }
+.pd_info{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+}
+/* .pd_info input[type="checkbox"]{
+    display: none;
+
+  } */
+
+.pd_info  #wishtem:checked+.wish-icon i ::before{
+    content: "\f204";
+    color:red;
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    margin-right: 18px;
+}
