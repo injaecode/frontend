@@ -4,6 +4,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>eattem</title>
+  <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="style_prod1.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
 
@@ -51,7 +52,7 @@
         </div>
       <label for="show-search" class="search-icon"><i class="fas fa-search"></i></label>
       <form action="#" class="search-box">
-        <input type="text" placeholder="Find your taste" required>
+        <input type="text" placeholder="find your taste" required>
         <button type="submit" class="go-icon"><i class="fas fa-long-arrow-alt-right"></i></button>
       </form>
     </nav>
@@ -118,48 +119,47 @@
           </ul>
         </li>
       </ul>
-    </div>
 
-        <!-----------메인페이지----------->
+    </div>
     <div class="article1">
-      <section class="pd_info">
-        <input type="checkbox" id="wishtem">
+      <section class="pd_display">
+        
         <div id="pd_img">
             <ul>
-              <li><label for="wishtem" class="wish-icon"><i class="fa-regular fa-heart"></i></label></li>
-              <li><img src="https://sitem.ssgcdn.com/06/40/56/item/1000522564006_i1_1100.jpg" width="250px"></li>
-            </ul>
-          </div>
-        <div id="coffee_thumb">
-            <ul>
-                
+              <li><input type="checkbox" id="wishtem"></li>
+              <li><img src="https://sitem.ssgcdn.com/06/40/56/item/1000522564006_i1_1100.jpg" width="290px"></li>
             </ul>
         </div>
-        
-        </section>
-
+        <div id="pd_info">
+          <ul>
+            <li><h3>오리온 피넛칩쿠키</h3></li>
+            <li><i>오독 오독 씹는 재미, 땅콩 원물에 <br>고소한 피넛버터의 부드러움을 더하다</i></li>
+            <li> <table margin="10">
+               <tr><td align="right"><b>제조사 </b> </td> <td>오리온</td></tr> 
+               <tr><td align="right"><b>판매처 </b> </td> <td>대형마트 슈퍼마켓 편의점</td></tr>
+               <tr><td align="right"><b> 가격 </b></td> <td>1,500원</td></tr>
+               </table>
+            </li>
+            <li><a href="#"><span>#땅콩함유</span></a>&nbsp; <a href="#"><span>#추억의맛</span></a>&nbsp;<a href="#"><span>#단짠단짠</span></a> </li>
+            <li><img src="./영양성분.jpg" alt=""></li>
+          </ul>
+        </div>
+    </section>  
     </div>
     <div class="article2">
-      <h2>오늘의 신상🦔</h2>
-      <div class="box"><a href="#"> <img src="https://tqklhszfkvzk6518638.cdn.ntruss.com/product/8801753110037.jpg" alt="" height="170px"><br>연세우유 황치즈빵 <br><span id="cu">CU only</span></a>
+      <div  id="comments" >
+        <textarea name="comments" style="font-size:1.2em" width="500px">
+          솔직한 후기를 입력해주세요!
+          </textarea>
+          </div>
+          <input type="submit" value="Submit">
       </div>
-      <div class="box"><a href="#"> <img src="http://gs25appimg.gsretail.com/imgsvr/item/GD_2700038844550_001.jpg" alt="" height="170px"><br>벅스버니 당근라페샌드 <br><span id="gs">GS25 only</span></a>
-      </div>
-      <div class="box"><a href="#"> <img src="https://tqklhszfkvzk6518638.cdn.ntruss.com/product/8809494070719.jpg" alt="" height="170px"><br>고대1905 딸기잼맘모스빵<br><span id="cu">CU only</span></a>
-      </div>
-      <div class="box"><a href="#"> <img src="https://cphoto.asiae.co.kr/listimglink/9/2022110311032693464_1667441006.jpg" alt="" height="170px"> <br>푸드렐라 비건 짜장/카레 <br><span id="vegan">Vegan</span></a>
-      </div>
-      <div class="box"><a href="#"> <img src="https://tqklhszfkvzk6518638.cdn.ntruss.com/product/8801753110037.jpg" alt="" height="170px"> <br>연세우유 황치즈빵 <br><span id="none">ss</span></a>
-      </div>
-
     </div>
     <div class="clear"></div>
     <div class="article3">
-      <div><h2><span id="username">김철수</span> 님이 좋아할 잇템🍰 (<span id="keyword">#단백질충전</span>&nbsp; <span id="keyword">#매콤한</span>&nbsp;<span id="keyword"> #추억의맛</span>) </h2> </div>
-      <div class="box"><a href="#"> <img src="https://image.newsis.com/2022/12/26/NISI20221226_0001161635_web.jpg?rnd=20221226084738" alt="" height="170px"><br>신라면 제페토 큰사발 </a></div>
-      <div class="box"><a href="#"> <img src="https://sitem.ssgcdn.com/40/77/15/item/1000476157740_i1_232.jpg" alt="" height="170px"><br>피코크 프로틴 아이스크림 초코 </a></div>
-      <div class="box"><a href="#"> <img src="https://image.newsis.com/2023/01/09/NISI20230109_0001171760_web.jpg?rnd=20230109094311" alt="" height="170px"><br>틈새라면 고기 짬뽕 </a></div>
-      <div class="box"><a href="#"> <img src="https://sitem.ssgcdn.com/06/40/56/item/1000522564006_i1_232.jpg" alt="" height="170px"><br>오리온 피넛칩 쿠키 </a></div>
+  
+      
+       
     </div>
   </div>    
 </div>
