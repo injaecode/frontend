@@ -11,8 +11,9 @@
     box-sizing: border-box;
     text-decoration: none;
     font-family: 'Pretendard-Regular';
-    background-color: rgb(255, 251, 230);
-
+}
+body{
+  background-color: rgb(255, 251, 230);
 }
 li{
   list-style-type: none; 
@@ -26,7 +27,7 @@ a{
 .clear{
   clear:both;
 }
-.clear{clear:both;}
+
 .wrap{ width:100%;margin:0 auto;}
   
 
@@ -45,44 +46,6 @@ a{
     text-align: center;
 
   }
-/* .ctg{
-  width:200px;
-  height: 50px;
-  position:absolute;
-  z-index: 1000;
-  cursor: pointer;
-  font-size: 20px;
-  margin:10px;
-  top:10px;
-  padding-top:10px;
-  left:20px;
-align-items: center;
-justify-content: center;
-
-}
-.ctg input[type="checkbox"]{
-  display: none;
-}
-
-.ctg label{
-  border-radius: 30px;
-  border:1px solid black;
-  width:100px;
-  padding:10px 30px;
-  background-color: white;
-}
-.ctg:hover{
-  background-color:#B9E4C9;
-  transition: none;
- 
-}
-.ctg:hover label{
-  border:0;
-  border-radius:0;
-  background-color:#B9E4C9;
-  transition: 0;
-  color:white;
-} */
 
 .aside {
   /* padding-top:70px; */
@@ -94,19 +57,13 @@ justify-content: center;
   opacity:1;
   margin-right:10px;
 }
-/* .ctg:hover~.aside{
-  opacity:1;
-} */
+
 
 .aside ul{
   position:relative;
    background-color: #B9E4C9;
 }
-/* .aside button:hover{
-  background-color: #B9E4C9;
-  color:white;
-  border: 1px solid #B9E4C9;
-} */
+
 .aside ul li a{
   display:flex;
   align-items: center;

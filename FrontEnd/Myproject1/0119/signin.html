@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style_header.css">
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    
+    <title>회원가입 - Eat-tem.</title>
+    <style>
+        .signinbox{
+            position:absolute;
+            top:50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width:800px;
+            height: 500px;
+            background: white ;
+            border-radius: 20px;
+            padding:30px;
+        }
+    </style>
+</head>
+<body>
+    
+  <div class="header">
+    <nav>
+      <input type="checkbox" id="show-search">
+      <input type="checkbox" id="show-menu">
+      <label for="show-menu" class="menu-icon"><i class="fas fa-bars"></i></label>
+      <div class="content">
+        <div class="logo"><a href="index.html"><img src="./logo.png" width="100px"></a></div>
+
+          <ul class="links">
+            <li>
+              <a href="#" class="desktop-link">카테고리</a>
+              <input type="checkbox" id="show-tap1">
+              <label for="show-tap1">카테고리</label>
+              <ul>
+                <li><a href="#">품목 별</a></li>
+                <li><a href="#">제조사 별</a></li>
+                <li><a href="#">판매처 별</a></li>
+                <li><a href="#">영양성분 별</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="#" class="desktop-link">이 달의 신상</a>
+              <input type="checkbox" id="show-tab2">
+              <label for="show-tab2">이달의신상</label>
+              <ul>
+                <li><a href="#">Jan 2023</a></li>
+                <li><a href="#">4Q 2022</a></li>
+                <li><a href="#">3Q 2022</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="#" class="desktop-link">잇템 랭킹</a>
+            </li>
+            <li>
+              <a href="#" class="desktop-link">공지사항</a>
+            </li>
+
+          </ul>
+        </div>
+      <label for="show-search" class="search-icon"><i class="fas fa-search"></i></label>
+      <form action="#" class="search-box">
+        <input type="text" placeholder="Find your taste" required>
+        <button type="submit" class="go-icon"><i class="fas fa-long-arrow-alt-right"></i></button>
+      </form>
+    </nav>
+    <button class="login"><a href="login.html">로그인</a></button>
+  </div>
+
+
+  <div class="signinbox">
+  
+    <h1>회원가입</h1>
+    <form name="signin" action="login.do" method="get">
+        <table>
+            <tr><td>ID</td><td><input type="text" name="id" placeholder="hello@eat-tem.co.kr"></td></tr>
+            <tr><td>PW</td><td><input type="password" name="pw" placeholder="대/소문자 구분 (최소 8자)"></td></tr>
+            <tr><td>PW 확인</td><td><input type="password" name="pw"></td></tr>
+            <tr><td>닉네임</td><td><input type="text" name="nickname"></td></tr>
+            <tr><td colspan="2">내 잇템 찾기</td></tr>
+            <tr><td colspan="6">
+                <input type="checkbox" name="taste" id="crispy"><label for="crispy">#바삭한</label>
+                <input type="checkbox" name="taste" id="chewy"><label for="chewy">#쫀득한</label>
+                <input type="checkbox" name="taste" id="spicy"><label for="spicy">#매콤한</label>
+                <input type="checkbox" name="taste" id="protine"><label for="protine">#단백질충전</label>
+                <input type="checkbox" name="taste" id="noflour"><label for="noflour">#노밀가루</label>
+                <input type="checkbox" name="taste" id="nutty"><label for="nutty">#고소한</label><br>
+                <input type="checkbox" name="taste" id="soft"><label for="soft">#부드러운</label>
+                <input type="checkbox" name="taste" id="salty"><label for="salty">#짭짤한</label>
+                <input type="checkbox" name="taste" id="creamy"><label for="creamy">#생크림가득</label>
+                <input type="checkbox" name="taste" id="memory"><label for="memory">#추억의맛</label>
+                <input type="checkbox" name="taste" id="fullraw"><label for="fullraw">#원물가득</label><br>
+                <input type="checkbox" name="taste" id="nondairy"><label for="nondairy">#유당없는</label>
+                <input type="checkbox" name="taste" id="mintchoco"><label for="mintchoco">#민초러버</label>
+                <input type="checkbox" name="taste" id="old"><label for="old">#할매입맛</label>
+                <input type="checkbox" name="taste" id="exotic"><label for="exotic">#이국적인</label>
+                <input type="checkbox" name="taste" id="sweet"><label for="sweet">#달달한</label>
+                <input type="checkbox" name="taste" id="sour"><label for="sour">#새콤한</label>
+
+            </td></tr>
+            <tr><td></td><td align="center"><input type="submit" value="등록">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="reset" value="취소"></td></tr>
+            
+        </table>
+
+    </form>
+  </div>
+</body>
+</html>
