@@ -5,6 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>eattem</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style_header.css"
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -21,16 +22,17 @@
       <label for="show-menu" class="menu-icon"><i class="fas fa-bars"></i></label>
       <div class="content">
         <div class="logo"><a href="index.html"><img src="./logo.png" width="100px"></a></div>
+
           <ul class="links">
             <li>
-              <a href="#" class="desktop-link">실시간 인기템</a>
+              <a href="#" class="desktop-link">카테고리</a>
               <input type="checkbox" id="show-tap1">
-              <label for="show-tap1">실시간 인기</label>
+              <label for="show-tap1">카테고리</label>
               <ul>
-                <li><a href="#">Drop Menu 1</a></li>
-                <li><a href="#">Drop Menu 2</a></li>
-                <li><a href="#">Drop Menu 3</a></li>
-                <li><a href="#">Drop Menu 4</a></li>
+                <li><a href="#">품목 별</a></li>
+                <li><a href="#">제조사 별</a></li>
+                <li><a href="#">판매처 별</a></li>
+                <li><a href="#">영양성분 별</a></li>
               </ul>
             </li>
             <li>
@@ -38,23 +40,27 @@
               <input type="checkbox" id="show-tab2">
               <label for="show-tab2">이달의신상</label>
               <ul>
-                <li><a href="#">Drop Menu 1</a></li>
-                <li><a href="#">Drop Menu 2</a></li>
-                <li><a href="#">Drop Menu 3</a></li>
+                <li><a href="#">Jan 2023</a></li>
+                <li><a href="#">4Q 2022</a></li>
+                <li><a href="#">3Q 2022</a></li>
               </ul>
             </li>
             <li>
               <a href="#" class="desktop-link">잇템 랭킹</a>
             </li>
-            <li><a href="#">로그인</a></li>
+            <li>
+              <a href="#" class="desktop-link">공지사항</a>
+            </li>
+
           </ul>
         </div>
       <label for="show-search" class="search-icon"><i class="fas fa-search"></i></label>
       <form action="#" class="search-box">
-        <input type="text" placeholder="find your taste" required>
+        <input type="text" placeholder="Find your taste" required>
         <button type="submit" class="go-icon"><i class="fas fa-long-arrow-alt-right"></i></button>
       </form>
     </nav>
+    <button class="login"><a href="#">로그인</a></button>
   </div>
 
     
