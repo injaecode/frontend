@@ -142,14 +142,14 @@
 
   }
 
-  button{
+.loginbtn{
     height:50px; 
     width:100px;
     border-radius: 10px;
     margin-top: 10px;
     background-color: whitesmoke
 }
-button a{
+.loginbtn a{
     display:flex;
     justify-content: center;
     font-size: 20px;
@@ -214,7 +214,7 @@ button a{
       max-width: 90%;
       overflow: hidden;
     }
-    button{display: none;}
+    .loginbtn{display: none;}
   }
   @media screen and (max-width: 940px){
     .header .menu-icon{
@@ -258,7 +258,7 @@ button a{
     .content .links li a.desktop-link{
       display: none;
     }
-     .login{
+     .loginbtn{
         display: none;
     }
 
@@ -306,5 +306,5 @@ button a{
     .header .search-box input{
       padding-right: 30px;
     }
-    .login{display: none;}
+    .loginbtn{display: none;}
   }
