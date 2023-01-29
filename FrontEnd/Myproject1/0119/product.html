@@ -5,7 +5,9 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>eattem</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style_header.css">
   <link rel="stylesheet" href="style_prod1.css">
+
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -22,16 +24,65 @@
       <label for="show-menu" class="menu-icon"><i class="fas fa-bars"></i></label>
       <div class="content">
         <div class="logo"><a href="index.html"><img src="./logo.png" width="100px"></a></div>
+
           <ul class="links">
             <li>
-              <a href="#" class="desktop-link">실시간 인기템</a>
+              <a href="#" class="desktop-link">카테고리</a>
               <input type="checkbox" id="show-tap1">
-              <label for="show-tap1">실시간 인기</label>
+              <label for="show-tap1">카테고리</label>
               <ul>
-                <li><a href="#">Drop Menu 1</a></li>
-                <li><a href="#">Drop Menu 2</a></li>
-                <li><a href="#">Drop Menu 3</a></li>
-                <li><a href="#">Drop Menu 4</a></li>
+                <li class="drop"><a href="#">품목 별<span>&rsaquo;</span></a>
+                  <ul>
+                    <li><a href="">봉지 과자</a></li>
+                    <li><a href="">박스 과자</a></li>
+                    <li class="drop_sub"><a href="">베이커리<span>&rsaquo;</span></a>
+                      <ul>
+                        <li><a href="#">크림빵</a></li>
+                        <li><a href="#">샌드위치</a></li>
+                        <li><a href="#">디저트</a></li>
+                      </ul>
+                    </li>
+                    <li><a href="">아이스크림</a></li>
+                    <li class="drop_sub"><a href="">음료<span>&rsaquo;</span></a>
+                      <ul>
+                        <li><a href="#">유제품</a></li>
+                        <li><a href="#">탄산음료</a></li>
+                        <li><a href="#">차/쥬스</a></li>
+                      </ul>
+                    </li>
+                  </ul>
+                </li>
+                <li class="drop"><a href="#">제조사 별<span>&rsaquo;</span></a>
+                  <ul>
+                    <li><a href="#">농심</a></li>
+                    <li><a href="#">오리온</a></li>
+                    <li><a href="#">해태</a></li>
+                    <li><a href='#'>삼립</a></li>
+                    <li><a href='#'>매일유업</a></li>
+                    <li><a href='#'>남양유업</a></li>
+                  </ul>
+                </li>
+                <li class="drop"><a href="#">판매처 별<span>&rsaquo;</span></a>
+                  <ul>
+                    <li class="drop_sub"><a href="#">편의점<span>&rsaquo;</span></a>
+                      <ul>
+                        <li><a href="#">GS25</a></li>
+                        <li><a href="#">CU</a></li>
+                        <li><a href="#">세븐일레븐</a></li>
+                        <li><a href="#">이마트24</a></li>
+                      </ul>
+                    </li>
+                    <li class="drop_sub"><a href="#">대형마트</a></li>
+                    <li class="drop_sub"><a href="#">온라인</a></li>
+                  </ul>
+                </li>
+                <li class="drop"><a href="#">영양성분 별<span>&rsaquo;</span></a>
+                  <ul>
+                    <li><a href="#">제로</a></li>
+                    <li><a href="#">저당 + 저지방</a></li>
+                    <li><a href="#">Protine Up</a></li>
+                  </ul>
+                </li>
               </ul>
             </li>
             <li>
@@ -39,23 +90,27 @@
               <input type="checkbox" id="show-tab2">
               <label for="show-tab2">이달의신상</label>
               <ul>
-                <li><a href="#">Drop Menu 1</a></li>
-                <li><a href="#">Drop Menu 2</a></li>
-                <li><a href="#">Drop Menu 3</a></li>
+                <li><a href="#">Jan 2023</a></li>
+                <li><a href="#">4Q 2022</a></li>
+                <li><a href="#">3Q 2022</a></li>
               </ul>
             </li>
             <li>
               <a href="#" class="desktop-link">잇템 랭킹</a>
             </li>
-            <li><a href="#">로그인</a></li>
+            <li>
+              <a href="#" class="desktop-link">공지사항</a>
+            </li>
+
           </ul>
         </div>
       <label for="show-search" class="search-icon"><i class="fas fa-search"></i></label>
       <form action="#" class="search-box">
-        <input type="text" placeholder="find your taste" required>
+        <input type="text" placeholder="Find your taste" required>
         <button type="submit" class="go-icon"><i class="fas fa-long-arrow-alt-right"></i></button>
       </form>
     </nav>
+    <button class="loginbtn"><a href="login.html">로그인</a></button>
   </div>
 
     
@@ -65,60 +120,7 @@
             <label for="category">카테고리</label>
     </div> -->
     <div class="aside">
-      <ul>
-        <li class="drop"><a href="">품목별<span>&rsaquo;</span></a>
-            <ul>
-              <li><a href="">봉지 과자</a></li>
-              <li><a href="">박스 과자</a></li>
-              <li class="drop_sub"><a href="">베이커리<span>&rsaquo;</span></a>
-                <ul>
-                  <li><a href="#">크림빵</a></li>
-                  <li><a href="#">샌드위치</a></li>
-                  <li><a href="#">디저트</a></li>
-                </ul>
-              </li>
-              <li><a href="">아이스크림</a></li>
-              <li class="drop_sub"><a href="">음료<span>&rsaquo;</span></a>
-                <ul>
-                  <li><a href="#">유제품</a></li>
-                  <li><a href="#">탄산음료</a></li>
-                  <li><a href="#">차/쥬스</a></li>
-                </ul>
-              </li>
-            </ul>
-        </li>
-        <li class="drop"><a href="">제조사별<span>&rsaquo;</span></a>
-          <ul>
-            <li><a href="#">농심</a></li>
-            <li><a href="#">오리온</a></li>
-            <li><a href="#">해태</a></li>
-            <li><a href='#'>삼립</a></li>
-            <li><a href='#'>매일유업</a></li>
-            <li><a href='#'>남양유업</a></li>
-          </ul>
-        </li>
-        <li class="drop"><a href="">판매처별<span>&rsaquo;</span></a>
-          <ul>
-            <li class="drop_sub"><a href="#">편의점<span>&rsaquo;</span></a>
-              <ul>
-                <li><a href="#">GS25</a></li>
-                <li><a href="#">CU</a></li>
-                <li><a href="#">세븐일레븐</a></li>
-                <li><a href="#">이마트24</a></li>
-              </ul>
-            </li>
-            <li class="drop_sub"><a href="#">대형마트</a></li>
-            <li class="drop_sub"><a href="#">온라인</a></li>
-          </ul>
-        </li>
-        <li class="drop"><a href="">영양성분별<span>&rsaquo;</span></a>
-          <ul>
-            <li><a href="#">제로</a></li>
-            <li><a href="#">저당 + 저지방</a></li>
-            <li><a href="#">Protine Up</a></li>
-          </ul>
-        </li>
-      </ul>
+      
 
     </div>
     <div class="article1">
@@ -127,7 +129,7 @@
         <div id="pd_img">
             <ul>
               <li><input type="checkbox" id="wishtem"></li>
-              <li><img src="https://sitem.ssgcdn.com/06/40/56/item/1000522564006_i1_1100.jpg" width="290px"></li>
+              <li><img src="https://sitem.ssgcdn.com/06/40/56/item/1000522564006_i1_1100.jpg" width="350"></li>
             </ul>
         </div>
         <div id="pd_info">
@@ -141,12 +143,31 @@
                </table>
             </li>
             <li><a href="#"><span>#땅콩함유</span></a>&nbsp; <a href="#"><span>#추억의맛</span></a>&nbsp;<a href="#"><span>#단짠단짠</span></a> </li>
-            <li><img src="./영양성분.jpg" alt=""></li>
+            <li><img src="./영양성분.jpg" alt="" width="450"></li>
           </ul>
         </div>
     </section>  
     </div>
     <div class="article2">
+      
+      <div class="like_btn">
+        <div class="cont">
+          <span class="like_img"></span>
+          <span class="like">맛있어요</span>
+          <span class="like_num"></span>
+        </div>
+      </div>
+
+      <!-- <div class="dislike_btn">
+        <div class="cont">
+          <span class="dislike_img"></span>
+          <span class="dislike">별로예요</span>
+          <span class="dislike_num"></span>
+        </div>
+      </div> -->
+    </div>
+    <div class="clear"></div>
+    <div class="article3">
       <div  id="comments" >
         <textarea name="comments" style="font-size:1.2em" width="500px">
           솔직한 후기를 입력해주세요!
@@ -154,12 +175,8 @@
           </div>
           <input type="submit" value="Submit">
       </div>
-    </div>
-    <div class="clear"></div>
-    <div class="article3">
-  
       
-       
+    
     </div>
   </div>    
 </div>

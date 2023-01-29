@@ -1,9 +1,13 @@
 
 .pd_display{
     display: flex;
-    flex-direction: row;
     align-items:center;
-    justify-content:first baseline;
+    justify-content:center;
+    margin-top:20px;
+    background-color: #b9e4c95a;
+    padding-top: 30px; 
+    border-radius: 20px 20px 0 0 ;
+   height:450px
 }
 #wishtem{
   margin-right: 200px;
@@ -21,7 +25,7 @@
   background-color: lightgray;
   height:60%;
   width:100%;
-  top:-58%;
+  top:-56%;
   border-radius: 15px 15px 0 0;
 }
 #wishtem:after{
@@ -32,7 +36,7 @@
   width:100%;
   transform: rotate(-90deg);
   top:19%;
-  right:78%;
+  right:76%;
   border-radius: 15px 15px 0 0;
 }
 
@@ -48,14 +52,86 @@ padding:10px;}
 
 #pd_info{
   width:400px;
+  margin-left: 100px;
 }
 #pd_info li{
   line-height: 30px;;
+}
+#pd_info i{
+  color:#fd5523;
 }
 #pd_info span{
   background-color: lightgray;
   border-radius: 10px;
   text-decoration: underline;
+}
+
+
+.article2{
+  align-items: center;
+  display:flex;
+  justify-content: center;
+  background-color: #b9e4c95a;
+
+}
+.like-btn{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%, -50%);
+
+}
+.cont{
+  display:flex;
+  width:250px;
+  border:1px solid silver;
+  background-color: whitesmoke;
+  padding:20px 15px 15px 15px;
+  border-radius: 15px;
+  cursor: pointer;
+  margin-right:20px;
+  
+}
+.cont .like_img{
+  height:60px;
+  width:60px;
+  background:url("./love1.png") no-repeat;
+  background-position: left;
+  background-size: 222%;
+ 
+
+  left:44.5%;
+  transform: translate(-50%, -50%);
+}
+
+
+.like_img:hover{
+  background-position: right;
+}
+
+.like{
+  font-size: 20px;
+  margin: 10px 0 0 0px;
+  font-family: 'LeferiPoint-WhiteObliqueA';
+  
+}
+.like_num::before{
+  content: '31';
+  font-family: 'LeferiPoint-WhiteObliqueA';
+  font-size: 20px;
+  font-weight: 600;
+  margin-left: 10px;
+
+}.cont .dislike_img{
+  height:90px;
+  width:90px;
+  background:url("./hate1.png") no-repeat;
+  background-position: left;
+  background-size: 222%;
+  position:sticky;
+  top:50%;
+  left:74.5%;
+  transform: translate(-50%, -50%);
 }
 
 #comment textarea{
