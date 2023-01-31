@@ -4,65 +4,239 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>제품정보 - Eat-tem.</title>
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://kit.fontawesome.com/056bc9c16a.css" crossorigin="anonymous">
     <script src="https://kit.fontawesome.com/056bc9c16a.js" crossorigin="anonymous"></script>
+    <link rel="icon" href="./favicon.ico">
     <style>
-        .rating{        
-            position:absolute;
-            top:50%;
-            left:50%;
-            transform: translate(-50%, -50%) rotateY(180deg);
-            display:flex;
+    .article1{    
+    padding-top: 50px;
+    grid-area:article1;
+    height:100%;
+    width:100%;
+    align-items: center;
+    overflow:hidden;
+    box-sizing:border-box;
+    }
+    
+    .pd_display{
+    display: flex;
+    align-items:center;
+    justify-content:center;
+    top:200px;
+    background-color: #b9e4c95a;
+        width:100%;
+    border-radius: 20px 20px 0 0 ;
+   height:450px
+    }
+    #pd_img{
+    width:400px;
+    }
+    #pd_img img{
+    border-radius: 50px;
+    padding:10px;
+    }
+
+    #pd_info{
+    width:400px;
+    margin-left: 100px;
+    }
+    #pd_info li{
+    line-height: 30px;;
+    }
+    #pd_info i{
+    color:#fd5523;
+    }
+    #pd_info span{
+    background-color: lightgray;
+    border-radius: 10px;
+    text-decoration: underline;
+    }
+  .article2{
+    grid-area:article2;
+  align-items: center;
+  display:flex;
+  justify-content: center;
+  background-color: #b9e4c95a;
+
+  }
+
+    .rating{        
+        position:absolute;
+        top:50%;
+        left:50%;
+        transform: translate(-50%, -50%) rotateY(180deg);
+        display:flex;
+    }
+    .rating input{
+        display: none;
+    }
+    .rating label{
+        display: block;
+        cursor: pointer;
+        width:50px;
+    }
+    .rating label:before{
+        content: "\f005";
+        font-family: fontAwesome;
+        position:relative;
+        display:block;
+        font-size: 40px;
+        color:whitesmoke;
+    }
+    .rating label:after{
+        content: "\f005";
+        font-family: fontAwesome;
+        position:absolute;
+        display:block;
+        font-size: 40px;
+        color:#fd5523;
+        top:0;
+        opacity: 0;
+        transition: .5s;
+        text-shadow: 0 2px 4px rgba(255,255,255,05);
+    }
+    .rating label:hover:after,
+    .rating label:hover~label:after,
+    .rating input:checked ~ label:after{
+        opacity: 1;
         }
-        .rating input{
-            display: none;
-        }
-        .rating label{
-            display: block;
-            cursor: pointer;
-            width:50px;
-        }
-        .rating label:before{
-            content: "\f005";
-            font-family: fontAwesome;
-            position:relative;
-            display:block;
-            font-size: 40px;
-            color:whitesmoke;
-        }
-        .rating label:after{
-            content: "\f005";
-            font-family: fontAwesome;
-            position:absolute;
-            display:block;
-            font-size: 40px;
-            color:#fd5523;
-            top:0;
-            opacity: 0;
-            transition: .5s;
-            text-shadow: 0 2px 4px rgba(255,255,255,05);
-        }
-        .rating label:hover:after,
-        .rating label:hover~label:after,
-        .rating input:checked ~ label:after{
-            opacity: 1;
-         }
-    </style>
+</style>
 </head>
 <body>
-    <div class="rating">
-        <input type="radio" name="star" id="star1">
-        <label for="star1"></label>
-        <input type="radio" name="star" id="star2">
-        <label for="star2"></label>
-        <input type="radio" name="star" id="star3">
-        <label for="star3"></label>
-        <input type="radio" name="star" id="star4">
-        <label for="star4"></label>
-        <input type="radio" name="star" id="star5">
-        <label for="star5"></label>
+    <div class="page">
+        <div class="header">
+            <nav>
+                <div class="navbar">
+                    <input type="checkbox" name="slider" id="menu-btn">
+                    <label for="menu-btn" class="menu-icon"><i class="fas fa-bars"></i></label>
+                
+                    <div class="logo"><a href="index.html"><img src="./logo.png" width="100px"></a></div>
+                    <ul class="nav-links">
+                        <li>
+                        <a href="#" class="desktop-item">카테고리</a>
+                        <input type="checkbox" id="showMega">
+                        <label for="showMega" class="mobile-item">카테고리</label>
+                        <div class="mega-box">
+                            <div class="content">
+                                <div class="row">
+                                    <h4>품목 별</h4>
+                                    <ul class="mega-links">
+                                        <li><a href="">봉지 과자</a></li>
+                                        <li><a href="">박스 과자</a></li>
+                                        <li><a href="">베이커리</a></li>
+                                        <li><a href="">아이스크림</a></li>
+                                        <li><a href="">음료</a></li>
+                                        <li> &nbsp;</li>
+                                    </ul>
+                                </div>
+                                <div class="row">
+                                    <h4>제조사 별</h4>
+                                    <ul class="mega-links">
+                                        <li><a href="#">농심</a></li>
+                                        <li><a href="#">오리온</a></li>
+                                        <li><a href="#">해태</a></li>
+                                        <li><a href='#'>삼립</a></li>
+                                        <li><a href='#'>매일유업</a></li>
+                                        <li><a href='#'>남양유업</a></li>
+        
+                                    </ul>
+                                </div>
+                                <div class="row">
+                                    <h4>판매처 별</h4>
+                                    <ul class="mega-links">
+                                        <li><a href="#">편의점</a></li>
+                                        <li><a href="#">대형마트</a></li>
+                                        <li><a href="#">자체스토어</a></li>
+                                        <li><a href="#">온라인</a></li>
+                                        <li> &nbsp;</li>
+                                        <li> &nbsp;</li>
+                                    </ul>
+                                </div>
+                                <div class="row">
+                                    <h4>영양성분 별</h4>
+                                    <ul class="mega-links">
+                                        <li><a href="#">제로</a></li>
+                                        <li><a href="#">저지방</a></li>
+                                        <li><a href="#">Protein Up</a></li>
+                                        <li><a href="#">알러지 Free</a></li>
+                                        <li> &nbsp;</li>
+                                        <li> &nbsp;</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        </li>
+                        <li>
+                            <a href="#" class="desktop-item">잇템 랭킹</a>
+                            <input type="checkbox" id="showDrop">
+                            <label for="showDrop" class="mobile-item">잇템 랭킹</label>
+                            <ul class="drop-menu">
+                                <li><a href="#">Jan 4주차</a></li>
+                                <li><a href="#">Jan 3주차</a></li>
+                                <li><a href="#">Jan 2주차</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#">공지사항</a></li>
+                        <li><a href="login.html">로그인</a></li>
+                    </ul>
+                    <form action="#" class="search-box">
+                        <input type="text" placeholder="Find your Eat-tem!">
+                        <button type="submit" class="search-icon"><i class="fas fa-search"></i></button>
+                    </form>
+                
+                </div>
+            </nav>
+        </div>
+        <div class="main">
+            <div class="aside_l"></div>
+            <div class="article1">
+                    <section class="pd_display">
+                    
+                    <div id="pd_img">
+                        <ul>
+                            <li><input type="checkbox" id="wishtem"></li>
+                            <li><img src="https://sitem.ssgcdn.com/06/40/56/item/1000522564006_i1_1100.jpg" width="350"></li>
+                        </ul>
+                    </div>
+                    <div id="pd_info">
+                        <ul>
+                        <li><h3>오리온 피넛칩쿠키</h3></li>
+                        <li><i>오독 오독 씹는 재미, 땅콩 원물에 <br>고소한 피넛버터의 부드러움을 더하다</i></li>
+                        <li> <table margin="10">
+                            <tr><td align="right"><b>제조사 </b> </td> <td>오리온</td></tr> 
+                            <tr><td align="right"><b>판매처 </b> </td> <td>대형마트 슈퍼마켓 편의점</td></tr>
+                            <tr><td align="right"><b> 가격 </b></td> <td>1,500원</td></tr>
+                            </table>
+                        </li>
+                        <li><a href="#"><span>#땅콩함유</span></a>&nbsp; <a href="#"><span>#추억의맛</span></a>&nbsp;<a href="#"><span>#단짠단짠</span></a> </li>
+                        <li><img src="./영양성분.jpg" alt="" width="450"></li>
+                        </ul>
+                    </div>
+                    </section>  
+            </div>
+            <div class="article2">
 
+
+
+            </div>
+                <div class="comment"></div>
+                    <div class="rating">
+                    <input type="radio" name="star" id="star1">
+                    <label for="star1"></label>
+                    <input type="radio" name="star" id="star2">
+                    <label for="star2"></label>
+                    <input type="radio" name="star" id="star3">
+                    <label for="star3"></label>
+                    <input type="radio" name="star" id="star4">
+                    <label for="star4"></label>
+                    <input type="radio" name="star" id="star5">
+                    <label for="star5"></label>
+
+        </div>
+        <div class="aside_l"></div>
+    </div>
     </div>
 </body>
 </html>
