@@ -6,103 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>제품정보 - Eat-tem.</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style_prod.css">
     <link rel="stylesheet" href="https://kit.fontawesome.com/056bc9c16a.css" crossorigin="anonymous">
     <script src="https://kit.fontawesome.com/056bc9c16a.js" crossorigin="anonymous"></script>
     <link rel="icon" href="./favicon.ico">
-    <style>
-    .article1{    
-    padding-top: 50px;
-    grid-area:article1;
-    height:100%;
-    width:100%;
-    align-items: center;
-    overflow:hidden;
-    box-sizing:border-box;
-    }
-    
-    .pd_display{
-    display: flex;
-    align-items:center;
-    justify-content:center;
-    top:200px;
-    background-color: #b9e4c95a;
-        width:100%;
-    border-radius: 20px 20px 0 0 ;
-   height:450px
-    }
-    #pd_img{
-    width:400px;
-    }
-    #pd_img img{
-    border-radius: 50px;
-    padding:10px;
-    }
 
-    #pd_info{
-    width:400px;
-    margin-left: 100px;
-    }
-    #pd_info li{
-    line-height: 30px;;
-    }
-    #pd_info i{
-    color:#fd5523;
-    }
-    #pd_info span{
-    background-color: lightgray;
-    border-radius: 10px;
-    text-decoration: underline;
-    }
-  .article2{
-    grid-area:article2;
-  align-items: center;
-  display:flex;
-  justify-content: center;
-  background-color: #b9e4c95a;
-
-  }
-
-    .rating{        
-        position:absolute;
-        top:50%;
-        left:50%;
-        transform: translate(-50%, -50%) rotateY(180deg);
-        display:flex;
-    }
-    .rating input{
-        display: none;
-    }
-    .rating label{
-        display: block;
-        cursor: pointer;
-        width:50px;
-    }
-    .rating label:before{
-        content: "\f005";
-        font-family: fontAwesome;
-        position:relative;
-        display:block;
-        font-size: 40px;
-        color:whitesmoke;
-    }
-    .rating label:after{
-        content: "\f005";
-        font-family: fontAwesome;
-        position:absolute;
-        display:block;
-        font-size: 40px;
-        color:#fd5523;
-        top:0;
-        opacity: 0;
-        transition: .5s;
-        text-shadow: 0 2px 4px rgba(255,255,255,05);
-    }
-    .rating label:hover:after,
-    .rating label:hover~label:after,
-    .rating input:checked ~ label:after{
-        opacity: 1;
-        }
-</style>
 </head>
 <body>
     <div class="page">
@@ -195,48 +103,58 @@
                     <section class="pd_display">
                     
                     <div id="pd_img">
-                        <ul>
-                            <li><input type="checkbox" id="wishtem"></li>
-                            <li><img src="https://sitem.ssgcdn.com/06/40/56/item/1000522564006_i1_1100.jpg" width="350"></li>
-                        </ul>
+                        <img src="https://sitem.ssgcdn.com/06/40/56/item/1000522564006_i1_1100.jpg" width="350">
                     </div>
                     <div id="pd_info">
                         <ul>
                         <li><h3>오리온 피넛칩쿠키</h3></li>
-                        <li><i>오독 오독 씹는 재미, 땅콩 원물에 <br>고소한 피넛버터의 부드러움을 더하다</i></li>
-                        <li> <table margin="10">
+                        <li><i>풍부한 피넛 버터로 부드러운 쿠키 식감 <br>원물 땅콩으로 한층 더 오독오독 고소하게!</i></li>
+                        <li> <table margin="10" cellspaing="10">
                             <tr><td align="right"><b>제조사 </b> </td> <td>오리온</td></tr> 
                             <tr><td align="right"><b>판매처 </b> </td> <td>대형마트 슈퍼마켓 편의점</td></tr>
                             <tr><td align="right"><b> 가격 </b></td> <td>1,500원</td></tr>
                             </table>
                         </li>
                         <li><a href="#"><span>#땅콩함유</span></a>&nbsp; <a href="#"><span>#추억의맛</span></a>&nbsp;<a href="#"><span>#단짠단짠</span></a> </li>
-                        <li><img src="./영양성분.jpg" alt="" width="450"></li>
                         </ul>
                     </div>
                     </section>  
             </div>
             <div class="article2">
-
+                <img src="https://image.hanpoom.com/wp-content/uploads/2022/11/%ED%94%BC%EB%84%9B%EC%B9%A93.jpg" alt="" height="1000">
 
 
             </div>
-                <div class="comment"></div>
-                    <div class="rating">
-                    <input type="radio" name="star" id="star1">
-                    <label for="star1"></label>
-                    <input type="radio" name="star" id="star2">
-                    <label for="star2"></label>
-                    <input type="radio" name="star" id="star3">
-                    <label for="star3"></label>
-                    <input type="radio" name="star" id="star4">
-                    <label for="star4"></label>
-                    <input type="radio" name="star" id="star5">
-                    <label for="star5"></label>
+            <div class="article3">
+                <div class="comments">
+                    <div class="commentshead" >
+                        <div class="nickname"> 닉네임 &nbsp;&nbsp;&nbsp;<b>뉴진스하입보이요</b> </div>
+                        <div class="rating">
+                            <input type="radio" name="star" id="star1">
+                            <label for="star1"></label>
+                            <input type="radio" name="star" id="star2">
+                            <label for="star2"></label>
+                            <input type="radio" name="star" id="star3">
+                            <label for="star3"></label>
+                            <input type="radio" name="star" id="star4">
+                            <label for="star4"></label>
+                            <input type="radio" name="star" id="star5">
+                            <label for="star5"></label>
+                        </div>             
+                    </div>
 
-        </div>
+                    <div class="commnetsarea">
+                        <form name="commentInsertForm" method="post" enctype="multipart/form-date">
+                        <textarea name="comm_box" id="comm_box" cols="120" rows="6" placeholder="솔직한 후기를 남겨주세요!"></textarea>    
+                        </form>
+                        <button>등록</button>
+                    </div>
+                </div>
+            </div>
+        </div>    
+
         <div class="aside_l"></div>
     </div>
-    </div>
+   
 </body>
 </html>
