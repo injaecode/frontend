@@ -48,8 +48,10 @@
 #pd_img{
   width:400px;
 }
-#pd_img img{border-radius: 50px;
-padding:10px;}
+#pd_img img{
+border-radius: 50px;
+padding:10px;
+}
 
 #pd_info{
   width:400px;

@@ -226,3 +226,12 @@
 .aside_r{
     grid-area: aside_r;
 }
+
+.footer{
+  color:white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'LeferiPoint-WhiteObliqueA';
+  font-weight: 800;
+}

@@ -376,6 +376,11 @@ clear:both;
 
 .footer{
     height:70px;
-    
     background: #356859;
+    color:white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'LeferiPoint-WhiteObliqueA';
+    font-weight: 800;
 }
